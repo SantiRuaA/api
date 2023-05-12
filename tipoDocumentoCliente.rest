@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/tipoDocumentoCliente
+
+###
+
+POST http://localhost:3030/tipoDocumentoCliente
+Content-Type: application/json
+
+{
+    "idTipoDocumento": 1,
+    "nombreTipo": "NIT"
+}

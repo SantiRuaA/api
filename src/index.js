@@ -5,6 +5,7 @@ const novedades = require("./routes/tipoNovedad")
 const modulos = require("./routes/modulo")
 const estadoUsuario = require("./routes/estadoUsuario");
 const tipoDocumentoUsuario = require("./routes/tipoDocumentoUsuario");
+const tipoDocumentoCliente = require("./routes/tipoDocumentoCliente");
 const EstadoPaquete = require("./routes/estadoPaquete");
 const db = require("./db/database");
 const app = express();
@@ -39,6 +40,8 @@ app.use('/estadoUsuario',estadoUsuario);
 app.use('/estadoPaquete',EstadoPaquete);
 
 app.use('/tipoDocumentoUsuario',tipoDocumentoUsuario);
+
+app.use('/tipoDocumentoCliente',tipoDocumentoCliente);
 
 app.listen(port,() => {
     console.log("Servcidor trotando en el puerto: ", port);

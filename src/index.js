@@ -3,6 +3,8 @@ const cors = require("cors");
 const usuarios = require("./routes/usuarios")
 const novedades = require("./routes/tipoNovedad")
 const modulos = require("./routes/modulo")
+const estadoUsuario = require("./routes/estadoUsuario");
+const EstadoPaquete = require("./routes/estadoPaquete");
 const db = require("./db/database");
 const app = express();
 const port = process.env.PORT || 3030;
@@ -30,6 +32,10 @@ app.use('/usuarios',usuarios);
 app.use('/tipoNovedad',novedades);
 
 app.use('/modulo',modulos);
+
+app.use('/estadoUsuario',estadoUsuario);
+
+app.use('/estadoPaquete',EstadoPaquete);
 
 app.listen(port,() => {
     console.log("Servcidor ejecutandose en el puerto: ", port);

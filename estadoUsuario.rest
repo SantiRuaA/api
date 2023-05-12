@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/estadoUsuario
+
+###
+
+POST http://localhost:3030/estadoUsuario
+Content-Type: application/json
+
+{
+    "idEstado": 2,
+    "estadoUsuario": "Inactivo"
+}

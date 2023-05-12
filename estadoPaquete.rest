@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/estadoPaquete
+
+###
+
+POST http://localhost:3030/estadoPaquete
+Content-Type: application/json
+
+{
+    "idEstado": 3,
+    "estadoPaquete": "No entregado"
+}

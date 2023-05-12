@@ -15,7 +15,7 @@ const port = process.env.PORT || 3030;
     try {
         await db.authenticate()
         await db.sync();
-        console.log("Conectados a la base de datos");
+        console.log("melos a la base de datos");
     } catch (error){
         throw new Error(error)
     }

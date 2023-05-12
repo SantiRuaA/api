@@ -11,7 +11,7 @@ const Usuario = db.define('Usuarios',{
     },
     estado: {
         type: DataTypes.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
     }
 });
 

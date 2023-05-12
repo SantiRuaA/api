@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/modulo
+
+###
+
+POST http://localhost:3030/modulo
+Content-Type: application/json
+
+{
+    "idModulo": 6,
+    "modulo": "Enrutamiento"
+}

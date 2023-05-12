@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/tipoNovedad
+
+###
+
+POST http://localhost:3030/tipoNovedad
+Content-Type: application/json
+
+{
+    "idTipoNovedad": 2,
+    "tipoNovedad": "Otro"
+}

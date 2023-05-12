@@ -1,0 +1,14 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/usuarios
+
+###
+
+POST http://localhost:3030/usuarios
+Content-Type: application/json
+
+{
+    "nombre": "Hamilton",
+    "email": "Hamilton@rata.com"
+}

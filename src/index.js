@@ -6,6 +6,7 @@ const modulos = require("./routes/modulo")
 const estadoUsuario = require("./routes/estadoUsuario");
 const tipoDocumentoUsuario = require("./routes/tipoDocumentoUsuario");
 const tipoDocumentoCliente = require("./routes/tipoDocumentoCliente");
+const roles = require("./routes/roles")
 const EstadoPaquete = require("./routes/estadoPaquete");
 const db = require("./db/database");
 const app = express();
@@ -42,6 +43,8 @@ app.use('/estadoPaquete',EstadoPaquete);
 app.use('/tipoDocumentoUsuario',tipoDocumentoUsuario);
 
 app.use('/tipoDocumentoCliente',tipoDocumentoCliente);
+
+app.use('/roles',roles);
 
 app.listen(port,() => {
     console.log("Servcidor trotando en el puerto: ", port);

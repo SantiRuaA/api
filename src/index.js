@@ -31,7 +31,7 @@ app.use(express.json()); //Recibir indormacion
 
 app.use(cors());// Habilitar otras aplicaciones para realizar solicitudes a nuestra app
 
-app.use('/usuario',usuarios);
+app.use('/usuarios',usuarios);
 
 app.use('/tipoNovedad',novedades);
 

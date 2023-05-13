@@ -9,18 +9,18 @@ POST http://localhost:3030/modulo
 Content-Type: application/json
 
 {
-    "modulo": "kjaks"
+    "modulo": "cliente"
 }
 
 ###
 
-PUT http://localhost:3030/modulo/8
+PUT http://localhost:3030/modulo/13
 Content-Type: application/json
 
 {
-    "modulo": "holaaaa"
+    "modulo": "paquete"
 }
 
 ###
 
-DELETE http://localhost:3030/modulo/8
+DELETE http://localhost:3030/modulo/12

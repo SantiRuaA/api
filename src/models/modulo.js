@@ -9,7 +9,7 @@ const Modulo = db.define('modulo',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     modulo: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('cliente','paquete','usuario','entrega','novedad','rol'),
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
 });

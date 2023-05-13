@@ -3,20 +3,35 @@ const db = require("../db/database");
 const Rol = require("./rol");
 
 const Usuario = db.define('usuario',{
-    nombre:{
+    documentoUsuario:{
+        type: DataTypes.INTEGER,
+        primaryKey: true
+    },
+    idTipoDocumento:{
+        type: DataTypes.INTEGER,
+    },
+    nombreUsuario:{
         type:DataTypes.STRING,
     },
-    email: {
+    apellidoUsuario:{
+        type: DataTypes.STRING,
+    },
+    telefonoUsuario:{
+        type: DataTypes.STRING,
+    },
+    correoUsuario: {
         type: DataTypes.STRING,
         unique: true,
     },
-    estado: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
+    contrasenaUsuario: {
+        type: DataTypes.STRING,
     },
     idRol: {
         type: DataTypes.INTEGER,
-    }
+    },
+    idEstado:{
+        type: DataTypes.INTEGER,
+    },
 });
 
 Usuario.hasOne(Rol, { foreignKey: 'idRol'});

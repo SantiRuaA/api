@@ -9,16 +9,17 @@ POST http://localhost:3030/tipoDocumentoUsuario
 Content-Type: application/json
 
 {
-    "nombreTipo": "pruebaa"
+    "idTipoDocumento":4,
+    "nombreTipo": "Tarjeta de identidad"
 }
 
 ###
 
-PUT http://localhost:3030/tipoDocumentoUsuario/1
+PUT http://localhost:3030/tipoDocumentoUsuario/2
 Content-Type: application/json
 
 {
-    "nombreTipo": "kjas"
+    "nombreTipo": "Cedula de extranjería"
 }
 
 ###

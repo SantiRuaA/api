@@ -18,7 +18,7 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-  const { nombreTipo } = req.body;
+  const { idTipoDocumento, nombreTipo } = req.body;
   const tipo = await TipoDocumentoUsuario.findOne({ where: {nombreTipo}})
   if(!nombreTipo){
     return res.status(400).json({
@@ -31,7 +31,7 @@ router.post('/', async (req,res)=>{
       error:"El tipo de documento ya existe mibro"
     });
   }
-  const tipoDocUser = await TipoDocumentoUsuario.create({nombreTipo})
+  const tipoDocUser = await TipoDocumentoUsuario.create({idTipoDocumento,nombreTipo})
 
   res.json(tipoDocUser);
 });

@@ -9,7 +9,8 @@ POST http://localhost:3030/rol
 Content-Type: application/json
 
 {
-    "nombreRol": "coño",
+    "idRol":2,
+    "nombreRol": "uikgy,j",
     "descripcionRol": "me agarró el transito patron :("
 }
 

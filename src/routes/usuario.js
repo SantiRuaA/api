@@ -19,26 +19,35 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-  const { nombre,email,idRol } = req.body;
-  const user = await Usuario.findOne({ where: {email}})
+  const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
+  const user = await Usuario.findOne({ where: {correoUsuario}})
   
-  if(!nombre || !email || !idRol ){
+  if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
     return res.status(400).json({
         error:"Uno o mas campos vacios"
     });
   }
+  
   if (user){
     return res.status(400).json({
       error:"El usuario ya existe"
     });
   }
+
+  const userId = await Rol.findByPk(documentoUsuario)
+    if(rolId){
+        return res.status(400).json({
+          error:"Ya existe un rol con ese ID"
+        });
+    }
+
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
     return res.status(400).json({
     error: 'El idRol proporcionado no es válido'
     });
   }
-  const usuario = await Usuario.create({nombre,email,idRol})
+  const usuario = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
 
   res.json(usuario);
 });

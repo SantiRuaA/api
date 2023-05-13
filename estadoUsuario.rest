@@ -9,7 +9,8 @@ POST http://localhost:3030/estadoUsuario
 Content-Type: application/json
 
 {
-    "estadoUsuario": "holaaa"
+    "idEstado":2,
+    "estadoUsuario": "inactivo"
 }
 
 ###

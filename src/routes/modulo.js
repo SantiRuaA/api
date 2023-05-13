@@ -26,6 +26,12 @@ router.post("/", async (req,res) => {
         })
     }
 
+    if (!Modulo.rawAttributes.modulo.values.includes(modulo)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo modulo"
+        })
+    }
+
     if(moduloExists){
         return res.status(400).json({
             error:"El modulo ya existe"
@@ -44,6 +50,12 @@ router.put('/:id', async (req, res) => {
     if (!modulo){
         return res.status(400).json({
             error:"Uno o más campos vacios"
+        })
+    }
+
+    if (!Modulo.rawAttributes.modulo.values.includes(modulo)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo modulo"
         })
     }
 

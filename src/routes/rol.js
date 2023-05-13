@@ -18,9 +18,9 @@ router.get("/:id", async(req,res) => {
 
 //Crear un rol
 router.post("/", async (req,res) => {
-    const { nombreRol, descripcionRol } = req.body;
+    const { idRol, nombreRol, descripcionRol } = req.body;
     const rolExists = await Rol.findOne({ where: {nombreRol}})
-    if (!nombreRol ){
+    if (!nombreRol || !idRol){
         return res.status(400).json({
             error:"Uno o más campos vacios"
         })
@@ -32,7 +32,14 @@ router.post("/", async (req,res) => {
         });
     }
 
-    const rol = await Rol.create({nombreRol, descripcionRol});
+    const rolId = await Rol.findByPk(idRol)
+    if(rolId){
+        return res.status(400).json({
+          error:"Ya existe un rol con ese ID"
+        });
+    }
+
+    const rol = await Rol.create({idRol, nombreRol, descripcionRol});
     res.json(rol);
 });
 

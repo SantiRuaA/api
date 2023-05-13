@@ -9,6 +9,7 @@ POST http://localhost:3030/tipoNovedad
 Content-Type: application/json
 
 {
+    "idTipoNovedad": 9,
     "tipoNovedad": "hola mijo"
 }
 
@@ -18,6 +19,7 @@ PUT http://localhost:3030/tipoNovedad/4
 Content-Type: application/json
 
 {
+    "idTipoNovedad": "4",
     "tipoNovedad": "auu"
 }
 

@@ -1,17 +1,21 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
+const Modulo = require("./modulo");
 
-const TipoNovedad = db.define('TipoNovedades',{
-    idTipoNovedad:{
+const Permiso = db.define('Permisos',{
+    idPermiso:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
-        autoIncrement: false,
+        autoIncrement: true,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
-    tipoNovedad: {
+    nombrePermiso: {
         type: DataTypes.STRING,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
+    idModulo: {
+        type: DataTypes.INTEGER,
+    }
 });
-
-module.exports = TipoNovedad;
+Permiso.hasOne(Modulo, { foreignKey: 'idModulo' });
+module.exports = Permiso;

@@ -18,21 +18,27 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-    const { estadoUsuario } = req.body;
+    const { idEstado, estadoUsuario } = req.body;
     const estadoUserExists = await EstadoUsuario.findOne({ where: {estadoUsuario}})
-    if (!estadoUsuario){
+    const estadoUserId = await EstadoUsuario.findByPk(idEstado)
+    
+    if (!estadoUsuario || !idEstado){
         return res.status(400).json({
             error:"Uno o más campos vacios"
         })
     }
-
+    if(estadoUserId){
+        return res.status(400).json({
+            error:"Ya existe un usuario con ese ID"
+        });
+    }
     if(estadoUserExists){
         return res.status(400).json({
             error:"El estado del usuario ya existe"
         });
     }
 
-    const estadoUserC = await EstadoUsuario.create({estadoUsuario})
+    const estadoUserC = await EstadoUsuario.create({idEstado, estadoUsuario})
 
     res.json(estadoUserC);
 });
@@ -40,9 +46,9 @@ router.post('/', async (req,res)=>{
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const estadoUserId = await EstadoUsuario.findByPk(id);
-    const { estadoUsuario, ...resto } = req.body;
+    const { idEstado, estadoUsuario, ...resto } = req.body;
   
-    if (!estadoUsuario){
+    if (!estadoUsuario || !idEstado){
         return res.status(400).json({
             error:"Uno o más campos vacios"
         })
@@ -50,6 +56,12 @@ router.put('/:id', async (req, res) => {
 
     if (!estadoUserId) {
       return res.json({ msj: 'El estado del usuario no existe' });
+    }
+
+    if (id !== idEstado) {
+        return res.status(400).json({
+            error: "El ID en el enlace no coincide con el ID en el cuerpo"
+        });
     }
   
     const estadoUserExists = await EstadoUsuario.findOne({ where: { estadoUsuario } });

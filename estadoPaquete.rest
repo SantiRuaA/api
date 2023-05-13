@@ -9,7 +9,8 @@ POST http://localhost:3030/estadoPaquete
 Content-Type: application/json
 
 {
-    "estadoPaquete": "holaaa"
+    "idEstado": "11",
+    "estadoPaquete": "uu"
 }
 
 ###
@@ -18,7 +19,8 @@ PUT http://localhost:3030/estadoPaquete/2
 Content-Type: application/json
 
 {
-    "estadoPaquete": "jejje"
+    "idEstado": "2",
+    "estadoPaquete": "coñito"
 }
 
 ###

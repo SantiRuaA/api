@@ -9,10 +9,9 @@ POST http://localhost:3030/usuarios
 Content-Type: application/json
 
 {
-    "id":1,
     "nombre": "los pepes",
-    "email": "kwjk",
-    "idRol": 1
+    "email": "milton1",
+    "idRol": 4
 }
 
 ###
@@ -22,10 +21,10 @@ Content-Type: application/json
 
 {
     "nombre": "Milton",
-    "email": "ksjdowqkjoieowe",
-    "idRol": 3
+    "email": "burgos1",
+    "idRol": 2
 }
 
 ###
 
-DELETE http://localhost:3030/usuarios/5
+DELETE http://localhost:3030/usuarios/6

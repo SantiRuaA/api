@@ -60,7 +60,7 @@ router.put('/:id', async (req, res) => {
   
   const userExists = await Usuario.findOne({ where: { email } });
 
-  if (userExists && userExists.id !== id) {
+  if (userExists) {
     return res.status(400).json({
       error: 'El email ya lo tiene otro usuario papi'
     });

@@ -18,21 +18,27 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-    const { estadoPaquete } = req.body;
+    const { idEstado, estadoPaquete } = req.body;
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: {estadoPaquete}})
-    if (!estadoPaquete){
+    const estadoPaqId = await EstadoPaquetes.findByPk(idEstado)
+
+    if (!estadoPaquete || !idEstado){
         return res.status(400).json({
             error:"Uno o más campos vacios"
         })
     }
-
+    if(estadoPaqId){
+        return res.status(400).json({
+            error:"Ya existe un estado con ese ID"
+        });
+    }
     if(estadoPaqExists){
         return res.status(400).json({
             error:"El estado del paquete ya existe"
         });
     }
 
-    const estadoPaqC = await EstadoPaquetes.create({estadoPaquete})
+    const estadoPaqC = await EstadoPaquetes.create({idEstado, estadoPaquete})
 
     res.json(estadoPaqC);
 });
@@ -40,9 +46,9 @@ router.post('/', async (req,res)=>{
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const estadoPaqId = await EstadoPaquetes.findByPk(id);
-    const { estadoPaquete, ...resto } = req.body;
+    const { idEstado, estadoPaquete, ...resto } = req.body;
   
-    if (!estadoPaquete){
+    if (!estadoPaquete || !idEstado){
         return res.status(400).json({
             error:"Uno o más campos vacios"
         })
@@ -50,6 +56,12 @@ router.put('/:id', async (req, res) => {
 
     if (!estadoPaqId) {
       return res.json({ msj: 'El estado del paquete no existe' });
+    }
+
+    if (id !== idEstado) {
+        return res.status(400).json({
+            error: "El ID en el enlace no coincide con el ID en el cuerpo"
+        });
     }
   
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: { estadoPaquete } });
@@ -60,7 +72,7 @@ router.put('/:id', async (req, res) => {
       });
     }
   
-    await estadoPaqId.update({ estadoPaquete, ...resto });
+    await estadoPaqId.update({ idEstado, estadoPaquete, ...resto });
   
     res.json({
       msj: 'Estado del paquete actualizado yujuu',

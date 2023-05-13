@@ -18,9 +18,10 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-  const { tipoNovedad } = req.body;
+  const { idTipoNovedad, tipoNovedad } = req.body;
   const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
-  if(!tipoNovedad){
+  const tipoId = await TipoNovedad.findByPk(idTipoNovedad)
+  if(!tipoNovedad || !idTipoNovedad){
     return res.status(400).json({
       error:"Uno o mas campos vacios"
     });
@@ -28,10 +29,17 @@ router.post('/', async (req,res)=>{
 
   if(tipo){
     return res.status(400).json({
-        error:"El tipo de novedad ya existe mibro"
+        error:"El tipo de novedad ya existe"
     });
   }
-  const novedad = await TipoNovedad.create({tipoNovedad})
+
+  if(tipoId){
+    return res.status(400).json({
+      error:"Ya existe una novedad con ese ID"
+    });
+  }
+
+  const novedad = await TipoNovedad.create({idTipoNovedad, tipoNovedad})
 
   res.json(novedad);
 });
@@ -39,9 +47,9 @@ router.post('/', async (req,res)=>{
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
-  const { tipoNovedad, ...resto } = req.body;
+  const { idTipoNovedad, tipoNovedad, ...resto } = req.body;
 
-  if(!tipoNovedad){
+  if(!tipoNovedad || !idTipoNovedad){
     return res.status(400).json({
       error:"Uno o mas campos vacios"
     });
@@ -50,6 +58,12 @@ router.put('/:id', async (req, res) => {
   if (!tipoId) {
     return res.json({ msj: 'El tipo de novedad no existe' });
   }
+
+  if (id !== idTipoNovedad) {
+    return res.status(400).json({
+        error: "El ID en el enlace no coincide con el ID en el cuerpo"
+    });
+}
 
   const tipoExists = await TipoNovedad.findOne({ where: { tipoNovedad } });
 

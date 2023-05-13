@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
+const Rol = require("./rol");
 
 const Usuario = db.define('Usuarios',{
     nombre:{
@@ -12,7 +13,11 @@ const Usuario = db.define('Usuarios',{
     estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
+    },
+    idRol: {
+        type: DataTypes.INTEGER,
     }
 });
 
+Usuario.hasOne(Rol, { foreignKey: 'idRol' });
 module.exports = Usuario;

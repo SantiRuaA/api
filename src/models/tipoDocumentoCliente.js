@@ -5,7 +5,7 @@ const TipoDocumentoCliente = db.define('TipoDocumentoClientes',{
     idTipoDocumento:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
-        autoIncrement: false,
+        autoIncrement: true,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     nombreTipo: {

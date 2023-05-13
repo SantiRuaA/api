@@ -9,6 +9,18 @@ POST http://localhost:3030/modulo
 Content-Type: application/json
 
 {
-    "idModulo": 6,
-    "modulo": "Enrutamiento"
+    "modulo": "kjaks"
 }
+
+###
+
+PUT http://localhost:3030/modulo/8
+Content-Type: application/json
+
+{
+    "modulo": "holaaaa"
+}
+
+###
+
+DELETE http://localhost:3030/modulo/8

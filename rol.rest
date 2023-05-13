@@ -1,0 +1,28 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/rol
+
+###
+
+POST http://localhost:3030/rol
+Content-Type: application/json
+
+{
+    "nombreRol": "coño",
+    "descripcionRol": "me agarró el transito patron :("
+}
+
+###
+
+PUT http://localhost:3030/rol/1
+Content-Type: application/json
+
+{
+    "nombreRol": "",
+    "descripcionRol": "me agarró el transito patron :("
+}
+
+###
+
+DELETE http://localhost:3030/rol/1

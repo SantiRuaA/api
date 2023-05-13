@@ -9,6 +9,18 @@ POST http://localhost:3030/tipoDocumentoCliente
 Content-Type: application/json
 
 {
-    "idTipoDocumento": 1,
-    "nombreTipo": "NIT"
+    "nombreTipo": "pruebaa"
 }
+
+###
+
+PUT http://localhost:3030/tipoDocumentoCliente/1
+Content-Type: application/json
+
+{
+    "nombreTipo": "pruebaa"
+}
+
+###
+
+DELETE http://localhost:3030/tipoDocumentoCliente/1

@@ -5,7 +5,7 @@ const EstadoUsuario = db.define('EstadoUsuarios',{
     idEstado:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
-        autoIncrement: false,
+        autoIncrement: true,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     estadoUsuario: {

@@ -9,6 +9,23 @@ POST http://localhost:3030/usuarios
 Content-Type: application/json
 
 {
-    "nombre": "Hamilton",
-    "email": "Hamilton@rata.com"
+    "id":1,
+    "nombre": "los pepes",
+    "email": "kwjk",
+    "idRol": 1
 }
+
+###
+
+PUT http://localhost:3030/usuarios/14
+Content-Type: application/json
+
+{
+    "nombre": "Milton",
+    "email": "ksjdowqkjoieowe",
+    "idRol": 3
+}
+
+###
+
+DELETE http://localhost:3030/usuarios/5

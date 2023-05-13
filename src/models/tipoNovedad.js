@@ -5,8 +5,8 @@ const TipoNovedad = db.define('TipoNovedades',{
     idTipoNovedad:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
-        autoIncrement: false,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        autoIncrement: true,
+        allowNull: true,   //Siempre de debe proporcionjar un valor
     },
     tipoNovedad: {
         type: DataTypes.STRING,

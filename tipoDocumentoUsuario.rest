@@ -9,6 +9,18 @@ POST http://localhost:3030/tipoDocumentoUsuario
 Content-Type: application/json
 
 {
-    "idTipoDocumento": 2,
-    "nombreTipo": "cedulaExtranjeria"
+    "nombreTipo": "pruebaa"
 }
+
+###
+
+PUT http://localhost:3030/tipoDocumentoUsuario/1
+Content-Type: application/json
+
+{
+    "nombreTipo": "kjas"
+}
+
+###
+
+DELETE http://localhost:3030/tipoDocumentoUsuario/1

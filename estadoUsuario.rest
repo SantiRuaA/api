@@ -9,6 +9,18 @@ POST http://localhost:3030/estadoUsuario
 Content-Type: application/json
 
 {
-    "idEstado": 2,
-    "estadoUsuario": "Inactivo"
+    "estadoUsuario": "holaaa"
 }
+
+###
+
+PUT http://localhost:3030/estadoUsuario/2
+Content-Type: application/json
+
+{
+    "estadoUsuario": "jejje"
+}
+
+###
+
+DELETE http://localhost:3030/estadoUsuario/1

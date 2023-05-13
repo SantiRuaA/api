@@ -9,6 +9,18 @@ POST http://localhost:3030/estadoPaquete
 Content-Type: application/json
 
 {
-    "idEstado": 3,
-    "estadoPaquete": "No entregado"
+    "estadoPaquete": "holaaa"
 }
+
+###
+
+PUT http://localhost:3030/estadoPaquete/2
+Content-Type: application/json
+
+{
+    "estadoPaquete": "jejje"
+}
+
+###
+
+DELETE http://localhost:3030/estadoPaquete/1

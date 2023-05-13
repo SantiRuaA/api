@@ -9,6 +9,18 @@ POST http://localhost:3030/tipoNovedad
 Content-Type: application/json
 
 {
-    "idTipoNovedad": 2,
-    "tipoNovedad": "Otro"
+    "tipoNovedad": "hola mijo"
 }
+
+###
+
+PUT http://localhost:3030/tipoNovedad/4
+Content-Type: application/json
+
+{
+    "tipoNovedad": "auu"
+}
+
+###
+
+DELETE http://localhost:3030/tipoNovedad/9

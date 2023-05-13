@@ -1,4 +1,4 @@
-const Rol = require('../models/Rol');
+const Rol = require('../models/rol');
 
 const router = require('express').Router()
 
@@ -42,6 +42,7 @@ router.post("/", async (req,res) => {
     const rol = await Rol.create({idRol, nombreRol, descripcionRol});
     res.json(rol);
 });
+
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;

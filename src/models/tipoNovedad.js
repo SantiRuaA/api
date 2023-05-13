@@ -9,7 +9,7 @@ const TipoNovedad = db.define('tiponovedad',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     tipoNovedad: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('Retraso','Devolucion','Otro'),
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
 });

@@ -50,5 +50,5 @@ app.use('/rol',roles);
 app.use('/permiso',permisos);
 
 app.listen(port,() => {
-    console.log("Servcidor trotando en el puerto: ", port);
+    console.log("Servidor trotando en el puerto: ", port);
 });

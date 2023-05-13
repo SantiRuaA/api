@@ -47,7 +47,7 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const userId = await Usuario.findByPk(id);
   const { nombre, email, idRol, ...resto } = req.body;
-
+  
   if(!nombre || !email || !idRol ){
     return res.status(400).json({
       error:"Uno o mas campos vacios"
@@ -57,7 +57,7 @@ router.put('/:id', async (req, res) => {
   if (!userId) {
     return res.json({ msj: 'El usuario no existe' });
   }
-
+  
   const userExists = await Usuario.findOne({ where: { email } });
 
   if (userExists && userExists.id !== id) {
@@ -66,7 +66,14 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await user.update({ nombre, email, idRol, ...resto });
+  const rol = await Rol.findByPk(idRol);
+  if(!rol){
+    return res.status(400).json({
+      error:"El idRol proporcionado no es válido"
+    });
+  }
+
+  await userId.update({ nombre, email, idRol, ...resto });
 
   res.json({
     msj: 'Usuario actualizado yujuu',

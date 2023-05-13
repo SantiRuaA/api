@@ -1,7 +1,7 @@
 //este rest es para que reconozca esete archivo como un archivo de solicitudes
 
 
-GET http://localhost:3030/usuarios/1000291725
+GET http://localhost:3030/usuarios/
 
 ###
 
@@ -9,29 +9,29 @@ POST http://localhost:3030/usuarios
 Content-Type: application/json
 
 {
-    "documentoUsuario":3334,
+    "documentoUsuario":927398,
     "idTipoDocumento":4,
     "nombreUsuario":"roass",
-    "apellidoUsuario":"FEO2",
+    "apellidoUsuario":"ered",
     "telefonoUsuario":"333333333",
-    "correoUsuario":"A@pairico.co",
+    "correoUsuario":"A@ererererer.co",
     "contrasenaUsuario":"Amolosaniomalestieamzoo",
-    "idRol":1,
+    "idRol":2,
     "idEstado":1
 }
 
 ###
 
-PUT http://localhost:3030/usuarios/1
+PUT http://localhost:3030/usuarios/1023625668
 Content-Type: application/json
 
 {
-    "documentoUsuario":1000291725,
-    "idTipoDocumento":1,
+    "documentoUsuario":23445767545458,
+    "idTipoDocumento":12,
     "nombreUsuario":"Juan",
     "apellidoUsuario":"Chava",
     "telefonoUsuario":"3108323315",
-    "correoUsuario":"pablosi14@papirico.co",
+    "correoUsuario":"carajoooo54545ooooo@papirico.co",
     "contrasenaUsuario":"Amolosaniomalestieamzoo",
     "idRol":1,
     "idEstado":1

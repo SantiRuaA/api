@@ -1,5 +1,5 @@
 const RolPermiso = require('../models/rolPermiso');
-const Rol = require('../models/Rol');
+const Rol = require('../models/rol');
 const Permiso = require('../models/permiso');
 
 const router = require('express').Router()

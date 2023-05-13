@@ -1,4 +1,4 @@
-const TipoDocumentoUsuario = require('../models/tipoDocumentoUsuario');
+const TipoDocumentoUsuario = require('../models/tipodocumentousuario');
 
 const router = require('express').Router()
 
@@ -35,6 +35,7 @@ router.post('/', async (req,res)=>{
 
   res.json(tipoDocUser);
 });
+
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;

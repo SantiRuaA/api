@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 
-const Modulo = db.define('Modulos',{
+const Modulo = db.define('modulo',{
     idModulo:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       

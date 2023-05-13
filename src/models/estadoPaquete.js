@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 
-const EstadoPaquetes = db.define('EstadoPaquetes',{
+const EstadoPaquetes = db.define('estadopaquete',{
     idEstado:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       

@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 const Modulo = require("./modulo");
 
-const Permiso = db.define('Permisos',{
+const Permiso = db.define('permiso',{
     idPermiso:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
@@ -17,5 +17,5 @@ const Permiso = db.define('Permisos',{
         type: DataTypes.INTEGER,
     }
 });
-Permiso.hasOne(Modulo, { foreignKey: 'idModulo' });
+Permiso.hasOne(Modulo, { foreignKey: 'idModulo'});
 module.exports = Permiso;

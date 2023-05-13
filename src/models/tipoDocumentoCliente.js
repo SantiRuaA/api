@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 
-const TipoDocumentoCliente = db.define('TipoDocumentoClientes',{
+const TipoDocumentoCliente = db.define('tipodocumentocliente',{
     idTipoDocumento:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       

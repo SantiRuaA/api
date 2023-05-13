@@ -9,8 +9,7 @@ const EstadoUsuario = db.define('estadousuario',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     estadoUsuario: {
-        type: DataTypes.STRING,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.ENUM('activo','inactivo')
     },
 });
 

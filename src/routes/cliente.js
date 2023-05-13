@@ -82,6 +82,10 @@ router.put('/:id', async (req, res) => {
       error: "El correo no tiene un formato válido",
     });
   }
+
+  if (!userId) {
+    return res.json({ msj: 'El cliente no existe' });
+  }
   
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {

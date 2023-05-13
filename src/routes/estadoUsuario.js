@@ -32,6 +32,13 @@ router.post('/', async (req,res)=>{
             error:"Ya existe un usuario con ese ID"
         });
     }
+
+    if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo estado usuario"
+        })
+    }
+
     if(estadoUserExists){
         return res.status(400).json({
             error:"El estado del usuario ya existe"
@@ -57,19 +64,18 @@ router.put('/:id', async (req, res) => {
     if (!estadoUserId) {
       return res.json({ msj: 'El estado del usuario no existe' });
     }
-
-    if (id !== idEstado) {
-        return res.status(400).json({
-            error: "El ID en el enlace no coincide con el ID en el cuerpo"
-        });
-    }
   
     const estadoUserExists = await EstadoUsuario.findOne({ where: { estadoUsuario } });
-  
     if (estadoUserExists) {
       return res.status(400).json({
         error: 'El estado del usuario ya existe'
       });
+    }
+
+    if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo estado usuario"
+        })
     }
   
     await estadoUserId.update({ estadoUsuario, ...resto });

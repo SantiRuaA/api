@@ -11,6 +11,7 @@ const EstadoPaquete = require("./routes/estadoPaquete");
 const permisos = require("./routes/permiso");
 const rolPermisos = require("./routes/rolPermiso");
 const clientes = require("./routes/cliente");
+const paquetes = require("./routes/paquete");
 const db = require("./db/database");
 const app = express();
 const port = process.env.PORT || 3030;
@@ -54,6 +55,8 @@ app.use('/permiso',permisos);
 app.use('/rolPermiso', rolPermisos);
 
 app.use('/cliente',clientes);
+
+app.use('/paquete',paquetes);
 
 app.listen(port,() => {
     console.log("Servidor trotando en el puerto: ", port);

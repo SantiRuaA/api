@@ -32,6 +32,13 @@ router.post('/', async (req,res)=>{
             error:"Ya existe un estado con ese ID"
         });
     }
+
+    if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo tipo novedad"
+        })
+    }
+
     if(estadoPaqExists){
         return res.status(400).json({
             error:"El estado del paquete ya existe"
@@ -58,10 +65,10 @@ router.put('/:id', async (req, res) => {
       return res.json({ msj: 'El estado del paquete no existe' });
     }
 
-    if (id !== idEstado) {
+    if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
         return res.status(400).json({
-            error: "El ID en el enlace no coincide con el ID en el cuerpo"
-        });
+            error:"Valor no permitido para el campo tipo novedad"
+        })
     }
   
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: { estadoPaquete } });

@@ -18,7 +18,6 @@ const Cliente = db.define('cliente',{
     },
     correoCliente: {
         type: DataTypes.STRING,
-        unique: true,
     },
     direccionCliente: {
         type: DataTypes.STRING,

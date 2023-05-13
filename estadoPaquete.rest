@@ -9,20 +9,19 @@ POST http://localhost:3030/estadoPaquete
 Content-Type: application/json
 
 {
-    "idEstado": "11",
-    "estadoPaquete": "uu"
+    "idEstado": "30",
+    "estadoPaquete": "kwedjkjd"
 }
 
 ###
 
-PUT http://localhost:3030/estadoPaquete/2
+PUT http://localhost:3030/estadoPaquete/20
 Content-Type: application/json
 
 {
-    "idEstado": "2",
-    "estadoPaquete": "coñito"
+    "estadoPaquete": "entregado"
 }
 
 ###
 
-DELETE http://localhost:3030/estadoPaquete/1
+DELETE http://localhost:3030/estadoPaquete/10

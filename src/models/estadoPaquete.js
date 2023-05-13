@@ -9,8 +9,7 @@ const EstadoPaquetes = db.define('estadopaquete',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     estadoPaquete: {
-        type: DataTypes.STRING,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.ENUM('bodega','ruta','entregado', 'noEntregado'),
     },
 });
 

@@ -1,0 +1,32 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/paquete
+
+###
+
+POST http://localhost:3030/paquete/
+Content-Type: application/json
+
+{
+    "codigoQrPaquete":2,
+    "documentoUsuario":333,
+    "documentoCliente":123,
+    "idEstado": 20
+}
+
+### Cuidado con la coma al final del json
+
+PUT http://localhost:3030/paquete/3
+Content-Type: application/json
+
+{
+    "codigoQrPaquete": "29",
+    "documentoUsuario":333,
+    "documentoCliente":123,
+    "idEstado": 20
+}
+
+###
+
+DELETE http://localhost:3030/paquete/3

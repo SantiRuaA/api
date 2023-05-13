@@ -9,7 +9,8 @@ POST http://localhost:3030/tipoDocumentoCliente
 Content-Type: application/json
 
 {
-    "nombreTipo": "pruebaa"
+    "idTipoDocumento":5,
+    "nombreTipo": "Tarjeta de identidad"
 }
 
 ###

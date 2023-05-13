@@ -1,0 +1,39 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/cliente/
+
+###
+
+POST http://localhost:3030/cliente/
+Content-Type: application/json
+
+{
+    "documentoCliente":222,
+    "idTipoDocumento":1,
+    "nombreCliente":"MiLTON",
+    "telefonoCliente":"311111111",
+    "correoCliente":"awqa@pepe.co",
+    "direccionCliente":"KR11 #2-43"
+}
+
+### Cuidado con la coma al final del json
+
+PUT http://localhost:3030/usuarios/1
+Content-Type: application/json
+
+{
+    "documentoUsuario":1000291725,
+    "idTipoDocumento":1,
+    "nombreUsuario":"Juan",
+    "apellidoUsuario":"Chava",
+    "telefonoUsuario":"3108323315",
+    "correoUsuario":"pablosi14@papirico.co",
+    "contrasenaUsuario":"Amolosaniomalestieamzoo",
+    "idRol":1,
+    "idEstado":1
+}
+
+###
+
+DELETE http://localhost:3030/usuarios/6

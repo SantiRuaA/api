@@ -18,9 +18,9 @@ router.get('/:id',async(req,res)=>{
 
 //Crear Cliente
 router.post('/', async (req,res)=>{
-  const { nombreTipo } = req.body;
+  const { idTipoDocumento,nombreTipo } = req.body;
   const tipo = await TipoDocumentoCliente.findOne({ where: {nombreTipo}})
-  if(!nombreTipo){
+  if(!nombreTipo || !idTipoDocumento){
     return res.status(400).json({
       error:"Uno o mas campos vacios"
     });
@@ -31,7 +31,7 @@ router.post('/', async (req,res)=>{
       error:"El tipo de documento ya existe mibro"
     });
   }
-  const tipoDocCust = await TipoDocumentoCliente.create({nombreTipo})
+  const tipoDocCust = await TipoDocumentoCliente.create({idTipoDocumento, nombreTipo})
 
   res.json(tipoDocCust);
 });

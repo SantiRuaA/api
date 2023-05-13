@@ -13,7 +13,7 @@ router.get('/', async (req,res)=>{
 //Obtener un solo usuario
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-    const usuario = await Usuario.findByPk(id)
+  const usuario = await Usuario.findByPk(id)
   res.json(usuario);
 });
 

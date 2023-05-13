@@ -22,14 +22,14 @@ router.post('/', async (req,res)=>{
   const tipo = await TipoDocumentoCliente.findOne({ where: {nombreTipo}})
   if(!nombreTipo){
     return res.status(400).json({
-        error:"Uno o mas campos vacios"
+      error:"Uno o mas campos vacios"
     });
   }
 
   if(tipo){
-      return res.status(400).json({
-          error:"El tipo de documento ya existe mibro"
-      });
+    return res.status(400).json({
+      error:"El tipo de documento ya existe mibro"
+    });
   }
   const tipoDocCust = await TipoDocumentoCliente.create({nombreTipo})
 

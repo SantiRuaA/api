@@ -9,8 +9,8 @@ POST http://localhost:3030/cliente/
 Content-Type: application/json
 
 {
-    "documentoCliente":2222,
-    "idTipoDocumento":1,
+    "documentoCliente":111,
+    "idTipoDocumento":5,
     "nombreCliente":"MiLTON",
     "telefonoCliente":"311111111",
     "correoCliente":"miltrus123@gmail.com",

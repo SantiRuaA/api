@@ -9,8 +9,8 @@ POST http://localhost:3030/estadoPaquete
 Content-Type: application/json
 
 {
-    "idEstado": "30",
-    "estadoPaquete": "kwedjkjd"
+    "idEstado": 4,
+    "estadoPaquete": "noEntregado"
 }
 
 ###

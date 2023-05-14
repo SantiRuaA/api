@@ -12,6 +12,7 @@ const permisos = require("./routes/permiso");
 const rolPermisos = require("./routes/rolPermiso");
 const clientes = require("./routes/cliente");
 const paquetes = require("./routes/paquete");
+const entregas = require("./routes/entrega");
 const listaPaquetes = require("./routes/listaPaquete");
 const db = require("./db/database");
 const app = express();
@@ -58,6 +59,8 @@ app.use('/rolPermiso', rolPermisos);
 app.use('/cliente',clientes);
 
 app.use('/paquete',paquetes);
+
+app.use('/entrega',entregas);
 
 app.use('/listaPaquete',listaPaquetes);
 

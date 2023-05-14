@@ -1,0 +1,30 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/entrega
+
+###
+
+POST http://localhost:3030/entrega/
+Content-Type: application/json
+
+{
+    "firmaDestinatario":2,
+    "fechaEntrega":333,
+    "idLista":123
+}
+
+### Cuidado con la coma al final del json
+
+PUT http://localhost:3030/entrega/3
+Content-Type: application/json
+
+{
+    "firmaDestinatario":4,
+    "fechaEntrega":444,
+    "idLista":321
+}
+
+###
+
+DELETE http://localhost:3030/entrega/3

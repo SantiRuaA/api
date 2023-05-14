@@ -9,9 +9,9 @@ POST http://localhost:3030/entrega/
 Content-Type: application/json
 
 {
-    "firmaDestinatario":2,
-    "fechaEntrega":333,
-    "idLista":123
+    "firmaDestinatario":"Juan",
+    "fechaEntrega":"2021-05-05",
+    "idLista":1
 }
 
 ### Cuidado con la coma al final del json

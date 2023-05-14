@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const usuarios = require("./routes/usuario")
-const novedades = require("./routes/tipoNovedad")
+const tipoNovedades = require("./routes/tipoNovedad")
 const modulos = require("./routes/modulo")
 const estadoUsuario = require("./routes/estadoUsuario");
 const tipoDocumentoUsuario = require("./routes/tipoDocumentoUsuario");
@@ -14,6 +14,7 @@ const clientes = require("./routes/cliente");
 const paquetes = require("./routes/paquete");
 const entregas = require("./routes/entrega");
 const listaPaquetes = require("./routes/listaPaquete");
+const novedades = require("./routes/novedad")
 const db = require("./db/database");
 const app = express();
 const port = process.env.PORT || 3030;
@@ -38,7 +39,7 @@ app.use(cors());// Configura la aplicación para que permita solicitudes de otro
 
 app.use('/usuarios',usuarios);
 
-app.use('/tipoNovedad',novedades);
+app.use('/tipoNovedad',tipoNovedades);
 
 app.use('/modulo',modulos);
 
@@ -63,6 +64,8 @@ app.use('/paquete',paquetes);
 app.use('/entrega',entregas);
 
 app.use('/listaPaquete',listaPaquetes);
+
+app.use('/novedad',novedades);
 
 app.listen(port,() => {
     console.log("Servidor trotando en el puerto: ", port);

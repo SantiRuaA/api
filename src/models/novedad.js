@@ -20,4 +20,4 @@ const Novedad = db.define('novedad',{
     }
 });
 //Paquete.hasOne(TipoDocumentoUsuario, { foreignKey: 'idTipoDocumentoUsuario'});
-module.exports = Paquete;
+module.exports = Novedad;

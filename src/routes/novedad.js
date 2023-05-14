@@ -34,89 +34,38 @@ router.post('/', async (req,res)=>{
   }
   
 
-  const novedad = await TipoNovedad.findByPk(idTipoNovedad);
-  if (!novedad) {
+  const novedad1 = await TipoNovedad.findByPk(idTipoNovedad);
+  if (!novedad1) {
     return res.status(400).json({
-    error: 'El documento del cliente no existe'
+    error: 'El tipo de novedad no existe'
     }); 
   }
 
-  const estado = await EstadoPaquete.findByPk(idEstado);
-  if (!estado) {
+  const entrega = await Entrega.findByPk(idEntrega);
+  if (!entrega) {
     return res.status(400).json({
-    error: 'El estado no existe'
+    error: 'La entrega no existe'
     }); 
   }
 
-  const paquete = await Paquete.create({codigoQrPaquete,documentoUsuario,documentoCliente,idEstado})
+  const novedad = await Novedad.create({descripcionNovedad, idTipoNovedad, idEntrega})
 
-  res.json(paquete);
-});
-
-
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const paqId = await Paquete.findByPk(id);
-  const { codigoQrPaquete,documentoUsuario,documentoCliente,idEstado } = req.body;
-  const paq = await Paquete.findOne({ where: {codigoQrPaquete}})
-  
-  if(!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado){
-    return res.status(400).json({
-        error:"Uno o mas campos vacios"
-    });
-  }
-  
-  if (!paqId) {
-    return res.status(404).json({
-      error:"No existe el paquete"
-    });
-  }
-
-  if (paq){
-    return res.status(400).json({
-      error:"El paquete ya existe"
-    });
-  }
-
-  const userDoc = await Usuario.findByPk(documentoUsuario);
-  if (!userDoc) {
-    return res.status(400).json({
-    error: 'El documento del usuario no existe'
-    }); 
-  }
-
-  const clDoc = await Cliente.findByPk(documentoCliente);
-  if (!clDoc) {
-    return res.status(400).json({
-    error: 'El documento del cliente no existe'
-    }); 
-  }
-
-  const estado = await EstadoPaquete.findByPk(idEstado);
-  if (!estado) {
-    return res.status(400).json({
-    error: 'El estado no existe'
-    }); 
-  }
-
-  await paqId.update({codigoQrPaquete,documentoUsuario,documentoCliente,idEstado})
-
-  res.json(paqId);
+  res.json(novedad);
 });
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const paqId = await Paquete.findByPk(id);
+  const novId = await Novedad.findByPk(id);
 
-  if (!paqId) {
-    return res.json({ msj: 'El paquete no existe o ya ha sido eliminado' });
+  if (!novId) {
+    return res.json({ msj: 'La novedad no existe o ya ha sido eliminado' });
   }
 
-  await paqId.destroy();
+  await novId.destroy();
 
   res.json({
-    msj: 'Paquete eliminado con exito',
-    paquete: paqId
+    msj: 'Novedad eliminado con exito',
+    paquete: novId
   });
 });
   

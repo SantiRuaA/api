@@ -2,21 +2,33 @@ const TipoDocumentoUsuario = require('../models/tipodocumentousuario');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const tipoDocUsers = await TipoDocumentoUsuario.findAll();
 
-  res.json(tipoDocUsers);
+  res.json({
+    Tipos: tipoDocUsers
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-  const tipoDocUsuario = await TipoDocumentoUsuario.findByPk(id)
-  res.json(tipoDocUsuario);
+  const tipoDocUser = await TipoDocumentoUsuario.findByPk(id)
+
+  if(!tipoDocUser){
+    return res.status(404).json({
+      error:"No existe el tipo de documento de usuario"
+    });
+  }
+
+  res.json({
+    msj: 'Informacion de tipoDocumentoUsuario',
+    Tipo: tipoDocUser
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { idTipoDocumento, nombreTipo } = req.body;
   const tipo = await TipoDocumentoUsuario.findOne({ where: {nombreTipo}})
@@ -33,7 +45,10 @@ router.post('/', async (req,res)=>{
   }
   const tipoDocUser = await TipoDocumentoUsuario.create({idTipoDocumento,nombreTipo})
 
-  res.json(tipoDocUser);
+  res.json({
+    msj: 'TipoDocumentoUsuario creado exitosamente',
+    Tipo: tipoDocUser
+  });
 });
 
 
@@ -63,10 +78,11 @@ router.put('/:id', async (req, res) => {
   await tipoId.update({ nombreTipo, ...resto });
 
   res.json({
-    msj: 'Tipo de documento actualizado yujuu',
-    tipoDoc: tipoId
+    msj: 'TipoDocumentoUsuario actualizado con exito',
+    Tipo: tipoId
   });
 });
+
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
@@ -79,8 +95,8 @@ router.delete('/:id', async (req, res) => {
   await tipoId.destroy();
 
   res.json({
-    msj: 'Tipo de documento eliminado con exito',
-    tipoDoc: tipoId
+    msj: 'TipoDocumentoUsuario eliminado con exito',
+    Tipo: tipoId
   });
 });
 

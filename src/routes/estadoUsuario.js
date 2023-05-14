@@ -2,21 +2,33 @@ const EstadoUsuario = require('../models/estadoUsuario');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
-router.get('/', async (req,res)=>{
-    const estadoUsuarios = await EstadoUsuario.findAll();
 
-    res.json(estadoUsuarios);
+router.get('/', async (req,res)=>{
+    const estadoUsers = await EstadoUsuario.findAll();
+
+    res.json({
+        Estados: estadoUsers
+    });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
     const { id } = req.params;
-    const estadoUsuario = await EstadoUsuario.findByPk(id)
-    res.json(estadoUsuario);
+    const estadoUser = await EstadoUsuario.findByPk(id)
+
+    if(!estadoUser){
+        return res.status(404).json({
+          error:"No existe el estado de usuario"
+        });
+    }
+
+    res.json({
+        msj: 'Informacion de estadoUsuario',
+        Estado: estadoUser
+    });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
     const { idEstado, estadoUsuario } = req.body;
     const estadoUserExists = await EstadoUsuario.findOne({ where: {estadoUsuario}})
@@ -47,8 +59,12 @@ router.post('/', async (req,res)=>{
 
     const estadoUserC = await EstadoUsuario.create({idEstado, estadoUsuario})
 
-    res.json(estadoUserC);
+    res.json({
+        msj: 'EstadoUsuario creado exitosamente',
+        Estado: estadoUserC
+    });
 });
+
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
@@ -81,10 +97,11 @@ router.put('/:id', async (req, res) => {
     await estadoUserId.update({ estadoUsuario, ...resto });
   
     res.json({
-      msj: 'Estado del usuario actualizado yujuu',
-      estadoUser: estadoUserId
+      msj: 'EstadoUsuario actualizado con exito',
+      Estado: estadoUserId
     });
 });
+
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
@@ -99,8 +116,8 @@ router.delete('/:id', async (req, res) => {
     await estadoUserId.destroy();
   
     res.json({
-      msj: 'Estado del usuario eliminado con exito',
-      estadoUser: estadoUserId
+      msj: 'EstadoUsuario eliminado con exito',
+      Estado: estadoUserId
     });
 });
 

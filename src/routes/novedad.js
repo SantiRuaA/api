@@ -4,38 +4,43 @@ const Entrega = require('../models/entrega');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
 router.get('/', async (req,res)=>{
   const novedades = await Novedad.findAll();
 
-  res.json(novedades);
+  res.json({
+    Novedades: novedades
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const novedad = await Novedad.findByPk(id)
+  
   if(!novedad){
     return res.status(404).json({
       error:"No existe la novedad"
     });
   }
-  res.json(novedad);
+
+  res.json({
+    msj: 'Informacion de novedad',
+    Novedad: novedad
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
   
   if(!descripcionNovedad||!idTipoNovedad||!idEntrega){
     return res.status(400).json({
-        error:"Uno o mas campos vacios"
+      error:"Uno o mas campos vacios"
     });
   }
   
-
-  const novedad1 = await TipoNovedad.findByPk(idTipoNovedad);
-  if (!novedad1) {
+  const tipo = await TipoNovedad.findByPk(idTipoNovedad);
+  if (!tipo) {
     return res.status(400).json({
     error: 'El tipo de novedad no existe'
     }); 
@@ -50,7 +55,10 @@ router.post('/', async (req,res)=>{
 
   const novedad = await Novedad.create({descripcionNovedad, idTipoNovedad, idEntrega})
 
-  res.json(novedad);
+  res.json({
+    msj: 'Novedad creada exitosamente',
+    Novedad: novedad
+  });
 });
 
 router.delete('/:id', async (req, res) => {
@@ -58,16 +66,15 @@ router.delete('/:id', async (req, res) => {
   const novId = await Novedad.findByPk(id);
 
   if (!novId) {
-    return res.json({ msj: 'La novedad no existe o ya ha sido eliminado' });
+    return res.json({ msj: 'La novedad no existe o ya ha sido eliminada' });
   }
 
   await novId.destroy();
 
   res.json({
-    msj: 'Novedad eliminado con exito',
-    paquete: novId
+    msj: 'Novedad eliminada con exito',
+    Novedad: novId
   });
 });
-  
 
 module.exports = router

@@ -1,35 +1,41 @@
 const Paquete = require('../models/paquete');
 const ListaPaquete = require('../models/listaPaquete');
-const { isEmail } = require('validator');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
-router.get('/', async (req,res)=>{
-  const paquetes = await ListaPaquete.findAll();
 
-  res.json(paquetes);
+router.get('/', async (req,res)=>{
+  const lists = await ListaPaquete.findAll();
+
+  res.json({
+    Listas: lists
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-  const paquete = await ListaPaquete.findByPk(id)
-  if(!paquete){
+  const listPaquete = await ListaPaquete.findByPk(id)
+  
+  if(!listPaquete){
     return res.status(404).json({
-      error:"No existe el paquete"
+      error:"No existe la lista de paquetes"
     });
   }
-  res.json(cliente);
+
+  res.json({
+    msj: 'Informacion de usuario',
+    Lista: listPaquete
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
-  const { idLista, idPaquete } = req.body;
+  const { idPaquete } = req.body;
   
   if(!idPaquete){
     return res.status(400).json({
-        error:"Campo vacios"
+      error:"Campos vacios"
     });
   }
 
@@ -39,63 +45,59 @@ router.post('/', async (req,res)=>{
     error: 'El paquete no existe'
     }); 
   }
-  const save = await ListaPaquete.create({idLista, idPaquete})
+  const list = await ListaPaquete.create({idPaquete})
 
-  res.json(save);
+  res.json({
+    msj: 'Lista creada exitosamente',
+    Lista: list
+  });
 });
 
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = await Cliente.findByPk(id);
-  const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
+  const listId = await ListaPaquete.findByPk(id);
+  const { idLista, idPaquete,...resto } = req.body;
   
-  if(!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
+  if(!idPaquete){
     return res.status(400).json({
-      error:"Uno o mas campos vacios"
-    });
-  }
-  
-
-  if (!isEmail(correoCliente)) {
-    return res.status(400).json({
-      error: "El correo no tiene un formato válido",
+      error:"Campos vacios"
     });
   }
 
-  if (!userId) {
-    return res.json({ msj: 'El cliente no existe' });
+  if (!listId) {
+    return res.json({ msj: 'La lista no existe' });
   }
   
-  const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
-  if (!tDocumento) {
+  const paq = await Paquete.findByPk(idPaquete);
+  if (!paq) {
     return res.status(400).json({
-    error: 'El tipo documento no existe'
+    error: 'El paquete no existe'
     }); 
   }
 
 
-  await userId.update({ documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente, ...resto });
+  await listId.update({ idLista, idPaquete, ...resto });
 
   res.json({
-    msj: 'Cliente actualizado yujuu',
-    usuario: userId
+    msj: 'Lista actualizada con exito',
+    Lista: listId
   });
 });
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = await Cliente.findByPk(id);
+  const listId = await ListaPaquete.findByPk(id);
 
-  if (!userId) {
-    return res.json({ msj: 'El usuario no existe o ya ha sido eliminado' });
+  if (!listId) {
+    return res.json({ msj: 'La lista no existe o ya ha sido eliminada' });
   }
 
-  await userId.destroy();
+  await listId.destroy();
 
   res.json({
-    msj: 'Usuario eliminado con exito',
-    usuario: userId
+    msj: 'Lista eliminada con exito',
+    Lista: listId
   });
 });
   

@@ -1,24 +1,36 @@
 const RolPermiso = require('../models/rolPermiso');
-const Rol = require('../models/rol');
+const Rol = require('../models/Rol');
 const Permiso = require('../models/permiso');
 
 const router = require('express').Router()
 
-//Obtener todos los roles permiso
+
 router.get("/",async(req,res) => {
     const rolesPermiso = await RolPermiso.findAll()
 
-    res.json(rolesPermiso);
+    res.json({
+        RolesxPermisos: rolesPermiso
+    });
 });
 
-//Un solo rol permiso
+
 router.get("/:id", async(req,res) => {
     const { id } = req.params
     const rolPermiso = await RolPermiso.findByPk(id)
-    res.json(rolPermiso);
+
+    if(!rolPermiso){
+        return res.status(404).json({
+          error:"No existe el rolPermiso"
+        });
+    }
+
+    res.json({
+        msj: 'Informacion de RolxPermiso',
+        RolxPermiso: rolPermiso
+      });
 });
 
-//Crear un rol permiso
+
 router.post("/", async (req,res) => {
     const { fechaCreacion, idRol, idPermiso } = req.body;
     if (!fechaCreacion || !idRol || !idPermiso){
@@ -42,7 +54,11 @@ router.post("/", async (req,res) => {
     }
 
     const rolPermiso = await RolPermiso.create({fechaCreacion, idRol, idPermiso});
-    res.json(rolPermiso);
+    
+    res.json({
+        msj: 'RolxPermiso creado exitosamente',
+        RolxPermiso: rolPermiso
+      });
 });
 
 router.put('/:id', async (req, res) => {
@@ -78,8 +94,8 @@ router.put('/:id', async (req, res) => {
     await rolPermisoId.update({ fechaCreacion, idRol, idPermiso });
   
     res.json({
-      msj: 'Rol actualizado yujuu',
-      rol: rolPermisoId
+      msj: 'RolxPermiso actualizado con exito',
+      RolxPermiso: rolPermisoId
     });
     
 });
@@ -97,8 +113,8 @@ router.delete('/:id', async (req, res) => {
     await rolPermisoId.destroy();
   
     res.json({
-      msj: 'Rol eliminado con exito',
-      rol: rolPermisoId
+      msj: 'RolxPermiso eliminado con exito',
+      RolxPermiso: rolPermisoId
     });
 });
 

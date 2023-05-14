@@ -9,8 +9,8 @@ POST http://localhost:3030/paquete/
 Content-Type: application/json
 
 {
-    "codigoQrPaquete":1234,
-    "documentoUsuario":333,
+    "codigoQrPaquete":13487023625668,
+    "documentoUsuario":23,
     "documentoCliente":123,
     "idEstado": 20
 }

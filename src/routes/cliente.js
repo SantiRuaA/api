@@ -4,26 +4,33 @@ const { isEmail } = require('validator');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const clientes = await Cliente.findAll();
 
-  res.json(clientes);
+  res.json({
+    Clientes: clientes
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const cliente = await Cliente.findByPk(id)
+  
   if(!cliente){
     return res.status(404).json({
       error:"No existe el cliente"
     });
   }
-  res.json(cliente);
+
+  res.json({
+    msj: 'Informacion de cliente',
+    Cliente: cliente
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente } = req.body;
   const user = await Cliente.findOne({ where: {correoCliente}})
@@ -59,15 +66,19 @@ router.post('/', async (req,res)=>{
     error: 'El tipo documento no existe'
     }); 
   }
+  
   const cliente = await Cliente.create({documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente})
 
-  res.json(cliente);
+  res.json({
+    msj: 'Cliente creado exitosamente',
+    Cliente: cliente
+  });
 });
 
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = await Cliente.findByPk(id);
+  const cltId = await Cliente.findByPk(id);
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
   
   if(!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
@@ -83,7 +94,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!userId) {
+  if (!cltId) {
     return res.json({ msj: 'El cliente no existe' });
   }
   
@@ -94,30 +105,29 @@ router.put('/:id', async (req, res) => {
     }); 
   }
 
-
-  await userId.update({ documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente, ...resto });
+  await cltId.update({ documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente, ...resto });
 
   res.json({
-    msj: 'Cliente actualizado yujuu',
-    usuario: userId
+    msj: 'Cliente actualizado con exito',
+    Cliente: cltId
   });
 });
+
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = await Cliente.findByPk(id);
+  const cltId = await Cliente.findByPk(id);
 
-  if (!userId) {
+  if (!cltId) {
     return res.json({ msj: 'El usuario no existe o ya ha sido eliminado' });
   }
 
-  await userId.destroy();
+  await cltId.destroy();
 
   res.json({
-    msj: 'Usuario eliminado con exito',
-    usuario: userId
+    msj: 'Cliente eliminado con exito',
+    Cliente: cltId
   });
 });
-  
 
 module.exports = router

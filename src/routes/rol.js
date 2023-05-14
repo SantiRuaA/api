@@ -2,21 +2,33 @@ const Rol = require('../models/rol');
 
 const router = require('express').Router()
 
-//Obtener todos los roles
+
 router.get("/",async(req,res) => {
     const roles = await Rol.findAll()
 
-    res.json(roles);
+    res.json({
+        Roles: roles
+    });
 });
 
-//Un solo rol
+
 router.get("/:id", async(req,res) => {
     const { id } = req.params
     const rol = await Rol.findByPk(id)
-    res.json(rol);
+
+    if(!rol){
+        return res.status(404).json({
+          error:"No existe el rol"
+        });
+    }
+
+    res.json({
+        msj: 'Informacion de rol',
+        Rol: rol
+    });
 });
 
-//Crear un rol
+
 router.post("/", async (req,res) => {
     const { idRol, nombreRol, descripcionRol } = req.body;
     const rolExists = await Rol.findOne({ where: {nombreRol}})
@@ -40,7 +52,11 @@ router.post("/", async (req,res) => {
     }
 
     const rol = await Rol.create({idRol, nombreRol, descripcionRol});
-    res.json(rol);
+    
+    res.json({
+        msj: 'Rol creado exitosamente',
+        Rol: rol
+    });
 });
 
 
@@ -70,10 +86,9 @@ router.put('/:id', async (req, res) => {
     await rolId.update({ nombreRol, ...resto });
   
     res.json({
-      msj: 'Rol actualizado yujuu',
-      rol: rolId
+      msj: 'Rol actualizado con exito',
+      Rol: rolId
     });
-    
 });
 
 router.delete('/:id', async (req, res) => {
@@ -90,7 +105,7 @@ router.delete('/:id', async (req, res) => {
   
     res.json({
       msj: 'Rol eliminado con exito',
-      rol: rolId
+      Rol: rolId
     });
 });
 

@@ -1,7 +1,7 @@
 //este rest es para que reconozca esete archivo como un archivo de solicitudes
 
 
-GET http://localhost:3030/cliente
+GET http://localhost:3030/cliente/111
 
 ###
 
@@ -9,27 +9,27 @@ POST http://localhost:3030/cliente/
 Content-Type: application/json
 
 {
-    "documentoCliente":111,
+    "documentoCliente":9090,
     "idTipoDocumento":5,
     "nombreCliente":"MiLTON",
     "telefonoCliente":"311111111",
-    "correoCliente":"miltrus123@gmail.com",
-    "direccionCliente":"KR11 #2-43"
+    "correoCliente":"090@gmail.com",
+    "direccionCliente":"djskdd"
 }
 
 ### Cuidado con la coma al final del json
 
-PUT http://localhost:3030/cliente/19
+PUT http://localhost:3030/cliente/9090
 Content-Type: application/json
 
 {
     "idTipoDocumento":1,
-    "nombreCliente":"oqiowieowiweowie",
+    "nombreCliente":"miltrus",
     "telefonoCliente":"311111111",
-    "correoCliente":"awqa@pepe.co",
+    "correoCliente":"100@pepe.co",
     "direccionCliente":"KR11 #2-43"
 }
 
 ###
 
-DELETE http://localhost:3030/cliente/222
+DELETE http://localhost:3030/cliente/9090

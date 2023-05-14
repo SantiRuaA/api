@@ -3,26 +3,33 @@ const Lista = require('../models/listaPaquete');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const entregas = await Entrega.findAll();
 
-  res.json(entregas);
+  res.json({
+    Entregas: entregas
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const entrega = await Entrega.findByPk(id)
+  
   if(!entrega){
     return res.status(404).json({
       error:"No existe la entrega"
     });
   }
-  res.json(entrega);
+
+  res.json({
+    msj: 'Informacion de entrega',
+    Entrega: entrega
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { firmaDestinatario,fechaEntrega,idLista } = req.body;
   //const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}})
@@ -49,7 +56,10 @@ router.post('/', async (req,res)=>{
 
   const entrega = await Entrega.create({firmaDestinatario,fechaEntrega,idLista})
 
-  res.json(entrega);
+  res.json({
+    msj: 'Entrega creada exitosamente',
+    Entrega: entrega
+  });
 });
 
 
@@ -86,8 +96,12 @@ router.put('/:id', async (req, res) => {
 
   await entId.update({firmaDestinatario,fechaEntrega,idLista})
 
-  res.json(entId);
+  res.json({
+    msj: 'Entrega actualizada con exito',
+    Entrega: entId
+  });
 });
+
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
@@ -101,9 +115,8 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     msj: 'Entrega eliminada con exito',
-    entrega: entId
+    Entrega: entId
   });
 });
-  
 
 module.exports = router

@@ -2,21 +2,33 @@ const TipoNovedad = require('../models/tipoNovedad');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const novedades = await TipoNovedad.findAll();
 
-  res.json(novedades);
+  res.json({
+    Novedades: novedades
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const novedad = await TipoNovedad.findByPk(id)
-  res.json(novedad);
+
+  if(!novedad){
+    return res.status(404).json({
+      error:"No existe la novedad"
+    });
+  }
+
+  res.json({
+    msj: 'Informacion de tipo de novedad',
+    Novedad: novedad
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { idTipoNovedad, tipoNovedad } = req.body;
   const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
@@ -47,8 +59,12 @@ router.post('/', async (req,res)=>{
 
   const novedad = await TipoNovedad.create({idTipoNovedad, tipoNovedad})
 
-  res.json(novedad);
+  res.json({
+    msj: 'Tipo de novedad creada exitosamente',
+    Novedad: novedad
+  });
 });
+
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
@@ -94,8 +110,8 @@ router.put('/:id', async (req, res) => {
   await tipoId.update({ tipoNovedad, ...resto });
 
   res.json({
-    msj: 'Novedad actualizado yujuu',
-    novedad: tipoId
+    msj: 'Tipo de novedad actualizada con exito',
+    Novedad: tipoId
   });
 });
 
@@ -112,7 +128,7 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     msj: 'Tipo de novedad eliminada con exito',
-    tipo: tipoId
+    Novedad: tipoId
   });
 });
 

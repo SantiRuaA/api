@@ -2,21 +2,33 @@ const TipoDocumentoCliente = require('../models/tipoDocumentoCliente');
 
 const router = require('express').Router()
 
-//obtener todos los Clientes
-router.get('/', async (req,res)=>{
-  const tipoDocCusts = await TipoDocumentoCliente.findAll();
 
-  res.json(tipoDocCusts);
+router.get('/', async (req,res)=>{
+  const tipoDocClts = await TipoDocumentoCliente.findAll();
+
+  res.json({
+    Tipos: tipoDocClts
+  });
 });
 
-//Obtener un solo Cliente
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-  const tipoDocCliente = await TipoDocumentoCliente.findByPk(id)
-  res.json(tipoDocCliente);
+  const tipoDocClt = await TipoDocumentoCliente.findByPk(id)
+
+  if(!tipoDocClt){
+    return res.status(404).json({
+      error:"No existe el tipo de documento de cliente"
+    });
+  }
+
+  res.json({
+    msj: 'Informacion de tipoDocumentoCliente',
+    Tipo: tipoDocClt
+  });
 });
 
-//Crear Cliente
+
 router.post('/', async (req,res)=>{
   const { idTipoDocumento,nombreTipo } = req.body;
   const tipo = await TipoDocumentoCliente.findOne({ where: {nombreTipo}})
@@ -31,10 +43,14 @@ router.post('/', async (req,res)=>{
       error:"El tipo de documento ya existe mibro"
     });
   }
-  const tipoDocCust = await TipoDocumentoCliente.create({idTipoDocumento, nombreTipo})
+  const tipoDocClt = await TipoDocumentoCliente.create({idTipoDocumento, nombreTipo})
 
-  res.json(tipoDocCust);
+  res.json({
+    msj: 'TipoDocumentoCliente creado exitosamente',
+    Tipo: tipoDocClt
+  });
 });
+
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
@@ -62,10 +78,11 @@ router.put('/:id', async (req, res) => {
   await tipoId.update({ nombreTipo, ...resto });
 
   res.json({
-    msj: 'Tipo de documento actualizado yujuu',
-    tipoCust: tipoId
+    msj: 'TipoDocumentoCliente actualizado con exito',
+    Tipo: tipoId
   });
 });
+
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
@@ -78,8 +95,8 @@ router.delete('/:id', async (req, res) => {
   await tipoId.destroy();
 
   res.json({
-    msj: 'Tipo de documento eliminado con exito',
-    tipoCust: tipoId
+    msj: 'TipoDocumentoCliente eliminado con exito',
+    Tipo: tipoId
   });
 });
 

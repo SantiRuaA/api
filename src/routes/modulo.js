@@ -2,21 +2,33 @@ const Modulo = require('../models/modulo');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
     const modulos = await Modulo.findAll();
 
-    res.json(modulos);
+    res.json({
+        Modulos: modulos
+    });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
     const { id } = req.params;
-        const modulo = await Modulo.findByPk(id)
-    res.json(modulo);
+    const modulo = await Modulo.findByPk(id)
+    
+    if(!modulo){
+        return res.status(404).json({
+          error:"No existe el modulo"
+        });
+    }
+    
+    res.json({
+        msj: 'Informacion de modulo',
+        Modulo: modulo
+    });
 });
 
-//Crear usuario
+
 router.post("/", async (req,res) => {
     const { modulo } = req.body;
     const moduloExists = await Modulo.findOne({ where: {modulo}})
@@ -39,7 +51,11 @@ router.post("/", async (req,res) => {
     }
 
     const moduloC = await Modulo.create({modulo});
-    res.json(moduloC);
+    
+    res.json({
+        msj: 'Modulo creado exitosamente',
+        Modulo: moduloC
+    });
 });
 
 router.put('/:id', async (req, res) => {
@@ -74,8 +90,8 @@ router.put('/:id', async (req, res) => {
     await moduloId.update({ modulo, ...resto });
   
     res.json({
-      msj: 'Modulo actualizado yujuu',
-      modulo: moduloId
+        msj: 'Modulo actualizado con exito',
+        Modulo: moduloId
     });
 });
 
@@ -93,7 +109,7 @@ router.delete('/:id', async (req, res) => {
   
     res.json({
       msj: 'Modulo eliminado con exito',
-      modulo: moduloId
+      Modulo: moduloId
     });
 });
 

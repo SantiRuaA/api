@@ -1,7 +1,7 @@
 //este rest es para que reconozca esete archivo como un archivo de solicitudes
 
 
-GET http://localhost:3030/listaPaquete
+GET http://localhost:3030/listapaquete
 
 ###
 
@@ -9,7 +9,7 @@ POST http://localhost:3030/listaPaquete
 Content-Type: application/json
 
 {
-    "idPaquete": 4
+    "idPaquete": 5
 }
 
 ###
@@ -18,7 +18,7 @@ PUT http://localhost:3030/listaPaquete/13
 Content-Type: application/json
 
 {
-    "modulo": "paquete"
+    "idPaquete": "1"
 }
 
 ###

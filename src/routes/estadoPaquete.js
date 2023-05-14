@@ -2,21 +2,33 @@ const EstadoPaquetes = require('../models/estadoPaquete');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
     const estadoPaquetes = await EstadoPaquetes.findAll();
 
-    res.json(estadoPaquetes);
+    res.json({
+        Estados: estadoPaquetes
+    });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
     const { id } = req.params;
     const estadoPaquete = await EstadoPaquetes.findByPk(id)
-    res.json(estadoPaquete);
+
+    if(!estadoPaquete){
+        return res.status(404).json({
+          error:"No existe el estado de paquete"
+        });
+    }
+
+    res.json({
+        msj: 'Informacion de estadoPaquete',
+        Estado: estadoPaquete
+    });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
     const { idEstado, estadoPaquete } = req.body;
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: {estadoPaquete}})
@@ -47,8 +59,12 @@ router.post('/', async (req,res)=>{
 
     const estadoPaqC = await EstadoPaquetes.create({idEstado, estadoPaquete})
 
-    res.json(estadoPaqC);
+    res.json({
+        msj: 'EstadoPaquete creado exitosamente',
+        Estado: estadoPaqC
+    });
 });
+
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
@@ -82,10 +98,11 @@ router.put('/:id', async (req, res) => {
     await estadoPaqId.update({ idEstado, estadoPaquete, ...resto });
   
     res.json({
-      msj: 'Estado del paquete actualizado yujuu',
-      estadoPaq: estadoPaqId
+        msj: 'EstadoPaquete actualizado con exito',
+        Estado: estadoPaqId
     });
 });
+
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
@@ -100,8 +117,8 @@ router.delete('/:id', async (req, res) => {
     await estadoPaqId.destroy();
   
     res.json({
-      msj: 'Estado del paquete eliminado con exito',
-      estadoPaq: estadoPaqId
+      msj: 'EstadoPaquete eliminado con exito',
+      Estado: estadoPaqId
     });
 });
 

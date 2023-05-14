@@ -3,21 +3,33 @@ const Modulo = require('../models/modulo');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const permisos = await Permiso.findAll();
 
-  res.json(permisos);
+  res.json({
+    Permisos: permisos
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const permiso = await Permiso.findByPk(id)
-  res.json(permiso);
+
+  if(!permiso){
+    return res.status(404).json({
+      error:"No existe el permiso"
+    });
+  }
+
+  res.json({
+    msj: 'Informacion de permiso',
+    Permiso: permiso
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { nombrePermiso,idModulo } = req.body;
   const permi = await Permiso.findOne({ where: {nombrePermiso}})
@@ -42,8 +54,12 @@ router.post('/', async (req,res)=>{
 
   const permiso = await Permiso.create({nombrePermiso,idModulo})
 
-  res.json(permiso);
+  res.json({
+    msj: 'Permiso creado exitosamente',
+    Permiso: permiso
+  });
 });
+
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
@@ -78,8 +94,8 @@ router.put('/:id', async (req, res) => {
   await permiId.update({ nombrePermiso, idModulo, ...resto });
 
   res.json({
-    msj: 'Permiso actualizado yujuu',
-    permiso: permiId
+    msj: 'Permiso actualizado con exito',
+    Permiso: permiId
   });
 });
 
@@ -95,7 +111,7 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     msj: 'Permiso eliminado con exito',
-    permiso: permiId
+    Permiso: permiId
   });
 });
   

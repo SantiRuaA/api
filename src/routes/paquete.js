@@ -5,26 +5,33 @@ const EstadoPaquete = require('../models/estadoPaquete');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
+
 router.get('/', async (req,res)=>{
   const paquetes = await Paquete.findAll();
 
-  res.json(paquetes);
+  res.json({
+    Paquetes: paquetes
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const paquete = await Paquete.findByPk(id)
+  
   if(!paquete){
     return res.status(404).json({
       error:"No existe el paquete"
     });
   }
-  res.json(paquete);
+
+  res.json({
+    msj: 'Informacion de paquete',
+    Paquete: paquete
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { codigoQrPaquete,documentoUsuario,documentoCliente,idEstado } = req.body;
   const paq = await Paquete.findOne({ where: {codigoQrPaquete}})
@@ -64,7 +71,10 @@ router.post('/', async (req,res)=>{
 
   const paquete = await Paquete.create({codigoQrPaquete,documentoUsuario,documentoCliente,idEstado})
 
-  res.json(paquete);
+  res.json({
+    msj: 'Paquete creado exitosamente',
+    Paquete: paquete
+  });
 });
 
 
@@ -115,7 +125,10 @@ router.put('/:id', async (req, res) => {
 
   await paqId.update({codigoQrPaquete,documentoUsuario,documentoCliente,idEstado})
 
-  res.json(paqId);
+  res.json({
+    msj: 'Paquete actualizado con exito',
+    Paquete: paqId
+  });
 });
 
 router.delete('/:id', async (req, res) => {
@@ -130,7 +143,7 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     msj: 'Paquete eliminado con exito',
-    paquete: paqId
+    Paquete: paqId
   });
 });
   

@@ -1,25 +1,37 @@
 const Usuario = require('../models/Usuario');
-const Rol = require('../models/rol');
+const Rol = require('../models/Rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
 
 const router = require('express').Router()
 
-//obtener todos los usuarios
-router.get('/', async (req,res)=>{
-  const usuarios = await Usuario.findAll();
 
-  res.json(usuarios);
+router.get('/', async (req,res)=>{
+  const users = await Usuario.findAll();
+
+  res.json({
+    Usuarios: users
+  });
 });
 
-//Obtener un solo usuario
+
 router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-  const usuario = await Usuario.findByPk(id)
-  res.json(usuario);
+  const user = await Usuario.findByPk(id)
+
+  if(!user){
+    return res.status(404).json({
+      error:"No existe el usuario"
+    });
+  }
+
+  res.json({
+    msj: 'Informacion de usuario',
+    Usuario: user
+  });
 });
 
-//Crear usuario
+
 router.post('/', async (req,res)=>{
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
@@ -65,9 +77,12 @@ router.post('/', async (req,res)=>{
     });
   }
 
-  const usuario = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
+  const userC = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
 
-  res.json(usuario);
+  res.json({
+    msj: 'Usuario creado exitosamente',
+    Usuario: userC
+  });
 });
 
 
@@ -123,10 +138,11 @@ router.put('/:id', async (req, res) => {
 
   const userNew = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
   res.json({
-    msj: 'Usuario actualizado yujuu',
-    usuario: userNew
+    msj: 'Usuario actualizado con exito',
+    Usuario: userNew
   });
 });
+
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
@@ -140,9 +156,8 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     msj: 'Usuario eliminado con exito',
-    usuario: userId
+    Usuario: userId
   });
 });
   
-
 module.exports = router

@@ -100,7 +100,7 @@ router.delete('/:id', async (req, res) => {
   await entId.destroy();
 
   res.json({
-    msj: 'Paquete eliminado con exito',
+    msj: 'Entrega eliminada con exito',
     entrega: entId
   });
 });

@@ -11,8 +11,8 @@ Content-Type: application/json
 {
     "codigoQrPaquete":1234,
     "documentoUsuario":333,
-    "documentoCliente":111,
-    "idEstado": 1
+    "documentoCliente":123,
+    "idEstado": 20
 }
 
 ### Cuidado con la coma al final del json

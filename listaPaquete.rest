@@ -9,7 +9,7 @@ POST http://localhost:3030/listaPaquete
 Content-Type: application/json
 
 {
-    "idPaquete": 1
+    "idPaquete": 4
 }
 
 ###

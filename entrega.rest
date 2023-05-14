@@ -9,9 +9,9 @@ POST http://localhost:3030/entrega/
 Content-Type: application/json
 
 {
-    "firmaDestinatario":2,
-    "fechaEntrega":333,
-    "idLista":123
+    "firmaDestinatario": "holaaa",
+    "fechaEntrega": "982",
+    "idLista":1
 }
 
 ### Cuidado con la coma al final del json
@@ -21,8 +21,8 @@ Content-Type: application/json
 
 {
     "firmaDestinatario":4,
-    "fechaEntrega":444,
-    "idLista":321
+    "fechaEntrega":"121212",
+    "idLista":1
 }
 
 ###

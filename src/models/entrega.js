@@ -12,7 +12,7 @@ const Entrega = db.define('entrega',{
         type: DataTypes.STRING,
     },
     fechaEntrega:{
-        type:DataTypes.DATEx,
+        type:DataTypes.DATE,
     },
     idLista: {
         type: DataTypes.INTEGER,

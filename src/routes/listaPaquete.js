@@ -25,7 +25,7 @@ router.get('/:id',async(req,res)=>{
 
 //Crear usuario
 router.post('/', async (req,res)=>{
-  const { idPaquete } = req.body;
+  const { idLista, idPaquete } = req.body;
   
   if(!idPaquete){
     return res.status(400).json({
@@ -39,7 +39,7 @@ router.post('/', async (req,res)=>{
     error: 'El paquete no existe'
     }); 
   }
-  const save = await ListaPaquete.create({idPaquete})
+  const save = await ListaPaquete.create({idLista, idPaquete})
 
   res.json(save);
 });

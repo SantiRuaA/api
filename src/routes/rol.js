@@ -1,9 +1,10 @@
 const Rol = require('../models/rol');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get("/",async(req,res) => {
+router.get("/", validateRol, async(req,res) => {
     const roles = await Rol.findAll()
 
     res.json({
@@ -12,7 +13,7 @@ router.get("/",async(req,res) => {
 });
 
 
-router.get("/:id", async(req,res) => {
+router.get("/:id", validateRol, async(req,res) => {
     const { id } = req.params
     const rol = await Rol.findByPk(id)
 
@@ -29,7 +30,7 @@ router.get("/:id", async(req,res) => {
 });
 
 
-router.post("/", async (req,res) => {
+router.post("/", validateRol, async (req,res) => {
     const { idRol, nombreRol, descripcionRol } = req.body;
     const rolExists = await Rol.findOne({ where: {nombreRol}})
     if (!nombreRol || !idRol){
@@ -60,7 +61,7 @@ router.post("/", async (req,res) => {
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateRol, async (req, res) => {
     const { id } = req.params;
     const rolId = await Rol.findByPk(id);
     const { nombreRol, ...resto } = req.body;
@@ -91,7 +92,7 @@ router.put('/:id', async (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateRol, async (req, res) => {
     const { id } = req.params;
     const rolId = await Rol.findByPk(id);
   

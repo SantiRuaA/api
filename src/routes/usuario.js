@@ -2,6 +2,7 @@ const Usuario = require('../models/Usuario');
 const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
+const bcryptjs = require('bcryptjs');
 
 const router = require('express').Router()
 
@@ -35,7 +36,6 @@ router.get('/:id',async(req,res)=>{
 router.post('/', async (req,res)=>{
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
-  
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
     return res.status(400).json({
         error:"Uno o mas campos vacios"
@@ -49,12 +49,15 @@ router.post('/', async (req,res)=>{
     });
   }
 
+  const salt = bcryptjs.genSaltSync();
+  const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
+
   const userId = await Usuario.findByPk(documentoUsuario)
-    if(userId){
-        return res.status(400).json({
-          error:"Ya existe un usuario con ese documento"
-        });
-    }
+  if(userId){
+    return res.status(400).json({
+      error:"Ya existe un usuario con ese documento"
+    });
+  }
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
@@ -77,7 +80,7 @@ router.post('/', async (req,res)=>{
     });
   }
 
-  const userC = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
+  const userC = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario: pwdEncrypt,idRol,idEstado})
 
   res.json({
     msj: 'Usuario creado exitosamente',
@@ -100,20 +103,23 @@ router.put('/:id', async (req, res) => {
   if (!userId) {
     return res.json({ msj: 'El usuario no existe' });
   }
-  const userDoc = await Usuario.findByPk(documentoUsuario)
-  if(userDoc){
+  if(documentoUsuario !== userId.documentoUsuario){
     return res.status(400).json({
-      error:"Ya existe un usuario con ese documento"
+      error:"No puedes cambiar el documento de un usuario"
     });
   }
-  
-  
-  const userExists = await Usuario.findOne({ where: { correoUsuario } });
-  if (userExists) {
-    return res.status(400).json({
-      error: 'El email ya lo tiene otro usuario papi'
-    });
+
+  if(correoUsuario !== userId.correoUsuario){
+    const emailExists = await Usuario.findOne({ where: { correoUsuario } });
+    if (emailExists) {
+      return res.status(400).json({
+        error: 'El email ya lo tiene otro usuario papi'
+      });
+    }
   }
+  
+  const salt = bcryptjs.genSaltSync();
+  const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
@@ -136,10 +142,11 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  const userNew = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado})
+  await userId.update({ documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario: pwdEncrypt, idRol, idEstado });
+  const userC = await Usuario.findByPk(id);
   res.json({
     msj: 'Usuario actualizado con exito',
-    Usuario: userNew
+    Usuario: userC
   });
 });
 

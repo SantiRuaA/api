@@ -1,7 +1,7 @@
 //este rest es para que reconozca esete archivo como un archivo de solicitudes
 
 
-GET http://localhost:3030/entrega
+GET http://localhost:3030/entrega/
 
 ###
 
@@ -16,12 +16,12 @@ Content-Type: application/json
 
 ### Cuidado con la coma al final del json
 
-PUT http://localhost:3030/entrega/3
+PUT http://localhost:3030/entrega/1
 Content-Type: application/json
 
 {
     "firmaDestinatario":4,
-    "fechaEntrega":"121212",
+    "fechaEntrega":"12/12/2012",
     "idLista":1
 }
 

@@ -9,13 +9,13 @@ POST http://localhost:3030/usuarios
 Content-Type: application/json
 
 {
-    "documentoUsuario":927398,
+    "documentoUsuario":1023625668,
     "idTipoDocumento":4,
-    "nombreUsuario":"roass",
-    "apellidoUsuario":"ered",
-    "telefonoUsuario":"333333333",
-    "correoUsuario":"A@ererererer.co",
-    "contrasenaUsuario":"Amolosaniomalestieamzoo",
+    "nombreUsuario":"miltru",
+    "apellidoUsuario":"friedman",
+    "telefonoUsuario":"3013784849",
+    "correoUsuario":"coño",
+    "contrasenaUsuario":"miltrusfriedman",
     "idRol":2,
     "idEstado":1
 }
@@ -26,17 +26,17 @@ PUT http://localhost:3030/usuarios/1023625668
 Content-Type: application/json
 
 {
-    "documentoUsuario":23445767545458,
-    "idTipoDocumento":12,
-    "nombreUsuario":"Juan",
-    "apellidoUsuario":"Chava",
+    "documentoUsuario":10236256,
+    "idTipoDocumento":1,
+    "nombreUsuario":"carlos",
+    "apellidoUsuario":"burgos",
     "telefonoUsuario":"3108323315",
-    "correoUsuario":"carajoooo54545ooooo@papirico.co",
-    "contrasenaUsuario":"Amolosaniomalestieamzoo",
+    "correoUsuario":"miltrus090",
+    "contrasenaUsuario":"como vamos ome",
     "idRol":1,
     "idEstado":1
 }
 
 ###
 
-DELETE http://localhost:3030/usuarios/6
+DELETE http://localhost:3030/usuarios/1023625668

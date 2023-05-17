@@ -3,6 +3,7 @@ const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
 const bcryptjs = require('bcryptjs');
+const {isEmail} = require('validator')
 
 const router = require('express').Router()
 
@@ -45,12 +46,15 @@ router.post('/', async (req,res)=>{
   const user = await Usuario.findOne({ where: {correoUsuario}})
   if (user){
     return res.status(400).json({
-      error:"El usuario ya existe"
+      error:"El email ya está en uso"
     });
   }
 
-  const salt = bcryptjs.genSaltSync();
-  const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
+  if (!isEmail(correoUsuario)) {
+    return res.status(400).json({
+      error: "El email no tiene un formato válido",
+    });
+  }
 
   const userId = await Usuario.findByPk(documentoUsuario)
   if(userId){
@@ -79,6 +83,9 @@ router.post('/', async (req,res)=>{
     error: 'El idTipoDocumento proporcionado no es válido'
     });
   }
+
+  const salt = bcryptjs.genSaltSync();
+  const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
 
   const userC = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario: pwdEncrypt,idRol,idEstado})
 

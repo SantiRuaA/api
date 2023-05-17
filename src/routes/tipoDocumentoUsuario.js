@@ -1,4 +1,6 @@
 const TipoDocumentoUsuario = require('../models/tipodocumentousuario');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
@@ -12,7 +14,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const { id } = req.params;
   const tipoDocUser = await TipoDocumentoUsuario.findByPk(id)
 
@@ -29,7 +31,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
   const { idTipoDocumento, nombreTipo } = req.body;
   const tipo = await TipoDocumentoUsuario.findOne({ where: {nombreTipo}})
   if(!nombreTipo){
@@ -52,7 +54,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoUsuario.findByPk(id);
   const { nombreTipo, ...resto } = req.body;
@@ -84,7 +86,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoUsuario.findByPk(id);
 

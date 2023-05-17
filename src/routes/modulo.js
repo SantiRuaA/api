@@ -1,9 +1,11 @@
 const Modulo = require('../models/modulo');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
     const modulos = await Modulo.findAll();
 
     res.json({
@@ -12,7 +14,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const { id } = req.params;
     const modulo = await Modulo.findByPk(id)
     
@@ -29,7 +31,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post("/", async (req,res) => {
+router.post("/", validateJWT, validateRol, async (req,res) => {
     const { modulo } = req.body;
     const moduloExists = await Modulo.findOne({ where: {modulo}})
     if (!modulo){
@@ -58,7 +60,7 @@ router.post("/", async (req,res) => {
     });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const moduloId = await Modulo.findByPk(id);
     const { modulo, ...resto } = req.body;
@@ -95,7 +97,7 @@ router.put('/:id', async (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const moduloId = await Modulo.findByPk(id);
   

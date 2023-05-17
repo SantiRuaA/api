@@ -1,9 +1,11 @@
 const EstadoUsuario = require('../models/estadoUsuario');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
     const estadoUsers = await EstadoUsuario.findAll();
 
     res.json({
@@ -12,7 +14,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const { id } = req.params;
     const estadoUser = await EstadoUsuario.findByPk(id)
 
@@ -29,7 +31,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
     const { idEstado, estadoUsuario } = req.body;
     const estadoUserExists = await EstadoUsuario.findOne({ where: {estadoUsuario}})
     const estadoUserId = await EstadoUsuario.findByPk(idEstado)
@@ -66,7 +68,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const estadoUserId = await EstadoUsuario.findByPk(id);
     const { idEstado, estadoUsuario, ...resto } = req.body;
@@ -103,7 +105,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const estadoUserId = await EstadoUsuario.findByPk(id);
   

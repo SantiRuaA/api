@@ -3,12 +3,14 @@ const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
 const bcryptjs = require('bcryptjs');
-const {isEmail} = require('validator')
+const {isEmail} = require('validator');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
   const users = await Usuario.findAll();
 
   res.json({
@@ -17,7 +19,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const { id } = req.params;
   const user = await Usuario.findByPk(id)
 
@@ -34,7 +36,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
@@ -96,7 +98,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const userId = await Usuario.findByPk(id);
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
@@ -158,7 +160,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const userId = await Usuario.findByPk(id);
 

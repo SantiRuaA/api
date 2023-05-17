@@ -1,9 +1,11 @@
 const EstadoPaquetes = require('../models/estadoPaquete');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
     const estadoPaquetes = await EstadoPaquetes.findAll();
 
     res.json({
@@ -12,7 +14,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const { id } = req.params;
     const estadoPaquete = await EstadoPaquetes.findByPk(id)
 
@@ -29,7 +31,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
     const { idEstado, estadoPaquete } = req.body;
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: {estadoPaquete}})
     const estadoPaqId = await EstadoPaquetes.findByPk(idEstado)
@@ -66,7 +68,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const estadoPaqId = await EstadoPaquetes.findByPk(id);
     const { idEstado, estadoPaquete, ...resto } = req.body;
@@ -104,7 +106,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const estadoPaqId = await EstadoPaquetes.findByPk(id);
   

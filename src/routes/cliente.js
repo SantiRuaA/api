@@ -1,11 +1,13 @@
 const Cliente = require('../models/cliente');
 const TipoDocumento = require('../models/tipoDocumentoCliente');
 const { isEmail } = require('validator');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
   const clientes = await Cliente.findAll();
 
   res.json({
@@ -14,7 +16,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const { id } = req.params;
   const cliente = await Cliente.findByPk(id)
   
@@ -31,7 +33,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente } = req.body;
   const user = await Cliente.findOne({ where: {correoCliente}})
   
@@ -76,7 +78,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const cltId = await Cliente.findByPk(id);
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
@@ -114,7 +116,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const cltId = await Cliente.findByPk(id);
 

@@ -1,9 +1,11 @@
 const TipoNovedad = require('../models/tipoNovedad');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, validateRol, async (req,res)=>{
   const novedades = await TipoNovedad.findAll();
 
   res.json({
@@ -12,7 +14,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const { id } = req.params;
   const novedad = await TipoNovedad.findByPk(id)
 
@@ -29,7 +31,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, validateRol, async (req,res)=>{
   const { idTipoNovedad, tipoNovedad } = req.body;
   const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
   const tipoId = await TipoNovedad.findByPk(idTipoNovedad)
@@ -66,7 +68,7 @@ router.post('/', async (req,res)=>{
 });
 
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
   const { idTipoNovedad, tipoNovedad, ...resto } = req.body;
@@ -116,7 +118,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
 

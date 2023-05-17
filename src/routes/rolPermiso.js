@@ -1,11 +1,13 @@
 const RolPermiso = require('../models/rolPermiso');
 const Rol = require('../models/Rol');
 const Permiso = require('../models/permiso');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get("/",async(req,res) => {
+router.get("/", validateJWT, validateRol, async(req,res) => {
     const rolesPermiso = await RolPermiso.findAll()
 
     res.json({
@@ -14,7 +16,7 @@ router.get("/",async(req,res) => {
 });
 
 
-router.get("/:id", async(req,res) => {
+router.get("/:id", validateJWT, validateRol, async(req,res) => {
     const { id } = req.params
     const rolPermiso = await RolPermiso.findByPk(id)
 
@@ -31,7 +33,7 @@ router.get("/:id", async(req,res) => {
 });
 
 
-router.post("/", async (req,res) => {
+router.post("/", validateJWT, validateRol, async (req,res) => {
     const { fechaCreacion, idRol, idPermiso } = req.body;
     if (!fechaCreacion || !idRol || !idPermiso){
         return res.status(400).json({
@@ -61,7 +63,7 @@ router.post("/", async (req,res) => {
       });
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
     const { fechaCreacion, idRol, idPermiso } = req.body;
@@ -100,7 +102,7 @@ router.put('/:id', async (req, res) => {
     
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, validateRol, async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
   

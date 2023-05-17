@@ -1,10 +1,12 @@
 const Novedad = require('../models/novedad');
 const TipoNovedad = require('../models/tipoNovedad');
 const Entrega = require('../models/entrega');
+const validateJWT = require('../middlewares/tokenValidation');
+const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
-router.get('/', async (req,res)=>{
+router.get('/', validateJWT, async (req,res)=>{
   const novedades = await Novedad.findAll();
 
   res.json({
@@ -13,7 +15,7 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', validateJWT, async(req,res)=>{
   const { id } = req.params;
   const novedad = await Novedad.findByPk(id)
   
@@ -30,7 +32,7 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', validateJWT, async (req,res)=>{
   const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
   
   if(!descripcionNovedad||!idTipoNovedad||!idEntrega){
@@ -61,7 +63,7 @@ router.post('/', async (req,res)=>{
   });
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', validateJWT, async (req, res) => {
   const { id } = req.params;
   const novId = await Novedad.findByPk(id);
 

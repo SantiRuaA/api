@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const usuarios = require("./routes/usuario")
+const login = require('./routes/auth')
 const tipoNovedades = require("./routes/tipoNovedad")
 const modulos = require("./routes/modulo")
 const estadoUsuario = require("./routes/estadoUsuario");
@@ -66,6 +67,8 @@ app.use('/entrega',entregas);
 app.use('/listaPaquete',listaPaquetes);
 
 app.use('/novedad',novedades);
+
+app.use('/login',login)
 
 app.listen(port,() => {
     console.log("Servidor trotando en el puerto: ", port);

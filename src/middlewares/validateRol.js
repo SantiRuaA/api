@@ -1,6 +1,6 @@
 const validateRol = (req, res, next) => {
 
-    const {idRol, correoUsuario} = req.body;
+    const {idRol, correoUsuario} = req.user;
     if(idRol !== 1){
         return res.status(401).json({msg: `El usuario ${correoUsuario} no es administrador - acceso denegado 🥱` })
 

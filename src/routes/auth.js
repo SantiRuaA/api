@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({msj: "Usuario no habilitado"});
         }
 
-        const token = await generateJWT(user.id);
+        const token = await generateJWT(user.documentoUsuario);
 
         res.json({msj: "User comprobao 🥶", user, token});
 

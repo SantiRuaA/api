@@ -1,17 +1,20 @@
 const jwt = require('jsonwebtoken');
-const JWTSECRET = "s3cr3t0";
+require('dotenv').config();
 
 //funcion que toma el id del user logueado, me retorna una promesa
-const generateJWT = (uid = '') => {
+const generateJWT = (uid) => {
+    console.log("uid recibido:",uid);
     return new Promise((resolve, reject) => {
         const payload = {uid};
-        jwt.sign(payload, JWTSECRET, { //tomamos la auth con el token
+        console.log("payload:",payload);
+        jwt.sign(payload, process.env.JWTSECRET, { //tomamos la auth con el token
             expiresIn: '1h'
         }, (err, token) => {
             if(err){
                 console.log(err)
                 reject('No se pudo generar el token, gueva 😛')
             }else{
+                console.log("token generado:",token);
                 resolve(token)
             }
         });

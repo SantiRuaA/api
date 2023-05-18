@@ -45,6 +45,12 @@ router.post("/", validateRol, validateJWT, async (req,res) => {
         });
     }
 
+    if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo rol"
+        })
+    }
+
     const rolId = await Rol.findByPk(idRol)
     if(rolId){
         return res.status(400).json({
@@ -74,6 +80,12 @@ router.put('/:id', validateRol, validateJWT, async (req, res) => {
 
     if (!rolId) {
         return res.json({ msj: 'El rol no existe' });
+    }
+
+    if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
+        return res.status(400).json({
+            error:"Valor no permitido para el campo rol"
+        })
     }
   
     const rolExists = await Rol.findOne({ where: { nombreRol } });

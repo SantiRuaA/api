@@ -10,7 +10,7 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/', async (req,res)=>{
   const users = await Usuario.findAll();
 
   res.json({
@@ -36,7 +36,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/', async (req,res)=>{
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
@@ -98,7 +98,7 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
 });
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const userId = await Usuario.findByPk(id);
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;

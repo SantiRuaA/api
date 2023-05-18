@@ -9,8 +9,7 @@ const Rol = db.define('rol',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     nombreRol: {
-        type: DataTypes.STRING,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.ENUM('Administrador', 'Mensajero'),
     },
     descripcionRol: {
         type: DataTypes.STRING,

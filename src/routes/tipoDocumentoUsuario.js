@@ -45,6 +45,13 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
       error:"El tipo de documento ya existe mibro"
     });
   }
+
+  if (!TipoDocumentoUsuario.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
+    return res.status(400).json({
+        error:"Valor no permitido para el campo tipoDocumentoUsuario"
+    })
+  }
+
   const tipoDocUser = await TipoDocumentoUsuario.create({idTipoDocumento,nombreTipo})
 
   res.json({
@@ -67,6 +74,12 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
 
   if (!tipoId) {
     return res.json({ msj: 'El tipo de documento no existe' });
+  }
+
+  if (!TipoDocumentoUsuario.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
+    return res.status(400).json({
+        error:"Valor no permitido para el campo TipoDocumentoUsuario"
+    })
   }
 
   const tipoExists = await TipoDocumentoUsuario.findOne({ where: { nombreTipo } });

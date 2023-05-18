@@ -26,7 +26,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
   }
 
   res.json({
-    msj: 'Informacion de usuario',
+    msj: 'Informacion de lista',
     Lista: listPaquete
   });
 });

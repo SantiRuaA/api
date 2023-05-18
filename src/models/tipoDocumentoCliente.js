@@ -9,8 +9,7 @@ const TipoDocumentoCliente = db.define('tipodocumentocliente',{
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
     nombreTipo: {
-        type: DataTypes.STRING,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.ENUM('cedulaCiudadania', 'cedulaExtranjeria', 'nit', 'pasaporte', 'tarjetaIdentidad'),
     },
 });
 

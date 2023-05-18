@@ -9,20 +9,20 @@ POST http://localhost:3030/usuarios
 Content-Type: application/json
 
 {
-    "documentoUsuario":2,
-    "idTipoDocumento":4,
-    "nombreUsuario":"miltru",
+    "documentoUsuario":11,
+    "idTipoDocumento":1,
+    "nombreUsuario":"miltrus",
     "apellidoUsuario":"friedman",
     "telefonoUsuario":"3013784849",
-    "correoUsuario":"coño@g.com",
-    "contrasenaUsuario":"ola",
+    "correoUsuario":"miltrus@g.com",
+    "contrasenaUsuario":"miltrus",
     "idRol":1,
     "idEstado":1
 }
 
 ###
 
-POST http://localhost:3030/login/login
+POST http://localhost:3030/login
 Content-Type: application/json
 
 {
@@ -32,19 +32,19 @@ Content-Type: application/json
 
 ###
 
-PUT http://localhost:3030/usuarios/2
+PUT http://localhost:3030/usuarios/11
 Content-Type: application/json
 
 {
-    "documentoUsuario":2,
+    "documentoUsuario":11,
     "idTipoDocumento":4,
-    "nombreUsuario":"miltru",
+    "nombreUsuario":"miltrus",
     "apellidoUsuario":"friedman",
     "telefonoUsuario":"3013784849",
-    "correoUsuario":"coño@g.com",
-    "contrasenaUsuario":"ola",
+    "correoUsuario":"miltrus@g.com",
+    "contrasenaUsuario":"miltrus",
     "idRol":1,
-    "idEstado":2
+    "idEstado":1
 }
 
 ###

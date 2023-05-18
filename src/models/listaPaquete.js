@@ -6,12 +6,12 @@ const ListaPaquete = db.define('listaPaquetes',{
     idLista:{
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,       
-        autoIncrement: false,
+        autoIncrement: true,
     },
     idPaquete: {
         type: DataTypes.INTEGER,
     },
 });
 
-ListaPaquete.hasOne(Paquete, { foreignKey: 'idPaquete'});
+//ListaPaquete.hasOne(Paquete, { foreignKey: 'idPaquete'});
 module.exports = ListaPaquete;

@@ -49,7 +49,7 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
 
     if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
         return res.status(400).json({
-            error:"Valor no permitido para el campo tipo novedad"
+            error:"Valor no permitido para el campo estado paquete"
         })
     }
 
@@ -85,7 +85,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
 
     if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
         return res.status(400).json({
-            error:"Valor no permitido para el campo tipo novedad"
+            error:"Valor no permitido para el campo estado paquete"
         })
     }
   

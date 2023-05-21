@@ -6,16 +6,14 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/',async (req,res)=>{
   const permisos = await Permiso.findAll();
 
-  res.json({
-    Permisos: permisos
-  });
+  res.json(permisos);
 });
 
 
-router.get('/:id', validateJWT, validateRol, async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const permiso = await Permiso.findByPk(id)
 
@@ -25,25 +23,24 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de permiso',
-    Permiso: permiso
-  });
+  res.json(permiso);
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/',async (req,res)=>{
   const { nombrePermiso,idModulo } = req.body;
   const permi = await Permiso.findOne({ where: {nombrePermiso}})
   
   if(!nombrePermiso || !idModulo ){
     return res.json({
-        error:"Uno o mas campos vacios"
+      status: "error",
+      msj:"Uno o mas campos vacios"
     });
   }
   if (permi){
     return res.json({
-      error:"El permiso ya existe"
+      status: "error",
+      msj:"El permiso ya existe"
     });
   }
 
@@ -57,16 +54,17 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const permiso = await Permiso.create({nombrePermiso,idModulo})
 
   res.json({
-    msj: 'Permiso creado exitosamente',
-    Permiso: permiso
+    status: "ok",
+    msj: 'Permiso creado exitosamente'
   });
-});
+}),
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id',async (req, res) => {
   const { id } = req.params;
-  const permiId = await Permiso.findByPk(id);
-  const { nombrePermiso,idModulo, ...resto } = req.body;
+  
+  const { idPermiso, nombrePermiso,idModulo, ...resto } = req.body;
+  const permiId = await Permiso.findByPk(idPermiso);
   
   if(!nombrePermiso || !idModulo ){
     return res.json({
@@ -78,30 +76,33 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     return res.json({ msj: 'El permiso no existe' });
   }
   
-  const permiExists = await Permiso.findOne({ where: { nombrePermiso } });
-
-  if (permiExists) {
-    return res.json({
-      error: 'El permiso ya existe bro'
-    });
+  if (permiId.nombrePermiso !== nombrePermiso) {
+    const permiExists = await Permiso.findOne({ where: { nombrePermiso } });
+    if (permiExists) {
+      return res.json({
+        status : "error",
+        msj: 'El permiso ya existe bro'
+      });
+    }
   }
 
   const modulo = await Modulo.findByPk(idModulo);
   if (!modulo) {
     return res.json({
-    error: 'El idModulo proporcionado no es válido'
+      status: 'error',
+      msj: 'El idModulo proporcionado no es válido'
     });
   }
 
   await permiId.update({ nombrePermiso, idModulo, ...resto });
 
   res.json({
+    status: 'ok',
     msj: 'Permiso actualizado con exito',
-    Permiso: permiId
   });
 });
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id',async (req, res) => {
   const { id } = req.params;
   const permiId = await Permiso.findByPk(id);
 
@@ -112,8 +113,8 @@ router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   await permiId.destroy();
 
   res.json({
+    status : 'ok',
     msj: 'Permiso eliminado con exito',
-    Permiso: permiId
   });
 });
   

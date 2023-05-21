@@ -81,15 +81,17 @@ router.put('/:id',async (req, res) => {
     if (!moduloId) {
       return res.json({ msj: 'El modulo no existe' });
     }
-  
-    const moduloExists = await Modulo.findOne({ where: { modulo } });
-  
-    if (moduloExists) {
-      return res.json({
-        status: 'error',
-        msj: 'El modulo ya existe'
-      });
+
+    if (moduloId.modulo !== modulo) {//**********COLOCAR ESTA VALIDACION EN TODOS LOS PUT******************
+        const moduloExists = await Modulo.findOne({ where: { modulo } }); 
+        if (moduloExists) {
+            return res.json({
+            status: 'error',
+            msj: 'El modulo ya existe'
+            });
+        }
     }
+    
   
     await moduloId.update({ modulo, ...resto });
   

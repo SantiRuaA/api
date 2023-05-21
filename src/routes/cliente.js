@@ -7,16 +7,14 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/',async (req,res)=>{
   const clientes = await Cliente.findAll();
 
-  res.json({
-    Clientes: clientes
-  });
+  res.json(clientes);
 });
 
 
-router.get('/:id', validateJWT, validateRol, async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const cliente = await Cliente.findByPk(id)
   
@@ -26,73 +24,89 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de cliente',
-    Cliente: cliente
-  });
+  res.json(cliente);
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/',async (req,res)=>{
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente } = req.body;
-  const user = await Cliente.findOne({ where: {correoCliente}})
+  const cliente = await Cliente.findOne({ where: {correoCliente}})
   
   if(!documentoCliente||!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
     return res.json({
-        error:"Uno o mas campos vacios"
-    });
-  }
-  
-  if (user){
-    return res.json({
-      error:"El correo ya existe"
+      status: "error",
+      msj:"Uno o mas campos vacios"
     });
   }
 
-  const userId = await Cliente.findByPk(documentoCliente)
-  if(userId){
+  if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
+    return res.json({
+      status: "error",
+      msj: "El documento y el telefono deben ser un número",
+    });
+  }
+  
+  if (cliente){
+    return res.json({
+      status: "error",
+      msj:"El correo ya existe"
+    });
+  }
+
+  const clienteId = await Cliente.findByPk(documentoCliente)
+  if(clienteId){
       return res.json({
-        error:"Ya existe un cliente con ese documento"
+        status: "error",
+        msj:"Ya existe un cliente con ese documento"
       });
   }
 
   if (!isEmail(correoCliente)) {
     return res.json({
-      error: "El correo no tiene un formato válido",
+      status: "error",
+      msj: "El correo no tiene un formato válido",
     });
   }
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
     return res.json({
-    error: 'El tipo documento no existe'
+      status : "error",
+      msj: 'El tipo documento no existe'
     }); 
   }
   
-  const cliente = await Cliente.create({documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente})
+  const clienteC = await Cliente.create({documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente})
 
   res.json({
-    msj: 'Cliente creado exitosamente',
-    Cliente: cliente
+    status: "ok",
+    msj: 'Cliente creado exitosamente'
   });
 });
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const cltId = await Cliente.findByPk(id);
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
+  const cltId = await Cliente.findByPk(documentoCliente);
   
   if(!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
     return res.json({
       error:"Uno o mas campos vacios"
     });
   }
-  
+
+  if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
+    return res.json({
+      status: "error",
+      msj: "El documento y el telefono deben ser un número",
+    });
+  }
 
   if (!isEmail(correoCliente)) {
     return res.json({
-      error: "El correo no tiene un formato válido",
+      status: "error",
+      msj: "El correo no tiene un formato válido",
     });
   }
 
@@ -110,13 +124,13 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   await cltId.update({ documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente, ...resto });
 
   res.json({
-    msj: 'Cliente actualizado con exito',
-    Cliente: cltId
+    status: "ok",
+    msj: 'Cliente actualizado con exito'
   });
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id',async (req, res) => {
   const { id } = req.params;
   const cltId = await Cliente.findByPk(id);
 
@@ -127,8 +141,8 @@ router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   await cltId.destroy();
 
   res.json({
-    msj: 'Cliente eliminado con exito',
-    Cliente: cltId
+    status: 'ok',
+    msj: 'Cliente eliminado con exito'
   });
 });
 

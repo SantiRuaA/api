@@ -20,7 +20,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
   const novedad = await Novedad.findByPk(id)
   
   if(!novedad){
-    return res.status(404).json({
+    return res.json({
       error:"No existe la novedad"
     });
   }
@@ -36,21 +36,21 @@ router.post('/', validateJWT, async (req,res)=>{
   const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
   
   if(!descripcionNovedad||!idTipoNovedad||!idEntrega){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o mas campos vacios"
     });
   }
   
   const tipo = await TipoNovedad.findByPk(idTipoNovedad);
   if (!tipo) {
-    return res.status(400).json({
+    return res.json({
     error: 'El tipo de novedad no existe'
     }); 
   }
 
   const entrega = await Entrega.findByPk(idEntrega);
   if (!entrega) {
-    return res.status(400).json({
+    return res.json({
     error: 'La entrega no existe'
     }); 
   }

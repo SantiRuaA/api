@@ -4,107 +4,113 @@ const validateJWT = require('../middlewares/tokenValidation');
 
 const router = require('express').Router()
 
-router.get("/", validateJWT, validateRol, async(req,res) => {
+router.get("/", async(req,res) => {
     const roles = await Rol.findAll()
 
-    res.json({
-        Roles: roles
-    });
+    res.json(roles);
 });
 
 
-router.get("/:id", validateRol, validateJWT, async(req,res) => {
+router.get("/:id",  async(req,res) => {
     const { id } = req.params
     const rol = await Rol.findByPk(id)
 
     if(!rol){
-        return res.status(404).json({
+        return res.json({
           error:"No existe el rol"
         });
     }
 
-    res.json({
-        msj: 'Informacion de rol',
-        Rol: rol
-    });
+    res.json(rol);
 });
 
 
-router.post("/", validateRol, validateJWT, async (req,res) => {
+router.post("/", async (req,res) => {
     const { idRol, nombreRol, descripcionRol } = req.body;
     const rolExists = await Rol.findOne({ where: {nombreRol}})
     if (!nombreRol || !idRol){
-        return res.status(400).json({
-            error:"Uno o más campos vacios"
+        return res.json({
+            status: "error",
+            msj:"Uno o más campos vacios"
         })
     }
 
     if(rolExists){
-        return res.status(400).json({
-            error:"El rol ya existe"
+        return res.json({
+            status: "error",
+            msj:"El rol ya existe"
         });
     }
 
     if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
-        return res.status(400).json({
-            error:"Valor no permitido para el campo rol"
+        return res.json({
+            status: "error",
+            msj:"Valor no permitido para el campo rol"
         })
     }
 
     const rolId = await Rol.findByPk(idRol)
     if(rolId){
-        return res.status(400).json({
-          error:"Ya existe un rol con ese ID"
+        return res.json({
+            status: "error",
+            msj:"Ya existe un rol con ese ID"
         });
     }
 
     const rol = await Rol.create({idRol, nombreRol, descripcionRol});
     
     res.json({
+        status: 'ok',
         msj: 'Rol creado exitosamente',
-        Rol: rol
     });
 });
 
 
-router.put('/:id', validateRol, validateJWT, async (req, res) => {
+router.put('/', async (req, res) => {
     const { id } = req.params;
-    const rolId = await Rol.findByPk(id);
-    const { nombreRol, ...resto } = req.body;
+    const { idRol, nombreRol, ...resto } = req.body;
+    const rolId = await Rol.findByPk(idRol);
   
     if (!nombreRol){
-        return res.status(400).json({
-            error:"Uno o más campos vacios"
+        return res.json({
+            status: "error",
+            msj:"Uno o más campos vacios"
         })
     }
 
     if (!rolId) {
-        return res.json({ msj: 'El rol no existe' });
+        return res.json({
+            status: 'error', 
+            msj: 'El rol no existe' 
+        });
     }
 
     if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
-        return res.status(400).json({
-            error:"Valor no permitido para el campo rol"
+        return res.json({
+            status: "error",
+            msj:"Valor no permitido para el campo rol"
         })
     }
-  
-    const rolExists = await Rol.findOne({ where: { nombreRol } });
-  
-    if (rolExists) {
-        return res.status(400).json({
-        error: 'El rol ya existe'
-        });
+    
+    if (rolId.nombreRol !== nombreRol) {
+        const rolExists = await Rol.findOne({ where: { nombreRol } });
+        if (rolExists) {
+            return res.json({
+                status: 'error',
+                msj: 'El rol ya existe'
+            });
+        }
     }
   
     await rolId.update({ nombreRol, ...resto });
   
     res.json({
-      msj: 'Rol actualizado con exito',
-      Rol: rolId
+      status: 'ok',
+      rolId
     });
 });
 
-router.delete('/:id', validateRol, validateJWT, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const rolId = await Rol.findByPk(id);
   
@@ -117,9 +123,8 @@ router.delete('/:id', validateRol, validateJWT, async (req, res) => {
     await rolId.destroy();
   
     res.json({
-      msj: 'Rol eliminado con exito',
-      Rol: rolId
-    });
+      status: 'ok',
+      rolId});
 });
 
 module.exports = router;

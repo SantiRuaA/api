@@ -19,7 +19,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const estadoUser = await EstadoUsuario.findByPk(id)
 
     if(!estadoUser){
-        return res.status(404).json({
+        return res.json({
           error:"No existe el estado de usuario"
         });
     }
@@ -37,24 +37,24 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
     const estadoUserId = await EstadoUsuario.findByPk(idEstado)
     
     if (!estadoUsuario || !idEstado){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
     if(estadoUserId){
-        return res.status(400).json({
+        return res.json({
             error:"Ya existe un usuario con ese ID"
         });
     }
 
     if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo estado usuario"
         })
     }
 
     if(estadoUserExists){
-        return res.status(400).json({
+        return res.json({
             error:"El estado del usuario ya existe"
         });
     }
@@ -74,7 +74,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { idEstado, estadoUsuario, ...resto } = req.body;
   
     if (!estadoUsuario || !idEstado){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
@@ -85,13 +85,13 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   
     const estadoUserExists = await EstadoUsuario.findOne({ where: { estadoUsuario } });
     if (estadoUserExists) {
-      return res.status(400).json({
+      return res.json({
         error: 'El estado del usuario ya existe'
       });
     }
 
     if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo estado usuario"
         })
     }

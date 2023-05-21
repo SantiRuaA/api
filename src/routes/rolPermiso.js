@@ -21,7 +21,7 @@ router.get("/:id", validateJWT, validateRol, async(req,res) => {
     const rolPermiso = await RolPermiso.findByPk(id)
 
     if(!rolPermiso){
-        return res.status(404).json({
+        return res.json({
           error:"No existe el rolPermiso"
         });
     }
@@ -36,21 +36,21 @@ router.get("/:id", validateJWT, validateRol, async(req,res) => {
 router.post("/", validateJWT, validateRol, async (req,res) => {
     const { fechaCreacion, idRol, idPermiso } = req.body;
     if (!fechaCreacion || !idRol || !idPermiso){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
 
     const rol = await Rol.findByPk(idRol);
     if (!rol) {
-        return res.status(400).json({
+        return res.json({
         error: 'El idRol proporcionado no es válido'
         });
     }
 
     const permiso = await Permiso.findByPk(idPermiso);
     if (!permiso) {
-        return res.status(400).json({
+        return res.json({
         error: 'El idPermiso proporcionado no es válido'
         });
     }
@@ -69,7 +69,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { fechaCreacion, idRol, idPermiso } = req.body;
   
     if (!fechaCreacion || !idRol || !idPermiso){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
@@ -80,14 +80,14 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
 
     const rol = await Rol.findByPk(idRol);
     if (!rol) {
-        return res.status(400).json({
+        return res.json({
         error: 'El idRol proporcionado no es válido'
         });
     }
 
     const permiso = await Permiso.findByPk(idPermiso);
     if (!permiso) {
-        return res.status(400).json({
+        return res.json({
         error: 'El idPermiso proporcionado no es válido'
         });
     }

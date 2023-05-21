@@ -36,7 +36,9 @@ const port = process.env.PORT || 3030;
 //middlewares
 app.use(express.json()); //Configura la aplicación para que pueda recibir datos en formato JSON.
 
-app.use(cors());// Configura la aplicación para que permita solicitudes de otros dominios.
+app.use(cors({
+    origin: '*'
+}));// Configura la aplicación para que permita solicitudes de otros dominios.
 
 app.use('/usuarios',usuarios);
 

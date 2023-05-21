@@ -24,7 +24,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const user = await Usuario.findByPk(id)
 
   if(!user){
-    return res.status(404).json({
+    return res.json({
       error:"No existe el usuario"
     });
   }
@@ -40,48 +40,48 @@ router.post('/', async (req,res)=>{
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
 
   const user = await Usuario.findOne({ where: {correoUsuario}})
   if (user){
-    return res.status(400).json({
+    return res.json({
       error:"El email ya está en uso"
     });
   }
 
   if (!isEmail(correoUsuario)) {
-    return res.status(400).json({
+    return res.json({
       error: "El email no tiene un formato válido",
     });
   }
 
   const userId = await Usuario.findByPk(documentoUsuario)
   if(userId){
-    return res.status(400).json({
+    return res.json({
       error:"Ya existe un usuario con ese documento"
     });
   }
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idRol proporcionado no es válido'
     });
   }
 
   const estado = await Estado.findByPk(idEstado);
   if (!estado) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idEstado proporcionado no es válido'
     });
   }
 
   const tipoDoc = await TipoDoc.findByPk(idTipoDocumento);
   if (!tipoDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idTipoDocumento proporcionado no es válido'
     });
   }
@@ -104,7 +104,7 @@ router.put('/:id', async (req, res) => {
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o mas campos vacios"
     });
   }
@@ -113,7 +113,7 @@ router.put('/:id', async (req, res) => {
     return res.json({ msj: 'El usuario no existe' });
   }
   if(documentoUsuario !== userId.documentoUsuario){
-    return res.status(400).json({
+    return res.json({
       error:"No puedes cambiar el documento de un usuario"
     });
   }
@@ -121,7 +121,7 @@ router.put('/:id', async (req, res) => {
   if(correoUsuario !== userId.correoUsuario){
     const emailExists = await Usuario.findOne({ where: { correoUsuario } });
     if (emailExists) {
-      return res.status(400).json({
+      return res.json({
         error: 'El email ya lo tiene otro usuario papi'
       });
     }
@@ -132,21 +132,21 @@ router.put('/:id', async (req, res) => {
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idRol proporcionado no es válido'
     });
   }
 
   const estado = await Estado.findByPk(idEstado);
   if (!estado) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idEstado proporcionado no es válido'
     });
   }
 
   const tipoDoc = await TipoDoc.findByPk(idTipoDocumento);
   if (!tipoDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idTipoDocumento proporcionado no es válido'
     });
   }

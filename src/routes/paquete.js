@@ -22,7 +22,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const paquete = await Paquete.findByPk(id)
   
   if(!paquete){
-    return res.status(404).json({
+    return res.json({
       error:"No existe el paquete"
     });
   }
@@ -39,34 +39,34 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const paq = await Paquete.findOne({ where: {codigoQrPaquete}})
   
   if(!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   
   if (paq){
-    return res.status(400).json({
+    return res.json({
       error:"El paquete ya existe"
     });
   }
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El documento del usuario no existe'
     }); 
   }
 
   const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El documento del cliente no existe'
     }); 
   }
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
-    return res.status(400).json({
+    return res.json({
     error: 'El estado no existe'
     }); 
   }
@@ -87,40 +87,40 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const paq = await Paquete.findOne({ where: {codigoQrPaquete}})
   
   if(!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   
   if (!paqId) {
-    return res.status(404).json({
+    return res.json({
       error:"No existe el paquete"
     });
   }
 
   if (paq){
-    return res.status(400).json({
+    return res.json({
       error:"El paquete ya existe"
     });
   }
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El documento del usuario no existe'
     }); 
   }
 
   const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
-    return res.status(400).json({
+    return res.json({
     error: 'El documento del cliente no existe'
     }); 
   }
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
-    return res.status(400).json({
+    return res.json({
     error: 'El estado no existe'
     }); 
   }

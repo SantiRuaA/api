@@ -19,7 +19,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const modulo = await Modulo.findByPk(id)
     
     if(!modulo){
-        return res.status(404).json({
+        return res.json({
           error:"No existe el modulo"
         });
     }
@@ -35,19 +35,19 @@ router.post("/", validateJWT, validateRol, async (req,res) => {
     const { modulo } = req.body;
     const moduloExists = await Modulo.findOne({ where: {modulo}})
     if (!modulo){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
 
     if (!Modulo.rawAttributes.modulo.values.includes(modulo)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo modulo"
         })
     }
 
     if(moduloExists){
-        return res.status(400).json({
+        return res.json({
             error:"El modulo ya existe"
         });
     }
@@ -66,13 +66,13 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { modulo, ...resto } = req.body;
   
     if (!modulo){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
 
     if (!Modulo.rawAttributes.modulo.values.includes(modulo)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo modulo"
         })
     }
@@ -84,7 +84,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const moduloExists = await Modulo.findOne({ where: { modulo } });
   
     if (moduloExists) {
-      return res.status(400).json({
+      return res.json({
         error: 'El modulo ya existe'
       });
     }

@@ -20,7 +20,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const permiso = await Permiso.findByPk(id)
 
   if(!permiso){
-    return res.status(404).json({
+    return res.json({
       error:"No existe el permiso"
     });
   }
@@ -37,19 +37,19 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const permi = await Permiso.findOne({ where: {nombrePermiso}})
   
   if(!nombrePermiso || !idModulo ){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   if (permi){
-    return res.status(400).json({
+    return res.json({
       error:"El permiso ya existe"
     });
   }
 
   const modulo = await Modulo.findByPk(idModulo);
   if (!modulo) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idModulo proporcionado no es válido'
     });
   }
@@ -69,7 +69,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { nombrePermiso,idModulo, ...resto } = req.body;
   
   if(!nombrePermiso || !idModulo ){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o mas campos vacios"
     });
   }
@@ -81,14 +81,14 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const permiExists = await Permiso.findOne({ where: { nombrePermiso } });
 
   if (permiExists) {
-    return res.status(400).json({
+    return res.json({
       error: 'El permiso ya existe bro'
     });
   }
 
   const modulo = await Modulo.findByPk(idModulo);
   if (!modulo) {
-    return res.status(400).json({
+    return res.json({
     error: 'El idModulo proporcionado no es válido'
     });
   }

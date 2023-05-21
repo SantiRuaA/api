@@ -21,7 +21,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const cliente = await Cliente.findByPk(id)
   
   if(!cliente){
-    return res.status(404).json({
+    return res.json({
       error:"No existe el cliente"
     });
   }
@@ -38,33 +38,33 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const user = await Cliente.findOne({ where: {correoCliente}})
   
   if(!documentoCliente||!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   
   if (user){
-    return res.status(400).json({
+    return res.json({
       error:"El correo ya existe"
     });
   }
 
   const userId = await Cliente.findByPk(documentoCliente)
   if(userId){
-      return res.status(400).json({
+      return res.json({
         error:"Ya existe un cliente con ese documento"
       });
   }
 
   if (!isEmail(correoCliente)) {
-    return res.status(400).json({
+    return res.json({
       error: "El correo no tiene un formato válido",
     });
   }
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
-    return res.status(400).json({
+    return res.json({
     error: 'El tipo documento no existe'
     }); 
   }
@@ -84,14 +84,14 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
   
   if(!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o mas campos vacios"
     });
   }
   
 
   if (!isEmail(correoCliente)) {
-    return res.status(400).json({
+    return res.json({
       error: "El correo no tiene un formato válido",
     });
   }
@@ -102,7 +102,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
-    return res.status(400).json({
+    return res.json({
     error: 'El tipo documento no existe'
     }); 
   }

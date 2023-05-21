@@ -20,7 +20,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
   const listPaquete = await ListaPaquete.findByPk(id)
   
   if(!listPaquete){
-    return res.status(404).json({
+    return res.json({
       error:"No existe la lista de paquetes"
     });
   }

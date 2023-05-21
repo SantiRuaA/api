@@ -19,7 +19,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
   const tipoDocClt = await TipoDocumentoCliente.findByPk(id)
 
   if(!tipoDocClt){
-    return res.status(404).json({
+    return res.json({
       error:"No existe el tipo de documento de cliente"
     });
   }
@@ -35,19 +35,19 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const { idTipoDocumento,nombreTipo } = req.body;
   const tipo = await TipoDocumentoCliente.findOne({ where: {nombreTipo}})
   if(!nombreTipo || !idTipoDocumento){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o mas campos vacios"
     });
   }
 
   if(tipo){
-    return res.status(400).json({
+    return res.json({
       error:"El tipo de documento ya existe mibro"
     });
   }
 
   if (!TipoDocumentoCliente.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
-    return res.status(400).json({
+    return res.json({
         error:"Valor no permitido para el campo tipoDocumentoCliente"
     })
   }
@@ -67,7 +67,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const { nombreTipo, ...resto } = req.body;
 
   if (!nombreTipo){
-    return res.status(400).json({
+    return res.json({
       error:"Uno o más campos vacios"
     })
 }
@@ -77,7 +77,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   }
 
   if (!TipoDocumentoCliente.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
-    return res.status(400).json({
+    return res.json({
         error:"Valor no permitido para el campo tipoDocumentoCliente"
     })
   }
@@ -85,7 +85,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   const tipoExists = await TipoDocumentoCliente.findOne({ where: { nombreTipo } });
 
   if (tipoExists) {
-    return res.status(400).json({
+    return res.json({
       error: 'El tipo de documento ya existe'
     });
   }

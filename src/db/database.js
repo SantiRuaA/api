@@ -11,4 +11,4 @@ const db = new Sequelize('starrouting', 'root', '', {
   },
 });
 
-  module.exports = db;
+module.exports = db;

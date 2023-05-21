@@ -19,7 +19,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     const estadoPaquete = await EstadoPaquetes.findByPk(id)
 
     if(!estadoPaquete){
-        return res.status(404).json({
+        return res.json({
           error:"No existe el estado de paquete"
         });
     }
@@ -37,24 +37,24 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
     const estadoPaqId = await EstadoPaquetes.findByPk(idEstado)
 
     if (!estadoPaquete || !idEstado){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
     if(estadoPaqId){
-        return res.status(400).json({
+        return res.json({
             error:"Ya existe un estado con ese ID"
         });
     }
 
     if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo estado paquete"
         })
     }
 
     if(estadoPaqExists){
-        return res.status(400).json({
+        return res.json({
             error:"El estado del paquete ya existe"
         });
     }
@@ -74,7 +74,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const { idEstado, estadoPaquete, ...resto } = req.body;
   
     if (!estadoPaquete || !idEstado){
-        return res.status(400).json({
+        return res.json({
             error:"Uno o más campos vacios"
         })
     }
@@ -84,7 +84,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     }
 
     if (!EstadoPaquetes.rawAttributes.estadoPaquete.values.includes(estadoPaquete)) {
-        return res.status(400).json({
+        return res.json({
             error:"Valor no permitido para el campo estado paquete"
         })
     }
@@ -92,7 +92,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     const estadoPaqExists = await EstadoPaquetes.findOne({ where: { estadoPaquete } });
   
     if (estadoPaqExists) {
-      return res.status(400).json({
+      return res.json({
         error: 'El estado del paquete ya existe'
       });
     }

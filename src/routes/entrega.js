@@ -20,7 +20,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
   const entrega = await Entrega.findByPk(id)
   
   if(!entrega){
-    return res.status(404).json({
+    return res.json({
       error:"No existe la entrega"
     });
   }
@@ -37,20 +37,20 @@ router.post('/', validateJWT, async (req,res)=>{
   //const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}})
   
   if(!firmaDestinatario || !fechaEntrega || !idLista){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   
   /*if (ent){
-    return res.status(400).json({
+    return res.json({
       error:"La entrega ya existe"
     });
   }*/
 
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
-    return res.status(400).json({
+    return res.json({
     error: 'La lista de paquetes no existe'
     }); 
   }
@@ -72,26 +72,26 @@ router.put('/:id', validateJWT, async (req, res) => {
   /* const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}}) */
   
   if(!firmaDestinatario || !fechaEntrega || !idLista){
-    return res.status(400).json({
+    return res.json({
         error:"Uno o mas campos vacios"
     });
   }
   
   if (!entId) {
-    return res.status(404).json({
+    return res.json({
       error:"No existe la entrega"
     });
   }
 
  /*  if (ent){
-    return res.status(400).json({
+    return res.json({
       error:"La entrega ya existe"
     });
   } */
 
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
-    return res.status(400).json({
+    return res.json({
     error: 'La lista de paquetes no existe'
     }); 
   }

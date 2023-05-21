@@ -5,16 +5,14 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/', async (req,res)=>{
   const novedades = await TipoNovedad.findAll();
 
-  res.json({
-    Novedades: novedades
-  });
+  res.json(novedades)
 });
 
 
-router.get('/:id', validateJWT, validateRol, async(req,res)=>{
+router.get('/:id', async(req,res)=>{
   const { id } = req.params;
   const novedad = await TipoNovedad.findByPk(id)
 
@@ -24,63 +22,69 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de tipo de novedad',
-    Novedad: novedad
-  });
+  res.json(novedad)
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/', async (req,res)=>{
   const { idTipoNovedad, tipoNovedad } = req.body;
   const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
   const tipoId = await TipoNovedad.findByPk(idTipoNovedad)
+
   if(!tipoNovedad || !idTipoNovedad){
     return res.json({
-      error:"Uno o mas campos vacios"
+        status: "error",
+        msj: "Uno o más campos vacios"
     });
   }
 
   if(tipo){
     return res.json({
-        error:"El tipo de novedad ya existe"
+        status:"error",
+        msj: "El tipo de novedad ya existe"
     });
   }
 
   if (!TipoNovedad.rawAttributes.tipoNovedad.values.includes(tipoNovedad)) {
     return res.json({
-        error:"Valor no permitido para el campo tipo novedad"
+        status:"error",
+        msj: "Valor no permitido para el campo tipo novedad"
     })
 }
 
   if(tipoId){
     return res.json({
-      error:"Ya existe una novedad con ese ID"
+      status:"error",
+      msj: "Ya existe una novedad con ese ID"
     });
   }
 
   const novedad = await TipoNovedad.create({idTipoNovedad, tipoNovedad})
 
   res.json({
-    msj: 'Tipo de novedad creada exitosamente',
-    Novedad: novedad
+    status : "ok",
+    msj : "Tipo de novedad creada exitosamente"
   });
 });
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const tipoId = await TipoNovedad.findByPk(id);
   const { idTipoNovedad, tipoNovedad, ...resto } = req.body;
+  const tipoId = await TipoNovedad.findByPk(idTipoNovedad);
 
   if(!tipoNovedad || !idTipoNovedad){
     return res.json({
-      error:"Uno o mas campos vacios"
+      status: "error",
+      msj: "Uno o mas campos vacios"
     });
   }
 
   if (!tipoId) {
-    return res.json({ msj: 'El tipo de novedad no existe' });
+    return res.json({
+       status: "error",
+       msj: 'El tipo de novedad no existe'
+      });
   }
 
   /* if (id !== idTipoNovedad) {
@@ -91,46 +95,44 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
 
   if (!TipoNovedad.rawAttributes.tipoNovedad.values.includes(tipoNovedad)) {
     return res.json({
-        error:"Valor no permitido para el campo tipo novedad"
+        status: "error",
+        msj: "Valor no permitido para el campo tipo novedad"
     })
   }
 
-  const tipoDocId = await TipoNovedad.findByPk(idTipoNovedad) 
-  if(tipoDocId){
-    return res.json({
-      error:"Ya existe una novedad con ese ID"
-    });
-  }
 
   const tipoExists = await TipoNovedad.findOne({ where: { tipoNovedad } });
   if (tipoExists) {
     return res.json({
-      error: 'El tipo de novedad ya existe'
+      status: "error",
+      msj: 'El tipo de novedad ya existe'
     });
   }
 
   await tipoId.update({ tipoNovedad, ...resto });
 
   res.json({
-    msj: 'Tipo de novedad actualizada con exito',
-    Novedad: tipoId
+    status: "ok",
+    tipoId
   });
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
 
   if (!tipoId) {
-    return res.json({ msj: 'El tipo de novedad no existe o ya ha sido eliminada' });
+    return res.json({
+       msj: 'El tipo de novedad no existe o ya ha sido eliminada' 
+      });
   }
 
   await tipoId.destroy();
 
   res.json({
-    msj: 'Tipo de novedad eliminada con exito',
-    Novedad: tipoId
+    status: 'ok',
+    tipoId
   });
 });
 

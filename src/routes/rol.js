@@ -27,7 +27,7 @@ router.get("/:id",  async(req,res) => {
 
 router.post("/", async (req,res) => {
     const { idRol, nombreRol, descripcionRol } = req.body;
-    const rolExists = await Rol.findOne({ where: {nombreRol}})
+    
     if (!nombreRol || !idRol){
         return res.json({
             status: "error",
@@ -35,6 +35,15 @@ router.post("/", async (req,res) => {
         })
     }
 
+    const rolId = await Rol.findByPk(idRol)
+    if(rolId){
+        return res.json({
+            status: "error",
+            msj:"Ya existe un rol con ese ID"
+        });
+    }
+
+    const rolExists = await Rol.findOne({ where: {nombreRol}})
     if(rolExists){
         return res.json({
             status: "error",
@@ -49,14 +58,6 @@ router.post("/", async (req,res) => {
         })
     }
 
-    const rolId = await Rol.findByPk(idRol)
-    if(rolId){
-        return res.json({
-            status: "error",
-            msj:"Ya existe un rol con ese ID"
-        });
-    }
-
     const rol = await Rol.create({idRol, nombreRol, descripcionRol});
     
     res.json({
@@ -66,7 +67,7 @@ router.post("/", async (req,res) => {
 });
 
 
-router.put('/', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { idRol, nombreRol, ...resto } = req.body;
     const rolId = await Rol.findByPk(idRol);

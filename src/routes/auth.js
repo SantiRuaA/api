@@ -16,20 +16,23 @@ router.post('/', async (req, res) => {
     
     try{
         const user = await Usuario.findOne({where: {correoUsuario}});
-        if(!user){
+        if(user){
+            const validPassword = bcryptjs.compareSync(contrasenaUsuario, user.contrasenaUsuario)
+            if(!validPassword){
+                return res.json({
+                    status: "error",
+                    msj: "Password incorrecta"
+                });
+            }
+        }else{
             return res.json({
                 status: "error",
                 msj: "Username incorrecto"
             });
         }
         
-        const validPassword = bcryptjs.compareSync(contrasenaUsuario, user.contrasenaUsuario)
-        if(!validPassword){
-            return res.json({
-                status: "error",
-                msj: "Password incorrecta"
-            });
-        }
+        
+        
 
         if(user.idEstado == 2){
             return res.json({

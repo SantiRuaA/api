@@ -8,9 +8,7 @@ const router = require('express').Router()
 router.get('/', async (req,res)=>{
   const tipoDocUsers = await TipoDocumentoUsuario.findAll();
 
-  res.json({
-    Tipos: tipoDocUsers
-  });
+  res.json(tipoDocUsers)
 });
 
 
@@ -24,17 +22,15 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de tipoDocumentoUsuario',
-    Tipo: tipoDocUser
-  });
+  res.json(tipoDocUser);
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/', async (req,res)=>{
   const { idTipoDocumento, nombreTipo } = req.body;
   const tipo = await TipoDocumentoUsuario.findOne({ where: {nombreTipo}})
-  if(!nombreTipo){
+
+  if(!nombreTipo || !idTipoDocumento){
     return res.json({
         error:"Uno o mas campos vacios"
     });
@@ -61,7 +57,7 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
 });
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id',async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoUsuario.findByPk(id);
   const { nombreTipo, ...resto } = req.body;
@@ -99,7 +95,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id',async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoUsuario.findByPk(id);
 

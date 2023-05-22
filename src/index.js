@@ -40,7 +40,7 @@ app.use(cors({
     origin: '*'
 }));// Configura la aplicación para que permita solicitudes de otros dominios.
 
-app.use('/usuarios',usuarios);
+app.use('/usuario',usuarios);
 
 app.use('/tipoNovedad',tipoNovedades);
 

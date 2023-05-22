@@ -13,15 +13,17 @@ const router = require('express').Router()
 router.get('/', async (req,res)=>{
   const users = await Usuario.findAll();
 
-  res.json({
-    Usuarios: users
-  });
+  res.json(users);
 });
 
 
-router.get('/:id', validateJWT, validateRol, async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   const { id } = req.params;
-  const user = await Usuario.findByPk(id)
+  const user = await Usuario.findByPk(id, {
+    attributes: {
+      exclude: ['contrasenaUsuario']
+    }
+  });
 
   if(!user){
     return res.json({
@@ -29,10 +31,7 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de usuario',
-    Usuario: user
-  });
+  res.json(user);
 });
 
 
@@ -41,27 +40,38 @@ router.post('/', async (req,res)=>{
   
   if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
     return res.json({
-        error:"Uno o mas campos vacios"
+      status:"error",
+      msj:"Uno o mas campos vacios"
+    });
+  }
+
+  if (isNaN(documentoUsuario) || isNaN(telefonoUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "El documento y el telefono deben ser un número",
     });
   }
 
   const user = await Usuario.findOne({ where: {correoUsuario}})
   if (user){
     return res.json({
-      error:"El email ya está en uso"
+      status:"error",
+      msj:"El email ya está en uso"
     });
   }
 
   if (!isEmail(correoUsuario)) {
     return res.json({
-      error: "El email no tiene un formato válido",
+      status:"error",
+      msj: "El email no tiene un formato válido",
     });
   }
 
   const userId = await Usuario.findByPk(documentoUsuario)
   if(userId){
     return res.json({
-      error:"Ya existe un usuario con ese documento"
+      status:"error",
+      msj:"Ya existe un usuario con ese documento"
     });
   }
 
@@ -92,29 +102,47 @@ router.post('/', async (req,res)=>{
   const userC = await Usuario.create({documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario: pwdEncrypt,idRol,idEstado})
 
   res.json({
-    msj: 'Usuario creado exitosamente',
-    Usuario: userC
+    status : 'ok',
+    msj: 'Usuario creado exitosamente'
   });
 });
 
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const userId = await Usuario.findByPk(id);
-  const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   
-  if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado){
+  const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
+  const userId = await Usuario.findByPk(documentoUsuario);
+
+  if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol || !idEstado){
     return res.json({
-      error:"Uno o mas campos vacios"
+      status:"error",
+      msj:"Uno o mas campos vacios"
+    });
+  }
+
+  if (isNaN(documentoUsuario) || isNaN(telefonoUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "El documento y el telefono deben ser un número",
     });
   }
 
   if (!userId) {
     return res.json({ msj: 'El usuario no existe' });
   }
+
   if(documentoUsuario !== userId.documentoUsuario){
     return res.json({
-      error:"No puedes cambiar el documento de un usuario"
+      status:"error",
+      msj:"No puedes cambiar el documento de un usuario"
+    });
+  }
+
+  if (!isEmail(correoUsuario)) {
+    return res.json({
+      status:"error",
+      msj: "El email no tiene un formato válido",
     });
   }
 
@@ -122,13 +150,18 @@ router.put('/:id', async (req, res) => {
     const emailExists = await Usuario.findOne({ where: { correoUsuario } });
     if (emailExists) {
       return res.json({
-        error: 'El email ya lo tiene otro usuario papi'
+        status:"error",
+        msj: 'El email ya lo tiene otro usuario papi'
       });
     }
   }
   
   const salt = bcryptjs.genSaltSync();
-  const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
+  let pwdEncrypt = contrasenaUsuario;
+
+  if (contrasenaUsuario) { // Si se proporciona una contraseña, se encripta
+    pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
+  }
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
@@ -151,16 +184,28 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await userId.update({ documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario: pwdEncrypt, idRol, idEstado });
+  await userId.update({ 
+    documentoUsuario, 
+    idTipoDocumento, 
+    nombreUsuario, 
+    apellidoUsuario, 
+    telefonoUsuario, 
+    correoUsuario, 
+    contrasenaUsuario: pwdEncrypt || userId.contrasenaUsuario, // Si contrasenaUsuario es vacío, se mantiene la contraseña actual 
+    idRol, 
+    idEstado 
+  });
+
   const userC = await Usuario.findByPk(id);
+  
   res.json({
-    msj: 'Usuario actualizado con exito',
-    Usuario: userC
+    status : 'ok',
+    msj: 'Usuario actualizado con exito'
   });
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const userId = await Usuario.findByPk(id);
 
@@ -171,8 +216,8 @@ router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   await userId.destroy();
 
   res.json({
-    msj: 'Usuario eliminado con exito',
-    Usuario: userId
+    status : 'ok',
+    msj: 'Usuario eliminado con exito'
   });
 });
   

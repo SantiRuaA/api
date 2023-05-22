@@ -96,6 +96,13 @@ router.put('/:id', async (req, res) => {
     });
   }
 
+  if(documentoCliente !== cltId.documentoCliente){
+    return res.json({
+      status:"error",
+      msj:"No puedes cambiar el documento de un cliente"
+    });
+  }
+
   if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
     return res.json({
       status: "error",
@@ -108,6 +115,16 @@ router.put('/:id', async (req, res) => {
       status: "error",
       msj: "El correo no tiene un formato válido",
     });
+  }
+
+  if(correoCliente !== cltId.correoCliente){
+    const emailExists = await Cliente.findOne({ where: { correoCliente } });
+    if (emailExists) {
+      return res.json({
+        status:"error",
+        msj: 'El email ya lo tiene otro cliente'
+      });
+    }
   }
 
   if (!cltId) {

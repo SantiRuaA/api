@@ -1,5 +1,6 @@
 const Cliente = require('../models/cliente');
 const TipoDocumento = require('../models/tipoDocumentoCliente');
+const Paquete = require('../models/paquete');
 const { isEmail } = require('validator');
 const validateJWT = require('../middlewares/tokenValidation');
 const validateRol = require('../middlewares/validateRol');
@@ -152,7 +153,16 @@ router.delete('/:id',async (req, res) => {
   const cltId = await Cliente.findByPk(id);
 
   if (!cltId) {
-    return res.json({ msj: 'El usuario no existe o ya ha sido eliminado' });
+    return res.json({ msj: 'El cliente no existe o ya ha sido eliminado' });
+  }
+
+  const paqAsociados = await Paquete.findAll({where:{documentoCliente: cltId.documentoCliente}});
+
+  if(paqAsociados.length > 0){
+    return res.json({
+      status: 'error',
+      msj: 'No se puede eliminar el cliente porque tiene paquetes asociados'
+    });
   }
 
   await cltId.destroy();

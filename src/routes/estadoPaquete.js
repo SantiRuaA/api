@@ -5,12 +5,10 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/', async (req,res)=>{
     const estadoPaquetes = await EstadoPaquetes.findAll();
 
-    res.json({
-        Estados: estadoPaquetes
-    });
+    res.json(estadoPaquetes);
 });
 
 

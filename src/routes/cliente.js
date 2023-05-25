@@ -158,7 +158,7 @@ router.delete('/:id',async (req, res) => {
 
   const paqAsociados = await Paquete.findAll({where:{documentoCliente: cltId.documentoCliente}});
 
-  if(paqAsociados.length > 0){
+  if(paqAsociados.length > 0){ //ESTA VUELTA ES PARA VER SI EL CLIENTE TIENE PAQUETES ASOCIADOS
     return res.json({
       status: 'error',
       msj: 'No se puede eliminar el cliente porque tiene paquetes asociados'

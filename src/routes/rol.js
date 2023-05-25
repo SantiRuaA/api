@@ -26,22 +26,22 @@ router.get("/:id",  async(req,res) => {
 
 
 router.post("/", async (req,res) => {
-    const { idRol, nombreRol, descripcionRol } = req.body;
+    const { nombreRol, descripcionRol } = req.body;
     
-    if (!nombreRol || !idRol){
+    if (!nombreRol){
         return res.json({
             status: "error",
-            msj:"Uno o más campos vacios"
+            msj:"Un campo vacio"
         })
     }
 
-    const rolId = await Rol.findByPk(idRol)
+    /* const rolId = await Rol.findByPk(idRol)
     if(rolId){
         return res.json({
             status: "error",
             msj:"Ya existe un rol con ese ID"
         });
-    }
+    } */
 
     const rolExists = await Rol.findOne({ where: {nombreRol}})
     if(rolExists){
@@ -51,14 +51,14 @@ router.post("/", async (req,res) => {
         });
     }
 
-    if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
+    /* if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
         return res.json({
             status: "error",
             msj:"Valor no permitido para el campo rol"
         })
-    }
+    } */
 
-    const rol = await Rol.create({idRol, nombreRol, descripcionRol});
+    const rol = await Rol.create({nombreRol, descripcionRol});
     
     res.json({
         status: 'ok',
@@ -86,12 +86,12 @@ router.put('/:id', async (req, res) => {
         });
     }
 
-    if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
+    /* if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
         return res.json({
             status: "error",
             msj:"Valor no permitido para el campo rol"
         })
-    }
+    } */
     
     if (rolId.nombreRol !== nombreRol) {
         const rolExists = await Rol.findOne({ where: { nombreRol } });

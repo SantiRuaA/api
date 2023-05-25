@@ -9,18 +9,17 @@ POST http://localhost:3030/rol
 Content-Type: application/json
 
 {
-    "idRol":3,
-    "nombreRol": "uikgy,j",
+    "nombreRol": "Cliente",
     "descripcionRol": "me agarró el transito patron :("
 }
 
 ###
 
-PUT http://localhost:3030/rol/1
+PUT http://localhost:3030/rol/3
 Content-Type: application/json
 
 {
-    "nombreRol": "",
+    "nombreRol": "Weva",
     "descripcionRol": "me agarró el transito patron :("
 }
 

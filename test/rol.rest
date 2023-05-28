@@ -9,20 +9,20 @@ POST http://localhost:3030/rol
 Content-Type: application/json
 
 {
-    "nombreRol": "Cliente",
+    "nombreRol": "Mulero",
     "descripcionRol": "me agarró el transito patron :("
 }
 
 ###
 
-PUT http://localhost:3030/rol/3
+PUT http://localhost:3030/rol/4
 Content-Type: application/json
 
 {
-    "nombreRol": "Weva",
-    "descripcionRol": "me agarró el transito patron :("
+    "nombreRol": "XD",
+    "descripcionRol": "me agarró el transito patron"
 }
 
 ###
 
-DELETE http://localhost:3030/rol/1
+DELETE http://localhost:3030/rol/4

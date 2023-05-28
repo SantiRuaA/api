@@ -69,8 +69,8 @@ router.post("/", async (req,res) => {
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { idRol, nombreRol, ...resto } = req.body;
-    const rolId = await Rol.findByPk(idRol);
+    const { nombreRol, ...resto } = req.body;
+    const rolId = await Rol.findByPk(id);
   
     if (!nombreRol){
         return res.json({

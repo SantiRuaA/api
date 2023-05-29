@@ -31,13 +31,18 @@ router.post('/', async (req, res) => {
             });
         }
         
-        
-        
 
         if(user.idEstado == 2){
             return res.json({
                 status: "error",
                 msj: "Usuario no habilitado"
+            });
+        }
+
+        if(user.idRol != 1 ){
+            return res.json({
+                status: "error",
+                msj: "Usted no es admin"
             });
         }
 

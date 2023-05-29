@@ -52,6 +52,15 @@ router.post('/', async (req,res)=>{
     });
   }
 
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d{3,}).{8,}$/;
+
+  if (!passwordRegex.test(contrasenaUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "La contraseña debe contener como mínimo 8 caracteres, una letra mayúscula y al menos 3 caracteres numéricos",
+    });
+}
+
   const user = await Usuario.findOne({ where: {correoUsuario}})
   if (user){
     return res.json({

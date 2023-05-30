@@ -124,7 +124,8 @@ router.put('/:id', async (req, res) => {
   const { documentoUsuario,idTipoDocumento,nombreUsuario,apellidoUsuario,telefonoUsuario,correoUsuario,contrasenaUsuario,idRol,idEstado } = req.body;
   const userId = await Usuario.findByPk(documentoUsuario);
 
-  if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol || !idEstado){
+
+  if(!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol){
     return res.json({
       status:"error",
       msj:"Uno o mas campos vacios"
@@ -202,8 +203,8 @@ router.put('/:id', async (req, res) => {
     telefonoUsuario, 
     correoUsuario, 
     contrasenaUsuario: pwdEncrypt || userId.contrasenaUsuario, // Si contrasenaUsuario es vacío, se mantiene la contraseña actual 
-    idRol, 
-    idEstado 
+    idRol,
+    idEstado
   });
 
   const userC = await Usuario.findByPk(id);

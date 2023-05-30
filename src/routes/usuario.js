@@ -207,7 +207,7 @@ router.put('/:id', async (req, res) => {
     idEstado
   });
 
-  const userC = await Usuario.findByPk(id);
+  const userCr = await Usuario.findByPk(id);
   
   res.json({
     status : 'ok',

@@ -6,7 +6,7 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, async (req,res)=>{
+router.get('/', async (req,res)=>{
   const entregas = await Entrega.findAll();
 
   res.json({
@@ -15,7 +15,7 @@ router.get('/', validateJWT, async (req,res)=>{
 });
 
 
-router.get('/:id', validateJWT, async(req,res)=>{
+router.get('/:id', async(req,res)=>{
   const { id } = req.params;
   const entrega = await Entrega.findByPk(id)
   
@@ -32,7 +32,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
 });
 
 
-router.post('/', validateJWT, async (req,res)=>{
+router.post('/', async (req,res)=>{
   const { firmaDestinatario,fechaEntrega,idLista } = req.body;
   //const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}})
   
@@ -65,7 +65,7 @@ router.post('/', validateJWT, async (req,res)=>{
 });
 
 
-router.put('/:id', validateJWT, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const entId = await Entrega.findByPk(id);
   const { firmaDestinatario,fechaEntrega,idLista } = req.body;
@@ -105,7 +105,7 @@ router.put('/:id', validateJWT, async (req, res) => {
 });
 
 
-router.delete('/:id', validateJWT, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const entId = await Entrega.findByPk(id);
 

@@ -6,7 +6,7 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, async (req,res)=>{
+router.get('/', async (req,res)=>{
   const lists = await ListaPaquete.findAll();
 
   res.json({
@@ -15,7 +15,7 @@ router.get('/', validateJWT, async (req,res)=>{
 });
 
 
-router.get('/:id', validateJWT, async(req,res)=>{
+router.get('/:id', async(req,res)=>{
   const { id } = req.params;
   const listPaquete = await ListaPaquete.findByPk(id)
   
@@ -32,7 +32,7 @@ router.get('/:id', validateJWT, async(req,res)=>{
 });
 
 
-router.post('/', validateJWT, async (req,res)=>{
+router.post('/', async (req,res)=>{
   const { idPaquete } = req.body;
   
   if(!idPaquete){
@@ -56,7 +56,7 @@ router.post('/', validateJWT, async (req,res)=>{
 });
 
 
-router.put('/:id', validateJWT, async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const listId = await ListaPaquete.findByPk(id);
   const { idLista, idPaquete,...resto } = req.body;
@@ -87,7 +87,7 @@ router.put('/:id', validateJWT, async (req, res) => {
   });
 });
 
-router.delete('/:id', validateJWT, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const listId = await ListaPaquete.findByPk(id);
 

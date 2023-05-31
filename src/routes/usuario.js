@@ -112,8 +112,7 @@ router.post('/', async (req,res)=>{
 
   res.json({
     status : 'ok',
-    msj: 'Usuario creado exitosamente',
-    userC
+    msj: 'Usuario creado exitosamente'
   });
 });
 

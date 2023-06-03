@@ -8,7 +8,7 @@ const generateJWT = (uid) => {
         const payload = {uid};
         console.log("payload:",payload);
         jwt.sign(payload, process.env.JWTSECRET, { //tomamos la auth con el token
-            expiresIn: '1h'
+            expiresIn: '12h'
         }, (err, token) => {
             if(err){
                 console.log(err)

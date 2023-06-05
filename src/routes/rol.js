@@ -63,6 +63,7 @@ router.post("/", async (req,res) => {
     res.json({
         status: 'ok',
         msj: 'Rol creado exitosamente',
+        id: rol.id
     });
 });
 

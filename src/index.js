@@ -3,7 +3,6 @@ const cors = require("cors");
 const usuarios = require("./routes/usuario")
 const login = require('./routes/auth')
 const tipoNovedades = require("./routes/tipoNovedad")
-const modulos = require("./routes/modulo")
 const estadoUsuario = require("./routes/estadoUsuario");
 const tipoDocumentoUsuario = require("./routes/tipoDocumentoUsuario");
 const tipoDocumentoCliente = require("./routes/tipoDocumentoCliente");
@@ -43,8 +42,6 @@ app.use(cors({
 app.use('/usuario',usuarios);
 
 app.use('/tipoNovedad',tipoNovedades);
-
-app.use('/modulo',modulos);
 
 app.use('/estadoUsuario',estadoUsuario);
 

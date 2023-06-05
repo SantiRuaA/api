@@ -1,5 +1,4 @@
 const Permiso = require('../models/permiso');
-const Modulo = require('../models/modulo');
 const validateJWT = require('../middlewares/tokenValidation');
 const validateRol = require('../middlewares/validateRol');
 
@@ -28,7 +27,7 @@ router.get('/:id',async(req,res)=>{
 
 
 router.post('/',async (req,res)=>{
-  const { nombrePermiso,idModulo } = req.body;
+  const { nombrePermiso } = req.body;
   const permi = await Permiso.findOne({ where: {nombrePermiso}})
   
   if(!nombrePermiso || !idModulo ){
@@ -44,13 +43,6 @@ router.post('/',async (req,res)=>{
     });
   }
 
-  const modulo = await Modulo.findByPk(idModulo);
-  if (!modulo) {
-    return res.json({
-    error: 'El idModulo proporcionado no es válido'
-    });
-  }
-
   const permiso = await Permiso.create({nombrePermiso,idModulo})
 
   res.json({
@@ -63,10 +55,10 @@ router.post('/',async (req,res)=>{
 router.put('/:id',async (req, res) => {
   const { id } = req.params;
   
-  const { idPermiso, nombrePermiso,idModulo, ...resto } = req.body;
+  const { idPermiso, nombrePermiso, ...resto } = req.body;
   const permiId = await Permiso.findByPk(idPermiso);
   
-  if(!nombrePermiso || !idModulo ){
+  if(!nombrePermiso ){
     return res.json({
       error:"Uno o mas campos vacios"
     });
@@ -84,14 +76,6 @@ router.put('/:id',async (req, res) => {
         msj: 'El permiso ya existe bro'
       });
     }
-  }
-
-  const modulo = await Modulo.findByPk(idModulo);
-  if (!modulo) {
-    return res.json({
-      status: 'error',
-      msj: 'El idModulo proporcionado no es válido'
-    });
   }
 
   await permiId.update({ nombrePermiso, idModulo, ...resto });

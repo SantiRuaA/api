@@ -7,7 +7,7 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get("/", validateJWT, validateRol, async(req,res) => {
+router.get("/", async(req,res) => {
     const rolesPermiso = await RolPermiso.findAll()
 
     res.json({
@@ -16,7 +16,7 @@ router.get("/", validateJWT, validateRol, async(req,res) => {
 });
 
 
-router.get("/:id", validateJWT, validateRol, async(req,res) => {
+router.get("/:id", async(req,res) => {
     const { id } = req.params
     const rolPermiso = await RolPermiso.findByPk(id)
 
@@ -33,37 +33,40 @@ router.get("/:id", validateJWT, validateRol, async(req,res) => {
 });
 
 
-router.post("/", validateJWT, validateRol, async (req,res) => {
-    const { fechaCreacion, idRol, idPermiso } = req.body;
-    if (!fechaCreacion || !idRol || !idPermiso){
+router.post("/", async (req,res) => {
+    const { idRol, idPermiso } = req.body;
+    if ( !idRol || !idPermiso){
         return res.json({
-            error:"Uno o más campos vacios"
+            status: "error",
+            msj:"Uno o más campos vacios"
         })
     }
 
     const rol = await Rol.findByPk(idRol);
     if (!rol) {
         return res.json({
-        error: 'El idRol proporcionado no es válido'
+            status: "error",
+            msj: 'El idRol proporcionado no es válido'
         });
     }
 
     const permiso = await Permiso.findByPk(idPermiso);
     if (!permiso) {
         return res.json({
-        error: 'El idPermiso proporcionado no es válido'
+            status: "error",
+            msj: 'El idPermiso proporcionado no es válido'
         });
     }
 
     const rolPermiso = await RolPermiso.create({fechaCreacion, idRol, idPermiso});
     
     res.json({
+        status: "ok",
         msj: 'RolxPermiso creado exitosamente',
-        RolxPermiso: rolPermiso
       });
 });
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id',  async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
     const { fechaCreacion, idRol, idPermiso } = req.body;
@@ -102,7 +105,7 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
     
 });
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
   

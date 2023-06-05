@@ -10,10 +10,6 @@ const RolPermiso = db.define('rolPermiso',{
         autoIncrement: true,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
-    fechaCreacion: {
-        type: DataTypes.DATE,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
-    },
     idRol: {
         type: DataTypes.INTEGER,
     },

@@ -4,6 +4,21 @@ const validateJWT = require('../middlewares/tokenValidation');
 
 const router = require('express').Router()
 
+router.get('/lastId', async (req, res) => {
+    const lastRol = await Rol.findOne({
+      attributes: ['idRol'],
+      order: [['idRol', 'DESC']]
+    });
+  
+    if (!lastRol) {
+      return res.json({
+        error: 'No se encontraron roles'
+      });
+    }
+  
+    res.json(lastRol.idRol);
+  });
+
 router.get("/", async(req,res) => {
     const roles = await Rol.findAll()
 
@@ -14,12 +29,6 @@ router.get("/", async(req,res) => {
 router.get("/:id",  async(req,res) => {
     const { id } = req.params
     const rol = await Rol.findByPk(id)
-
-    if(!rol){
-        return res.json({
-          error:"No existe el rol"
-        });
-    }
 
     res.json(rol);
 });
@@ -128,5 +137,12 @@ router.delete('/:id', async (req, res) => {
       status: 'ok',
       rolId});
 });
+
+
+// Nuevo endpoint para obtener el último ID de rol creado
+
+  
+  
+  
 
 module.exports = router;

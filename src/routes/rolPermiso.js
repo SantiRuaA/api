@@ -58,7 +58,7 @@ router.post("/", async (req,res) => {
         });
     }
 
-    const rolPermiso = await RolPermiso.create({fechaCreacion, idRol, idPermiso});
+    const rolPermiso = await RolPermiso.create({idRol, idPermiso});
     
     res.json({
         status: "ok",
@@ -69,9 +69,9 @@ router.post("/", async (req,res) => {
 router.put('/:id',  async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
-    const { fechaCreacion, idRol, idPermiso } = req.body;
+    const { idRol, idPermiso } = req.body;
   
-    if (!fechaCreacion || !idRol || !idPermiso){
+    if (!idRol || !idPermiso){
         return res.json({
             error:"Uno o más campos vacios"
         })
@@ -96,11 +96,11 @@ router.put('/:id',  async (req, res) => {
     }
   
   
-    await rolPermisoId.update({ fechaCreacion, idRol, idPermiso });
+    await rolPermisoId.update({ idRol, idPermiso });
   
     res.json({
-      msj: 'RolxPermiso actualizado con exito',
-      RolxPermiso: rolPermisoId
+        status: "ok",
+        msj: 'RolxPermiso actualizado con exito',
     });
     
 });

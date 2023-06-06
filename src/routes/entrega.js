@@ -9,9 +9,7 @@ const router = require('express').Router()
 router.get('/', async (req,res)=>{
   const entregas = await Entrega.findAll();
 
-  res.json({
-    Entregas: entregas
-  });
+  res.json( entregas);
 });
 
 
@@ -25,10 +23,7 @@ router.get('/:id', async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de entrega',
-    Entrega: entrega
-  });
+  res.json(entrega);
 });
 
 

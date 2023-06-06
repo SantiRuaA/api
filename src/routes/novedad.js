@@ -6,16 +6,14 @@ const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
-router.get('/', validateJWT, async (req,res)=>{
+router.get('/', async (req,res)=>{
   const novedades = await Novedad.findAll();
 
-  res.json({
-    Novedades: novedades
-  });
+  res.json( novedades);
 });
 
 
-router.get('/:id', validateJWT, async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const novedad = await Novedad.findByPk(id)
   
@@ -25,19 +23,17 @@ router.get('/:id', validateJWT, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de novedad',
-    Novedad: novedad
-  });
+  res.json( novedad);
 });
 
 
-router.post('/', validateJWT, async (req,res)=>{
+router.post('/',  async (req,res)=>{
   const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
   
   if(!descripcionNovedad||!idTipoNovedad||!idEntrega){
     return res.json({
-      error:"Uno o mas campos vacios"
+      status: "error",
+      msj:"Uno o mas campos vacios"
     });
   }
   
@@ -58,12 +54,12 @@ router.post('/', validateJWT, async (req,res)=>{
   const novedad = await Novedad.create({descripcionNovedad, idTipoNovedad, idEntrega})
 
   res.json({
+    status: 'ok',
     msj: 'Novedad creada exitosamente',
-    Novedad: novedad
   });
 });
 
-router.delete('/:id', validateJWT, async (req, res) => {
+router.delete('/:id',  async (req, res) => {
   const { id } = req.params;
   const novId = await Novedad.findByPk(id);
 

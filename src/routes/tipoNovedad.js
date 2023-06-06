@@ -5,16 +5,14 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', validateJWT, validateRol, async (req,res)=>{
+router.get('/',async (req,res)=>{
   const novedades = await TipoNovedad.findAll();
 
-  res.json({
-    Novedades: novedades
-  });
+  res.json(novedades);
 });
 
 
-router.get('/:id', validateJWT, validateRol, async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   const { id } = req.params;
   const novedad = await TipoNovedad.findByPk(id)
 
@@ -24,14 +22,11 @@ router.get('/:id', validateJWT, validateRol, async(req,res)=>{
     });
   }
 
-  res.json({
-    msj: 'Informacion de tipo de novedad',
-    Novedad: novedad
-  });
+  res.json( novedad);
 });
 
 
-router.post('/', validateJWT, validateRol, async (req,res)=>{
+router.post('/',async (req,res)=>{
   const { idTipoNovedad, tipoNovedad } = req.body;
   const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
   const tipoId = await TipoNovedad.findByPk(idTipoNovedad)
@@ -62,13 +57,13 @@ router.post('/', validateJWT, validateRol, async (req,res)=>{
   const novedad = await TipoNovedad.create({idTipoNovedad, tipoNovedad})
 
   res.json({
+    status: 'ok',
     msj: 'Tipo de novedad creada exitosamente',
-    Novedad: novedad
   });
 });
 
 
-router.put('/:id', validateJWT, validateRol, async (req, res) => {
+router.put('/:id',async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
   const { idTipoNovedad, tipoNovedad, ...resto } = req.body;
@@ -112,13 +107,13 @@ router.put('/:id', validateJWT, validateRol, async (req, res) => {
   await tipoId.update({ tipoNovedad, ...resto });
 
   res.json({
+    status: 'ok',
     msj: 'Tipo de novedad actualizada con exito',
-    Novedad: tipoId
   });
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id',async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
 
@@ -129,8 +124,8 @@ router.delete('/:id', validateJWT, validateRol, async (req, res) => {
   await tipoId.destroy();
 
   res.json({
+    status: 'ok',
     msj: 'Tipo de novedad eliminada con exito',
-    Novedad: tipoId
   });
 });
 

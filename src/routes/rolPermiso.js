@@ -15,6 +15,30 @@ router.get("/", async(req,res) => {
     });
 });
 
+router.get("/:idRol/permisos", async (req, res) => {
+    const { idRol } = req.params;
+  
+    // Buscar el rol por su ID
+    const rol = await Rol.findOne ({ where: { idRol: idRol } });
+
+    if (!rol) {
+        return res.json({
+            error: "El rol no existe",
+        });
+    }
+
+    // Buscar los permisos asociados al rol
+    const idPermiso = await RolPermiso.findAll({
+        where: { idRol },
+        include: [{ model: Permiso }],
+    });
+
+    res.json({
+        msj: "Permisos asociados al rol",
+        idPermiso
+    });
+});
+
 
 router.get("/:id", async(req,res) => {
     const { id } = req.params

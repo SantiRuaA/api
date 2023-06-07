@@ -79,8 +79,8 @@ router.post("/", async (req,res) => {
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { nombreRol, ...resto } = req.body;
-    const rolId = await Rol.findByPk(id);
+    const { idRol, nombreRol, ...resto } = req.body;
+    const rolId = await Rol.findOne({ where: { idRol } });
   
     if (!nombreRol){
         return res.json({
@@ -89,13 +89,13 @@ router.put('/:id', async (req, res) => {
         })
     }
 
-    if (!rolId) {
+   /*  if (!rolId) {
         return res.json({
             status: 'error', 
             msj: 'El rol no existe' 
         });
     }
-
+ */
     /* if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
         return res.json({
             status: "error",

@@ -5,20 +5,22 @@ const Permiso = require("./permiso");
 
 const RolPermiso = db.define('rolPermiso',{
     idRolPermiso:{
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
-        primaryKey: true,       
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        allowNull: false,
     },
     idRol: {
         type: DataTypes.INTEGER,
+        allowNull: false,
     },
     idPermiso:{
         type: DataTypes.INTEGER,
+        allowNull: false,
     },
 });
-RolPermiso.hasOne(Rol, { foreignKey: 'idRol'});
-RolPermiso.hasOne(Permiso, { foreignKey: 'idPermiso'});
 
+RolPermiso.belongsTo(Rol, { foreignKey: 'idRol' });
+RolPermiso.belongsTo(Permiso, { foreignKey: 'idPermiso' });
 
 module.exports = RolPermiso;

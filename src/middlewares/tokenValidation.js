@@ -1,32 +1,46 @@
-const jwt = require('jsonwebtoken')
-const Usuario = require('../models/Usuario')
+const express = require('express');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
+const Usuario = require('../models/Usuario');
 require('dotenv').config();
 
-const validateJWT = async (req, res, next) =>{ //el next es pa cuando todo este melo seguir papi
-    const token = req.header('x-token') // el token viene del header del thunder
-    console.log("token:",token);
-    if(!token){
-        return res.status(401).json({msj: 'y el token?? 😐'})
+router.post('/', async (req, res) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(401).json({ msj: 'Token no proporcionado' });
+  }
+
+  try {
+    const { uid } = jwt.verify(token, process.env.JWTSECRET);
+    const user = await Usuario.findByPk(uid);
+
+    if (!user) {
+      return res.json({ 
+            sttaus: "error",
+            msj: 'Token no válido - usuario no registrado' 
+        });
     }
 
-    try {
-        const {uid} = jwt.verify(token, process.env.JWTSECRET)
-        console.log("uid:",uid);
-        req.uid = uid
-        console.log("req.uid:",req.uid);
-        const user = await Usuario.findByPk(uid)
-        console.log("user:",user);
-        if(!user){
-            return res.status(401).json({msj: 'token no valido - el usuario no está registrado 🤥'})
-        }
-        if(user.idEstado != 1){
-            return res.status(401).json({msj: 'token no valido - usuario no habilitado 🤨'})
-        }
-        req.user = user
-        next();
-    } catch (error) {
-        return res.status(500).json({msj: 'token no valido'})
+    if (user.idEstado !== 1) {
+      return res.json({ 
+            status: "error",
+            msj: 'Token no válido - usuario no habilitado' 
+        });
     }
-}
 
-module.exports = validateJWT
+    // Token válido
+    return res.json({ 
+        status: "ok",
+        msj: 'Token válido' 
+    });
+    
+  } catch (error) {
+    return res.json({ 
+        status: "error",
+        msj: 'Token no válido' 
+    });
+  }
+});
+
+module.exports = router;

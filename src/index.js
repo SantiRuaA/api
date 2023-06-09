@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const tokenValidation = require("./middlewares/tokenValidation");
 const usuarios = require("./routes/usuario")
 const login = require('./routes/auth')
 const tipoNovedades = require("./routes/tipoNovedad")
@@ -41,6 +42,8 @@ app.use(cors({
 
 app.use('/usuario',usuarios);
 
+app.use('/token', tokenValidation);
+
 app.use('/tipoNovedad',tipoNovedades);
 
 app.use('/estadoUsuario',estadoUsuario);
@@ -68,6 +71,7 @@ app.use('/listaPaquete',listaPaquetes);
 app.use('/novedad',novedades);
 
 app.use('/login',login)
+
 
 app.listen(port,() => {
     console.log("Servidor trotando en el puerto: ", port);

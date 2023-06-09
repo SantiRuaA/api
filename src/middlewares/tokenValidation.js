@@ -36,6 +36,7 @@ router.post('/', async (req, res) => {
     });
     
   } catch (error) {
+    
     return res.json({ 
         status: "error",
         msj: 'Token no válido' 

@@ -14,8 +14,8 @@ Content-Type: application/json
     "nombreUsuario":"miltrus",
     "apellidoUsuario":"friedman",
     "telefonoUsuario":"3013784849",
-    "correoUsuario":"miltrus@g.com",
-    "contrasenaUsuario":"Miltrus123*",
+    "correoUsuario":"miltru@g.com",
+    "contrasenaUsuario":"Miltru123*",
     "idRol":1,
     "idEstado":1
 }

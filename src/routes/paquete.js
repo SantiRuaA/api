@@ -5,8 +5,7 @@ const EstadoPaquete = require('../models/estadoPaquete');
 const validateJWT = require('../middlewares/tokenValidation');
 const validateRol = require('../middlewares/validateRol');
 
-const router = require('express').Router()
-
+const router = require('express').Router();
 
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();
@@ -18,11 +17,11 @@ router.get('/:idCliente/direccion', async (req, res) => {
   const { idCliente } = req.params;
 
   try {
-    // Buscar el cliente por su ID
     const cliente = await Cliente.findByPk(idCliente);
+    
 
     if (!cliente) {
-      return res.json({
+      return res.status(404).json({
         error: 'El cliente no existe',
       });
     }
@@ -36,129 +35,124 @@ router.get('/:idCliente/direccion', async (req, res) => {
   }
 });
 
-
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const paquete = await Paquete.findByPk(id)
+  const paquete = await Paquete.findByPk(id);
 
   if (!paquete) {
-    return res.json({
-      error: "No existe el paquete"
+    return res.status(404).json({
+      error: 'No existe el paquete',
     });
   }
 
   res.json(paquete);
 });
 
-
-
-
 router.post('/', async (req, res) => {
   const { codigoQrPaquete, documentoUsuario, documentoCliente, idEstado } = req.body;
-  const paq = await Paquete.findOne({ where: { codigoQrPaquete } })
+  const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
   if (!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado) {
-    return res.json({
+    return res.status(400).json({
       status: 'error',
-      msj: "Uno o mas campos vacios"
+      msj: 'Uno o más campos vacíos',
     });
   }
 
   if (paq) {
-    return res.json({
+    return res.status(409).json({
       status: 'error',
-      msj: "El paquete ya existe"
+      msj: 'El paquete ya existe',
     });
   }
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El documento del usuario no existe'
+      msj: 'El documento del usuario no existe',
     });
   }
 
   const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El documento del cliente no existe'
+      msj: 'El documento del cliente no existe',
     });
   }
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El estado no existe'
+      msj: 'El estado no existe',
     });
   }
 
-  const paquete = await Paquete.create({ codigoQrPaquete, documentoUsuario, documentoCliente, idEstado })
+  const paquete = await Paquete.create({ codigoQrPaquete, documentoUsuario, documentoCliente, idEstado });
 
-  res.json({
+  res.status(201).json({
     status: 'ok',
-    msj: 'Paquete creado exitosamente'
+    msj: 'Paquete creado exitosamente',
   });
 });
-
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const paqId = await Paquete.findByPk(id);
   const { codigoQrPaquete, documentoUsuario, documentoCliente, idEstado } = req.body;
-  const paq = await Paquete.findOne({ where: { codigoQrPaquete } })
+  const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
   if (!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado) {
-    return res.json({
-      error: "Uno o mas campos vacios"
+    return res.status(400).json({
+      error: 'Uno o más campos vacíos',
     });
   }
 
   if (!paqId) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: "No existe el paquete"
+      msj: 'No existe el paquete',
     });
   }
 
   if (paq) {
-    return res.json({
+    return res.status(409).json({
       status: 'error',
-      msj: "El paquete ya existe"
+      msj: 'El paquete ya existe',
     });
   }
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El documento del usuario no existe'
+      msj: 'El documento del usuario no existe',
     });
   }
 
   const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El documento del cliente no existe'
+      msj: 'El documento del cliente no existe',
     });
   }
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El estado no existe'
+      msj: 'El estado no existe',
     });
   }
 
-  await paqId.update({ codigoQrPaquete, documentoUsuario, documentoCliente, idEstado })
+  await paqId.update({ codigoQrPaquete, documentoUsuario, documentoCliente, idEstado });
 
   res.json({
     status: 'ok',
-    msj: 'Paquete actualizado con exito',
+    msj: 'Paquete actualizado con éxito',
   });
 });
 
@@ -167,9 +161,9 @@ router.delete('/:id', async (req, res) => {
   const paqId = await Paquete.findByPk(id);
 
   if (!paqId) {
-    return res.json({
+    return res.status(404).json({
       status: 'error',
-      msj: 'El paquete no existe o ya ha sido eliminado'
+      msj: 'El paquete no existe o ya ha sido eliminado',
     });
   }
 
@@ -177,9 +171,8 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Paquete eliminado con exito',
+    msj: 'Paquete eliminado con éxito',
   });
 });
 
-
-module.exports = router
+module.exports = router;

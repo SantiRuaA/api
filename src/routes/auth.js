@@ -39,12 +39,12 @@ router.post('/', async (req, res) => {
             });
         }
 
-        if(user.idRol != 1 ){
+        /* if(user.idRol != 1 ){
             return res.json({
                 status: "error",
                 msj: "Usted no es admin"
             });
-        }
+        } */
 
         const token = await generateJWT(user.documentoUsuario);
 

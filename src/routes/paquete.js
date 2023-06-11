@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
       status: 'error',
       msj: 'Uno o más campos vacíos',
     });
-  }
+  }//nou
 
   /*if (paq) {
     return res.status(409).json({

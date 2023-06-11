@@ -59,12 +59,12 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (paq) {
+  /*if (paq) {
     return res.status(409).json({
       status: 'error',
       msj: 'El paquete ya existe',
     });
-  }
+  }*/
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {

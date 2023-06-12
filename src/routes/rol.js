@@ -1,6 +1,7 @@
 const Rol = require('../models/rol');
 const validateRol = require('../middlewares/validateRol');
 const validateJWT = require('../middlewares/tokenValidation');
+const Usuario = require('../models/Usuario');
 
 const router = require('express').Router()
 
@@ -130,19 +131,23 @@ router.delete('/:id', async (req, res) => {
             msj: 'El rol no existe o ya ha sido eliminado' 
         });
     }
+
+    const usersAsociados = await Usuario.findAll({where:{idRol: rolId.idRol}});
+
+    if(usersAsociados.length > 0){ //ESTA VUELTA ES PARA VER SI EL ROL TIENE USERS ASOCIADOS
+        return res.json({
+        status: 'error',
+        msj: 'No se puede eliminar el rol porque tiene usuarios asociados'
+        });
+    }
   
     await rolId.destroy();
   
     res.json({
       status: 'ok',
-      rolId});
+      rolId
+    });
 });
-
-
-// Nuevo endpoint para obtener el último ID de rol creado
-
-  
-  
   
 
 module.exports = router;

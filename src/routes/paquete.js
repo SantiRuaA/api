@@ -18,7 +18,7 @@ router.get('/:idCliente/direccion', async (req, res) => {
 
   try {
     const cliente = await Cliente.findByPk(idCliente);
-    
+
 
     if (!cliente) {
       return res.json({
@@ -100,8 +100,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const paqId = await Paquete.findByPk(id);
-  const { codigoQrPaquete, documentoUsuario, documentoCliente, idEstado } = req.body;
+  const { idPaquete, codigoQrPaquete, documentoUsuario, documentoCliente, idEstado } = req.body;
+  const paqId = await Paquete.findByPk(idPaquete);
   const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
   if (!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado) {
@@ -110,19 +110,6 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!paqId) {
-    return res.json({
-      status: 'error',
-      msj: 'No existe el paquete',
-    });
-  }
-
-  if (paq) {
-    return res.json({
-      status: 'error',
-      msj: 'El paquete ya existe',
-    });
-  }
 
   const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {

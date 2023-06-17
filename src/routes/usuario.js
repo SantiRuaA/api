@@ -52,12 +52,12 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d{3,}).{8,}$/;
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d)(?=.*[!@#$%^&+=*]).{8,}$/;
 
   if (!passwordRegex.test(contrasenaUsuario)) {
     return res.json({
       status: "error",
-      msj: "La contraseña debe contener como mínimo 8 caracteres, una letra mayúscula y al menos 3 caracteres numéricos",
+      msj: "La contraseña debe contener como mínimo 8 caracteres, una mayúscula, una minuscula, minimo 3 numeros y al menos un caracter especial",
     });
   }
 

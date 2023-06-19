@@ -139,7 +139,10 @@ router.put('/:id', async (req, res) => {
   }
 
   if (!userId) {
-    return res.json({ msj: 'El usuario no existe' });
+    return res.json({
+      status: "error",
+      msj: 'El usuario no existe'
+    });
   }
 
   if (documentoUsuario !== userId.documentoUsuario) {
@@ -185,21 +188,24 @@ router.put('/:id', async (req, res) => {
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
     return res.json({
-      error: 'El idRol proporcionado no es válido'
+      status: "error",
+      msj: 'El idRol proporcionado no es válido'
     });
   }
 
   const estado = await Estado.findByPk(idEstado);
   if (!estado) {
     return res.json({
-      error: 'El idEstado proporcionado no es válido'
+      status: "error",
+      msj: 'El idEstado proporcionado no es válido'
     });
   }
 
   const tipoDoc = await TipoDoc.findByPk(idTipoDocumento);
   if (!tipoDoc) {
     return res.json({
-      error: 'El idTipoDocumento proporcionado no es válido'
+      status: "error",
+      msj: 'El idTipoDocumento proporcionado no es válido'
     });
   }
 

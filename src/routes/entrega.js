@@ -6,20 +6,27 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req, res) => {
   const entregas = await Entrega.findAll();
 
-  res.json( entregas);
+  if (entregas.length === 0) {
+    return res.json({
+      status: "error",
+      msj: "No hay entregas registradas"
+    });
+  }
+
+  res.json(entregas);
 });
 
 
-router.get('/:id', async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const entrega = await Entrega.findByPk(id)
-  
-  if(!entrega){
+
+  if (!entrega) {
     return res.json({
-      error:"No existe la entrega"
+      error: "No existe la entrega"
     });
   }
 
@@ -27,16 +34,16 @@ router.get('/:id', async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
-  const { firmaDestinatario,fechaEntrega,idLista } = req.body;
+router.post('/', async (req, res) => {
+  const { firmaDestinatario, fechaEntrega, idLista } = req.body;
   //const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}})
-  
-  if(!firmaDestinatario || !fechaEntrega || !idLista){
+
+  if (!firmaDestinatario || !fechaEntrega || !idLista) {
     return res.json({
-        error:"Uno o mas campos vacios"
+      error: "Uno o mas campos vacios"
     });
   }
-  
+
   /*if (ent){
     return res.json({
       error:"La entrega ya existe"
@@ -46,12 +53,12 @@ router.post('/', async (req,res)=>{
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
     return res.json({
-    error: 'La lista de paquetes no existe'
-    }); 
+      error: 'La lista de paquetes no existe'
+    });
   }
 
 
-  const entrega = await Entrega.create({firmaDestinatario,fechaEntrega,idLista})
+  const entrega = await Entrega.create({ firmaDestinatario, fechaEntrega, idLista })
 
   res.json({
     msj: 'Entrega creada exitosamente',
@@ -63,35 +70,35 @@ router.post('/', async (req,res)=>{
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const entId = await Entrega.findByPk(id);
-  const { firmaDestinatario,fechaEntrega,idLista } = req.body;
+  const { firmaDestinatario, fechaEntrega, idLista } = req.body;
   /* const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}}) */
-  
-  if(!firmaDestinatario || !fechaEntrega || !idLista){
+
+  if (!firmaDestinatario || !fechaEntrega || !idLista) {
     return res.json({
-        error:"Uno o mas campos vacios"
-    });
-  }
-  
-  if (!entId) {
-    return res.json({
-      error:"No existe la entrega"
+      error: "Uno o mas campos vacios"
     });
   }
 
- /*  if (ent){
+  if (!entId) {
     return res.json({
-      error:"La entrega ya existe"
+      error: "No existe la entrega"
     });
-  } */
+  }
+
+  /*  if (ent){
+     return res.json({
+       error:"La entrega ya existe"
+     });
+   } */
 
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
     return res.json({
-    error: 'La lista de paquetes no existe'
-    }); 
+      error: 'La lista de paquetes no existe'
+    });
   }
 
-  await entId.update({firmaDestinatario,fechaEntrega,idLista})
+  await entId.update({ firmaDestinatario, fechaEntrega, idLista })
 
   res.json({
     msj: 'Entrega actualizada con exito',

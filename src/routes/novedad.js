@@ -6,52 +6,59 @@ const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req, res) => {
   const novedades = await Novedad.findAll();
 
-  res.json( novedades);
-});
-
-
-router.get('/:id',async(req,res)=>{
-  const { id } = req.params;
-  const novedad = await Novedad.findByPk(id)
-  
-  if(!novedad){
-    return res.json({
-      error:"No existe la novedad"
-    });
-  }
-
-  res.json( novedad);
-});
-
-
-router.post('/',  async (req,res)=>{
-  const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
-  
-  if(!descripcionNovedad||!idTipoNovedad||!idEntrega){
+  if (novedades.length === 0) {
     return res.json({
       status: "error",
-      msj:"Uno o mas campos vacios"
+      msj: "No hay novedades registradas"
     });
   }
-  
+
+  res.json(novedades);
+});
+
+
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const novedad = await Novedad.findByPk(id)
+
+  if (!novedad) {
+    return res.json({
+      error: "No existe la novedad"
+    });
+  }
+
+  res.json(novedad);
+});
+
+
+router.post('/', async (req, res) => {
+  const { descripcionNovedad, idTipoNovedad, idEntrega } = req.body;
+
+  if (!descripcionNovedad || !idTipoNovedad || !idEntrega) {
+    return res.json({
+      status: "error",
+      msj: "Uno o mas campos vacios"
+    });
+  }
+
   const tipo = await TipoNovedad.findByPk(idTipoNovedad);
   if (!tipo) {
     return res.json({
-    error: 'El tipo de novedad no existe'
-    }); 
+      error: 'El tipo de novedad no existe'
+    });
   }
 
   const entrega = await Entrega.findByPk(idEntrega);
   if (!entrega) {
     return res.json({
-    error: 'La entrega no existe'
-    }); 
+      error: 'La entrega no existe'
+    });
   }
 
-  const novedad = await Novedad.create({descripcionNovedad, idTipoNovedad, idEntrega})
+  const novedad = await Novedad.create({ descripcionNovedad, idTipoNovedad, idEntrega })
 
   res.json({
     status: 'ok',
@@ -59,7 +66,7 @@ router.post('/',  async (req,res)=>{
   });
 });
 
-router.delete('/:id',  async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const novId = await Novedad.findByPk(id);
 

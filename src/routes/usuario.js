@@ -13,6 +13,13 @@ const router = require('express').Router()
 router.get('/', async (req, res) => {
   const users = await Usuario.findAll();
 
+  if (users.length === 0) {
+    return res.json({
+      status: 'error',
+      msj: 'No hay usuarios registrados',
+    });
+  }
+
   res.json(users);
 });
 

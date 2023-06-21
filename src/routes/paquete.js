@@ -10,6 +10,13 @@ const router = require('express').Router();
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();
 
+  if (paquetes.length === 0) {
+    return res.json({
+      status: 'error',
+      msj: 'No hay paquetes registrados',
+    });
+  }
+
   res.json(paquetes);
 });
 

@@ -8,20 +8,27 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get('/',async (req,res)=>{
+router.get('/', async (req, res) => {
   const clientes = await Cliente.findAll();
+
+  if (clientes.length === 0) {
+    return res.json({
+      status: "error",
+      msj: "No hay clientes registrados"
+    });
+  }
 
   res.json(clientes);
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const cliente = await Cliente.findByPk(id)
-  
-  if(!cliente){
+
+  if (!cliente) {
     return res.json({
-      error:"No existe el cliente"
+      error: "No existe el cliente"
     });
   }
 
@@ -29,14 +36,14 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/',async (req,res)=>{
-  const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente } = req.body;
-  const cliente = await Cliente.findOne({ where: {correoCliente}})
-  
-  if(!documentoCliente||!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
+router.post('/', async (req, res) => {
+  const { documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
+  const cliente = await Cliente.findOne({ where: { correoCliente } })
+
+  if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
       status: "error",
-      msj:"Uno o mas campos vacios"
+      msj: "Uno o mas campos vacios"
     });
   }
 
@@ -46,20 +53,20 @@ router.post('/',async (req,res)=>{
       msj: "El documento y el telefono deben ser un número",
     });
   }
-  
-  if (cliente){
+
+  if (cliente) {
     return res.json({
       status: "error",
-      msj:"El correo ya existe"
+      msj: "El correo ya existe"
     });
   }
 
   const clienteId = await Cliente.findByPk(documentoCliente)
-  if(clienteId){
-      return res.json({
-        status: "error",
-        msj:"Ya existe un cliente con ese documento"
-      });
+  if (clienteId) {
+    return res.json({
+      status: "error",
+      msj: "Ya existe un cliente con ese documento"
+    });
   }
 
   if (!isEmail(correoCliente)) {
@@ -72,12 +79,12 @@ router.post('/',async (req,res)=>{
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
     return res.json({
-      status : "error",
+      status: "error",
       msj: 'El tipo documento no existe'
-    }); 
+    });
   }
-  
-  const clienteC = await Cliente.create({documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente})
+
+  const clienteC = await Cliente.create({ documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente })
 
   res.json({
     status: "ok",
@@ -88,19 +95,19 @@ router.post('/',async (req,res)=>{
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente,...resto } = req.body;
+  const { documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto } = req.body;
   const cltId = await Cliente.findByPk(documentoCliente);
-  
-  if(!idTipoDocumento||!nombreCliente||!telefonoCliente||!correoCliente||!direccionCliente){
+
+  if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
-      error:"Uno o mas campos vacios"
+      error: "Uno o mas campos vacios"
     });
   }
 
-  if(documentoCliente !== cltId.documentoCliente){
+  if (documentoCliente !== cltId.documentoCliente) {
     return res.json({
-      status:"error",
-      msj:"No puedes cambiar el documento de un cliente"
+      status: "error",
+      msj: "No puedes cambiar el documento de un cliente"
     });
   }
 
@@ -118,11 +125,11 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if(correoCliente !== cltId.correoCliente){
+  if (correoCliente !== cltId.correoCliente) {
     const emailExists = await Cliente.findOne({ where: { correoCliente } });
     if (emailExists) {
       return res.json({
-        status:"error",
+        status: "error",
         msj: 'El email ya lo tiene otro cliente'
       });
     }
@@ -131,15 +138,15 @@ router.put('/:id', async (req, res) => {
   if (!cltId) {
     return res.json({ msj: 'El cliente no existe' });
   }
-  
+
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
     return res.json({
-    error: 'El tipo documento no existe'
-    }); 
+      error: 'El tipo documento no existe'
+    });
   }
 
-  await cltId.update({ documentoCliente,idTipoDocumento,nombreCliente,telefonoCliente,correoCliente,direccionCliente, ...resto });
+  await cltId.update({ documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto });
 
   res.json({
     status: "ok",
@@ -148,7 +155,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id',async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const cltId = await Cliente.findByPk(id);
 
@@ -156,9 +163,9 @@ router.delete('/:id',async (req, res) => {
     return res.json({ msj: 'El cliente no existe o ya ha sido eliminado' });
   }
 
-  const paqAsociados = await Paquete.findAll({where:{documentoCliente: cltId.documentoCliente}});
+  const paqAsociados = await Paquete.findAll({ where: { documentoCliente: cltId.documentoCliente } });
 
-  if(paqAsociados.length > 0){ //ESTA VUELTA ES PARA VER SI EL CLIENTE TIENE PAQUETES ASOCIADOS
+  if (paqAsociados.length > 0) { //ESTA VUELTA ES PARA VER SI EL CLIENTE TIENE PAQUETES ASOCIADOS
     return res.json({
       status: 'error',
       msj: 'No se puede eliminar el cliente porque tiene paquetes asociados'

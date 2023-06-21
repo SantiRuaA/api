@@ -35,6 +35,72 @@ router.get('/:idCliente/direccion', async (req, res) => {
   }
 });
 
+router.get('/:idCliente/nombre', async (req, res) => {
+  const { idCliente } = req.params;
+
+  try {
+    const cliente = await Cliente.findByPk(idCliente);
+
+
+    if (!cliente) {
+      return res.json({
+        error: 'El cliente no existe',
+      });
+    }
+
+    res.json({
+      nombre: cliente.nombreCliente,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+router.get('/:idCliente/telefono', async (req, res) => {
+  const { idCliente } = req.params;
+
+  try {
+    const cliente = await Cliente.findByPk(idCliente);
+
+
+    if (!cliente) {
+      return res.json({
+        error: 'El cliente no existe',
+      });
+    }
+
+    res.json({
+      telefono: cliente.telefonoCliente,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+router.get('/:idCliente/correo', async (req, res) => {
+  const { idCliente } = req.params;
+
+  try {
+    const cliente = await Cliente.findByPk(idCliente);
+
+
+    if (!cliente) {
+      return res.json({
+        error: 'El cliente no existe',
+      });
+    }
+
+    res.json({
+      correo: cliente.correoCliente,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const paquete = await Paquete.findByPk(id);
@@ -49,10 +115,10 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { codigoQrPaquete, documentoUsuario, documentoCliente, idEstado } = req.body;
+  const { remitente, direccionRemitente, correoRemitente, destinatario, nombreDestinatario, telefonoDestinatario, correoDestinatario, codigoQrPaquete, documentoCliente, idEstado } = req.body;
   const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!codigoQrPaquete || !documentoUsuario || !documentoCliente || !idEstado) {
+  if (!codigoQrPaquete || !remitente || !direccionRemitente || !correoRemitente || !destinatario || !nombreDestinatario || !telefonoDestinatario || !correoDestinatario || !idEstado) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -66,21 +132,21 @@ router.post('/', async (req, res) => {
     });
   }*/
 
-  const userDoc = await Usuario.findByPk(documentoUsuario);
+  /*const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
     return res.json({
       status: 'error',
       msj: 'El documento del usuario no existe',
     });
-  }
+  }*/
 
-  const clDoc = await Cliente.findByPk(documentoCliente);
+  /*const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',
     });
-  }
+  }*/
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
@@ -90,7 +156,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const paquete = await Paquete.create({ codigoQrPaquete, documentoUsuario, documentoCliente, idEstado });
+  const paquete = await Paquete.create({ remitente, direccionRemitente, correoRemitente, destinatario, nombreDestinatario, telefonoDestinatario, correoDestinatario, codigoQrPaquete, documentoCliente, idEstado });
 
   res.json({
     status: 'ok',

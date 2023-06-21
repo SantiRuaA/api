@@ -3,23 +3,34 @@ const db = require("../db/database");
 const Usuario = require("./Usuario");
 const Cliente = require("./cliente");
 const EstadoPaquete = require("./estadoPaquete");
+const TamanoPaquete = require("./tamanoPaquete");
 
-const Paquete = db.define('paquete',{
-    idPaquete:{
+const Paquete = db.define('paquete', {
+    idPaquete: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    codigoQrPaquete:{
+    codigoQrPaquete: {
         type: DataTypes.STRING,
     },
-    documentoUsuario:{
-        type:DataTypes.INTEGER,
+    pesoPaquete: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
     },
-    documentoCliente:{
+    documentoUsuario: {
+        type: DataTypes.INTEGER,
+    },
+    documentoRemitente: {
+        type: DataTypes.INTEGER,
+    },
+    documentoDestinatario: {
         type: DataTypes.INTEGER,
     },
     idEstado: {
+        type: DataTypes.INTEGER,
+    },
+    idTamano: {
         type: DataTypes.INTEGER,
     },
 });

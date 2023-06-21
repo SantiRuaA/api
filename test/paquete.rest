@@ -9,10 +9,13 @@ POST http://localhost:3030/paquete/
 Content-Type: application/json
 
 {
-    "codigoQrPaquete":13487023625668,
-    "documentoUsuario":23,
-    "documentoCliente":123,
-    "idEstado": 20
+    "codigoQrPaquete": "123",
+    "pesoPaquete": 34.2,
+    "documentoUsuario": 1023625668,
+    "documentoRemitente": 1013337984,
+    "documentoDestinatario": 23,
+    "idEstado": 1,
+    "idTamano": 1
 }
 
 ### Cuidado con la coma al final del json

@@ -1,17 +1,17 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 
-const TipoNovedad = db.define('tiponovedad', {
-    idTipoNovedad: {
+const TamanoPaquete = db.define('tamanopaquete', {
+    idTamano: {
         type: DataTypes.INTEGER,    //Numero entero para bases de datos
         primaryKey: true,
         autoIncrement: false,
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
-    tipoNovedad: {
-        type: DataTypes.ENUM('retraso', 'devolucion', 'otro'),
+    tamanoPaquete: {
+        type: DataTypes.ENUM('largo', 'ancho', 'alto', 'otro'),
         allowNull: false,   //Siempre de debe proporcionjar un valor
     },
 });
 
-module.exports = TipoNovedad;
+module.exports = TamanoPaquete;

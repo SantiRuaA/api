@@ -21,6 +21,28 @@ router.get('/', async (req, res) => {
   res.json(paquetes);
 });
 
+router.get('/:idCliente/documento', async (req, res) => {
+  const { idCliente } = req.params;
+
+  try {
+    const cliente = await Cliente.findByPk(idCliente);
+
+
+    if (!cliente) {
+      return res.json({
+        error: 'El cliente no existe',
+      });
+    }
+
+    res.json({
+      documento: cliente.documentoCliente,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
 router.get('/:idCliente/nombre', async (req, res) => {
   const { idCliente } = req.params;
 

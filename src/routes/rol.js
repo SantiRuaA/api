@@ -87,8 +87,8 @@ router.post("/", async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { idRol, nombreRol, ...resto } = req.body;
-    const rolId = await Rol.findOne({ where: { idRol } });
+    const { idRol, nombreRol } = req.body;
+    const rolId = await Rol.findByPk(idRol)
 
     if (!nombreRol) {
         return res.json({
@@ -104,14 +104,8 @@ router.put('/:id', async (req, res) => {
          });
      }
   */
-    /* if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
-        return res.json({
-            status: "error",
-            msj:"Valor no permitido para el campo rol"
-        })
-    } */
 
-    if (rolId.nombreRol !== nombreRol) {
+    if (nombreRol !== rolId.nombreRol) {
         const rolExists = await Rol.findOne({ where: { nombreRol } });
         if (rolExists) {
             return res.json({
@@ -121,11 +115,11 @@ router.put('/:id', async (req, res) => {
         }
     }
 
-    await rolId.update({ nombreRol, ...resto });
+    await rolId.update({ idRol, nombreRol });
 
     res.json({
         status: 'ok',
-        rolId
+        msj: 'Rol actualizado con exito',
     });
 });
 

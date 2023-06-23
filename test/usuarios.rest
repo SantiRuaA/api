@@ -9,7 +9,7 @@ POST http://localhost:3030/usuario
 Content-Type: application/json
 
 {
-    "documentoUsuario":1023625668,
+    "documentoUsuario":102362566,
     "idTipoDocumento":1,
     "nombreUsuario":"miltrus",
     "apellidoUsuario":"friedman",

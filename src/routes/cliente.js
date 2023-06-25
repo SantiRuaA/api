@@ -100,7 +100,8 @@ router.put('/:id', async (req, res) => {
 
   if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
-      error: "Uno o mas campos vacios"
+      status: "error",
+      msj: "Uno o mas campos vacios"
     });
   }
 

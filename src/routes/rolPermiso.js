@@ -7,7 +7,7 @@ const validateRol = require('../middlewares/validateRol');
 const router = require('express').Router()
 
 
-router.get("/", async(req,res) => {
+router.get("/", async (req, res) => {
     const rolesPermiso = await RolPermiso.findAll()
 
     res.json({
@@ -17,9 +17,9 @@ router.get("/", async(req,res) => {
 
 router.get("/:idRol/permisos", async (req, res) => {
     const { idRol } = req.params;
-  
+
     // Buscar el rol por su ID
-    const rol = await Rol.findOne ({ where: { idRol: idRol } });
+    const rol = await Rol.findOne({ where: { idRol: idRol } });
 
     if (!rol) {
         return res.json({
@@ -40,29 +40,29 @@ router.get("/:idRol/permisos", async (req, res) => {
 });
 
 
-router.get("/:id", async(req,res) => {
+router.get("/:id", async (req, res) => {
     const { id } = req.params
     const rolPermiso = await RolPermiso.findByPk(id)
 
-    if(!rolPermiso){
+    if (!rolPermiso) {
         return res.json({
-          error:"No existe el rolPermiso"
+            error: "No existe el rolPermiso"
         });
     }
 
     res.json({
         msj: 'Informacion de RolxPermiso',
         RolxPermiso: rolPermiso
-      });
+    });
 });
 
 
-router.post("/", async (req,res) => {
+router.post("/", async (req, res) => {
     const { idRol, idPermiso } = req.body;
-    if ( !idRol || !idPermiso){
+    if (!idRol || !idPermiso) {
         return res.json({
             status: "error",
-            msj:"Uno o más campos vacios"
+            msj: "Uno o más campos vacios"
         })
     }
 
@@ -82,68 +82,70 @@ router.post("/", async (req,res) => {
         });
     }
 
-    const rolPermiso = await RolPermiso.create({idRol, idPermiso});
-    
+    const rolPermiso = await RolPermiso.create({ idRol, idPermiso });
+
     res.json({
         status: "ok",
         msj: 'RolxPermiso creado exitosamente',
-      });
+    });
 });
 
-router.put('/:id',  async (req, res) => {
+router.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const rolPermisoId = await RolPermiso.findByPk(id);
-    const { idRol, idPermiso } = req.body;
-  
-    if (!idRol || !idPermiso){
+    const { idRol, idPermisos } = req.body;
+
+    if (!idPermisos || idPermisos.length === 0) {
         return res.json({
-            error:"Uno o más campos vacios"
-        })
+            status: "error",
+            msj: "Uno o más campos vacíos o no se proporcionaron nuevos permisos",
+        });
     }
 
-    if (!rolPermisoId) {
-        return res.json({ msj: 'El rol permiso no existe' });
-    }
-
-    const rol = await Rol.findByPk(idRol);
+    const rol = await Rol.findByPk(id);
     if (!rol) {
         return res.json({
-        error: 'El idRol proporcionado no es válido'
+            status: "error",
+            msj: 'El idRol proporcionado no es válido',
         });
     }
 
-    const permiso = await Permiso.findByPk(idPermiso);
-    if (!permiso) {
-        return res.json({
-        error: 'El idPermiso proporcionado no es válido'
+    // Eliminar los permisos existentes asociados al rol
+    await RolPermiso.destroy({
+        where: {
+            idRol: id,
+        },
+    });
+
+    // Crear nuevos registros en la tabla "rolPermiso" con los nuevos permisos
+    for (const idPermiso of idPermisos) {
+        await RolPermiso.create({
+            idRol,
+            idPermiso,
         });
     }
-  
-  
-    await rolPermisoId.update({ idRol, idPermiso });
-  
+
     res.json({
         status: "ok",
-        msj: 'RolxPermiso actualizado con exito',
+        msj: 'RolesxPermiso actualizado con éxito',
     });
-    
 });
+
 
 router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const rolPermisoId = await RolPermiso.findByPk(id);
-  
+
     if (!rolPermisoId) {
-        return res.json({ 
-            msj: 'El rol permiso no existe o ya ha sido eliminado' 
+        return res.json({
+            msj: 'El rol permiso no existe o ya ha sido eliminado'
         });
     }
-  
+
     await rolPermisoId.destroy();
-  
+
     res.json({
-      msj: 'RolxPermiso eliminado con exito',
-      RolxPermiso: rolPermisoId
+        msj: 'RolxPermiso eliminado con exito',
+        RolxPermiso: rolPermisoId
     });
 });
 

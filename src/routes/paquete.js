@@ -145,10 +145,10 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
+  const { codigoQrPaquete, pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if (!codigoQrPaquete || !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -203,7 +203,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const paquete = await Paquete.create({ pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano });
+  const paquete = await Paquete.create({ pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, codigoQrPaquete, idEstado, idTamano });
 
   res.json({
     status: 'ok',
@@ -217,7 +217,7 @@ router.put('/:id', async (req, res) => {
   const paqId = await Paquete.findByPk(idPaquete);
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if ( !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if (!documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
     return res.json({
       error: 'Uno o más campos vacíos',
     });

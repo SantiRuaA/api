@@ -145,30 +145,39 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { codigoQrPaquete, pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
-  const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
+  const { pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
+  // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!codigoQrPaquete || !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if (!documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
     });
-  }//nou
+  }
 
-  /*if (paq) {
-    return res.status(409).json({
-      status: 'error',
-      msj: 'El paquete ya existe',
+  if (isNaN(pesoPaquete)) {
+    return res.json({
+      status: "error",
+      msj: "El campo peso deben ser numerico",
     });
-  }*/
+  }
+  //nou
 
-  /*const userDoc = await Usuario.findByPk(documentoUsuario);
-  if (!userDoc) {
+  if (documentoDestinatario === documentoRemitente) {
     return res.json({
       status: 'error',
-      msj: 'El documento del usuario no existe',
+      msj: 'El documento del destinatario y el remitente no pueden ser iguales',
     });
-  }*/
+  }
+
+  const userRemi = await Cliente.findByPk(documentoRemitente);
+  const userDest = await Cliente.findByPk(documentoDestinatario);
+  if (!userRemi || !userDest) {
+    return res.json({
+      status: 'error',
+      msj: 'El documento del cliente no existe',
+    });
+  }
 
   /*const clDoc = await Cliente.findByPk(documentoCliente);
   if (!clDoc) {
@@ -194,7 +203,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const paquete = await Paquete.create({ codigoQrPaquete, pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano });
+  const paquete = await Paquete.create({ pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano });
 
   res.json({
     status: 'ok',
@@ -204,22 +213,34 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idPaquete, codigoQrPaquete, pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
+  const { idPaquete, documentoUsuario, pesoPaquete, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
-  const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
+  // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!codigoQrPaquete || !documentoUsuario || !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if ( !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
     return res.json({
       error: 'Uno o más campos vacíos',
     });
   }
 
-
-  const userDoc = await Usuario.findByPk(documentoUsuario);
+  if (isNaN(pesoPaquete)) {
+    return res.json({
+      status: "error",
+      msj: "El campo peso deben ser numerico",
+    });
+  }
+  /* const userDoc = await Usuario.findByPk(documentoUsuario);
   if (!userDoc) {
     return res.json({
       status: 'error',
       msj: 'El documento del usuario no existe',
+    });
+  } */
+
+  if (documentoDestinatario === documentoRemitente) {
+    return res.json({
+      status: 'error',
+      msj: 'El documento del destinatario y el remitente no pueden ser iguales',
     });
   }
 
@@ -229,6 +250,13 @@ router.put('/:id', async (req, res) => {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',
+    });
+  }
+
+  if (documentoDestinatario === documentoRemitente) {
+    return res.json({
+      status: 'error',
+      msj: 'El documento del destinatario y el remitente no pueden ser iguales',
     });
   }
 
@@ -248,7 +276,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await paqId.update({ codigoQrPaquete, pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano });
+  await paqId.update({ pesoPaquete, documentoUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano });
 
   res.json({
     status: 'ok',

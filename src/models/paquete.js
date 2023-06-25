@@ -15,8 +15,7 @@ const Paquete = db.define('paquete', {
         type: DataTypes.STRING,
     },
     pesoPaquete: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        type: DataTypes.DECIMAL(10, 2)
     },
     documentoUsuario: {
         type: DataTypes.INTEGER,

@@ -151,7 +151,8 @@ router.put('/:id', async (req, res) => {
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
     return res.json({
-      error: 'El tipo documento no existe'
+      status: "error",
+      msj: 'El tipo documento no existe'
     });
   }
 

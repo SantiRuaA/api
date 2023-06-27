@@ -219,7 +219,8 @@ router.put('/:id', async (req, res) => {
 
   if (!documentoRemitente || !documentoDestinatario || !idEstado || !codigoQrPaquete || !idTamano) {
     return res.json({
-      error: 'Uno o más campos vacíos',
+      status: 'error',
+      msj: 'Uno o más campos vacíos',
     });
   }
 

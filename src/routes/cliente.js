@@ -11,12 +11,12 @@ const router = require('express').Router()
 router.get('/', async (req, res) => {
   const clientes = await Cliente.findAll();
 
-  if (clientes.length === 0) {
+  /* if (clientes.length < 1) {
     return res.json({
       status: "error",
       msj: "No hay clientes registrados"
     });
-  }
+  } */
 
   res.json(clientes);
 });

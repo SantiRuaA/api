@@ -11,7 +11,7 @@ const router = require('express').Router();
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();
 
-  if (paquetes.length === 0) {
+  if (paquetes.length < 1) {
     return res.json({
       status: 'error',
       msj: 'No hay paquetes registrados',
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
   res.json(paquetes);
 });
 
-/* router.get('/:idCliente/documento', async (req, res) => {
+router.get('/:idCliente/documento', async (req, res) => {
   const { idCliente } = req.params;
 
   try {
@@ -63,18 +63,19 @@ router.get('/:idCliente/nombre', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
-});*/
+});
 
-router.get('/:idCliente/direccion', async (req, res) => {
-  const { idCliente } = req.params;
+router.get('/:documentoCliente/direccion', async (req, res) => {
+  const { documentoCliente } = req.params;
 
   try {
-    const cliente = await Cliente.findByPk(idCliente);
+    const cliente = await Cliente.findOne({ where: { documentoCliente } });
 
 
     if (!cliente) {
       return res.json({
-        error: 'El cliente no existe',
+        status: 'error',
+        msj: 'El cliente no existe',
       });
     }
 
@@ -148,7 +149,7 @@ router.post('/', async (req, res) => {
   const { codigoQrPaquete, pesoPaquete, idUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!codigoQrPaquete || !documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if (!documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -170,8 +171,9 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const userRemi = await Cliente.findByPk(documentoRemitente);
-  const userDest = await Cliente.findByPk(documentoDestinatario);
+  const userRemi = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
+  const userDest = await Cliente.findOne({ where: { documentoCliente: documentoDestinatario } });
+  console.log("VIDA HP:", userRemi);
   if (!userRemi || !userDest) {
     return res.json({
       status: 'error',
@@ -252,8 +254,8 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  const remitente = await Cliente.findByPk(documentoRemitente);
-  const destinatario = await Cliente.findByPk(documentoDestinatario);
+  const remitente = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
+  const destinatario = await Cliente.findOne({ where: { documentoCliente: documentoDestinatario } });
   if (!remitente || !destinatario) {
     return res.json({
       status: 'error',

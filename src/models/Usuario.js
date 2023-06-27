@@ -6,6 +6,7 @@ const Usuario = db.define('usuario', {
     idUsuario: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
     },
     documentoUsuario: {
         type: DataTypes.INTEGER,

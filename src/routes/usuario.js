@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  const { documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
+  const { idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
 
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado) {
     return res.json({
@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
   const salt = bcryptjs.genSaltSync();
   const pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
 
-  const userC = await Usuario.create({ documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario: pwdEncrypt, idRol, idEstado })
+  const userC = await Usuario.create({ idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario: pwdEncrypt, idRol, idEstado })
 
   res.json({
     status: 'ok',
@@ -131,7 +131,7 @@ router.put('/:id', async (req, res) => {
   const { id } = req.params;
 
   const { idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
-  const userId = await Usuario.findOne({ where: { documentoUsuario } });
+  const userId = await Usuario.findByPk(idUsuario);
 
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol) {
     return res.json({
@@ -147,7 +147,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!userId) {
+  if (!idUsuario) {
     return res.json({
       status: "error",
       msj: 'El usuario no existe'
@@ -162,7 +162,6 @@ router.put('/:id', async (req, res) => {
         msj: "El documento pertenece a otro usuario"
       });
     }
-
   }
 
   const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
@@ -251,7 +250,10 @@ router.delete('/:id', async (req, res) => {
   const userId = await Usuario.findByPk(id);
 
   if (!userId) {
-    return res.json({ msj: 'El usuario no existe o ya ha sido eliminado' });
+    return res.json({
+      status: 'error',
+      msj: 'El usuario no existe o ya ha sido eliminado',
+    });
   }
 
   await userId.destroy();

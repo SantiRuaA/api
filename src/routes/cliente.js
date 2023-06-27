@@ -28,7 +28,8 @@ router.get('/:id', async (req, res) => {
 
   if (!cliente) {
     return res.json({
-      error: "No existe el cliente"
+      status: "error",
+      msj: "No existe el cliente"
     });
   }
 
@@ -37,8 +38,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  const { documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
-  const cliente = await Cliente.findOne({ where: { correoCliente } })
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
 
   if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
@@ -54,14 +54,15 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (cliente) {
+  const userCliente = await Cliente.findOne({ where: { correoCliente } })
+  if (userCliente) {
     return res.json({
       status: "error",
-      msj: "El correo ya existe"
+      msj: "El email ya está en uso"
     });
   }
 
-  const clienteId = await Cliente.findByPk(documentoCliente)
+  const clienteId = await Cliente.findOne({ where: { documentoCliente } })
   if (clienteId) {
     return res.json({
       status: "error",
@@ -98,8 +99,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto } = req.body;
-  const cltId = await Cliente.findByPk(documentoCliente);
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto } = req.body;
+  const cltId = await Cliente.findByPk(idCliente);
 
   if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
@@ -108,17 +109,24 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (documentoCliente !== cltId.documentoCliente) {
-    return res.json({
-      status: "error",
-      msj: "No puedes cambiar el documento de un cliente"
-    });
-  }
-
   if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
     return res.json({
       status: "error",
       msj: "El documento y el telefono deben ser un número",
+    });
+  }
+
+  if (!idCliente) {
+    return res.json({
+      status: "error",
+      msj: 'El cliente a editar no existe'
+    });
+  }
+
+  if (documentoCliente != cltId.documentoCliente) {
+    return res.json({
+      status: "error",
+      msj: "El documento pertenece a otro cliente"
     });
   }
 
@@ -136,16 +144,9 @@ router.put('/:id', async (req, res) => {
     if (emailExists) {
       return res.json({
         status: "error",
-        msj: 'El email ya lo tiene otro cliente'
+        msj: 'El email ya está en uso'
       });
     }
-  }
-
-  if (!cltId) {
-    return res.json({
-      status: "error",
-      msj: 'El cliente no existe'
-    });
   }
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);

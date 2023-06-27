@@ -35,7 +35,8 @@ router.get('/:id', async (req, res) => {
 
   if (!user) {
     return res.json({
-      error: "No existe el usuario"
+      status: "error",
+      msj: "No existe el usuario"
     });
   }
 
@@ -69,8 +70,8 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const user = await Usuario.findOne({ where: { correoUsuario } })
-  if (user) {
+  const emailUser = await Usuario.findOne({ where: { correoUsuario } })
+  if (emailUser) {
     return res.json({
       status: "error",
       msj: "El email ya está en uso"
@@ -129,7 +130,6 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-
   const { idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
   const userId = await Usuario.findByPk(idUsuario);
 
@@ -150,7 +150,7 @@ router.put('/:id', async (req, res) => {
   if (!idUsuario) {
     return res.json({
       status: "error",
-      msj: 'El usuario no existe'
+      msj: 'El usuario a editar no existe'
     });
   }
 
@@ -178,7 +178,7 @@ router.put('/:id', async (req, res) => {
     if (emailExists) {
       return res.json({
         status: "error",
-        msj: 'El email ya lo tiene otro usuario papi'
+        msj: 'El email ya está en uso'
       });
     }
   }

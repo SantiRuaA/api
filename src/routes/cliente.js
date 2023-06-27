@@ -69,12 +69,15 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (!isEmail(correoCliente)) {
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+
+  if (!emailRegex.test(correoCliente)) {
     return res.json({
       status: "error",
       msj: "El correo no tiene un formato válido",
     });
   }
+
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
@@ -119,7 +122,9 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!isEmail(correoCliente)) {
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+
+  if (!emailRegex.test(correoCliente)) {
     return res.json({
       status: "error",
       msj: "El correo no tiene un formato válido",
@@ -137,7 +142,10 @@ router.put('/:id', async (req, res) => {
   }
 
   if (!cltId) {
-    return res.json({ msj: 'El cliente no existe' });
+    return res.json({
+      status: "error",
+      msj: 'El cliente no existe'
+    });
   }
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
@@ -164,7 +172,7 @@ router.delete('/:id', async (req, res) => {
     return res.json({ msj: 'El cliente no existe o ya ha sido eliminado' });
   }
 
-  const paqAsociados = await Paquete.findAll({ where: { documentoCliente: cltId.documentoCliente } });
+  const paqAsociados = await Paquete.findAll({ where: { documentoRemitente: cltId.documentoCliente } });
 
   if (paqAsociados.length > 0) { //ESTA VUELTA ES PARA VER SI EL CLIENTE TIENE PAQUETES ASOCIADOS
     return res.json({

@@ -2,21 +2,24 @@ const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 const Rol = require("./rol");
 
-const Usuario = db.define('usuario',{
-    documentoUsuario:{
+const Usuario = db.define('usuario', {
+    idUsuario: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
     },
-    idTipoDocumento:{
+    documentoUsuario: {
         type: DataTypes.INTEGER,
     },
-    nombreUsuario:{
-        type:DataTypes.STRING,
+    idTipoDocumento: {
+        type: DataTypes.INTEGER,
     },
-    apellidoUsuario:{
+    nombreUsuario: {
         type: DataTypes.STRING,
     },
-    telefonoUsuario:{
+    apellidoUsuario: {
+        type: DataTypes.STRING,
+    },
+    telefonoUsuario: {
         type: DataTypes.STRING,
     },
     correoUsuario: {
@@ -29,10 +32,10 @@ const Usuario = db.define('usuario',{
     idRol: {
         type: DataTypes.INTEGER,
     },
-    idEstado:{
+    idEstado: {
         type: DataTypes.INTEGER,
     },
 });
 
-Usuario.hasOne(Rol, { foreignKey: 'idRol'});
+Usuario.hasOne(Rol, { foreignKey: 'idRol' });
 module.exports = Usuario;

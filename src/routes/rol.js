@@ -97,13 +97,13 @@ router.put('/:id', async (req, res) => {
         })
     }
 
-    /*  if (!rolId) {
-         return res.json({
-             status: 'error', 
-             msj: 'El rol no existe' 
-         });
-     }
-  */
+    if (!rolId) {
+        return res.json({
+            status: 'error',
+            msj: 'El rol no existe'
+        });
+    }
+
 
     if (nombreRol !== rolId.nombreRol) {
         const rolExists = await Rol.findOne({ where: { nombreRol } });

@@ -5,7 +5,7 @@ const router = require('express').Router()
 
 router.post('/', async (req, res) => {
 
-    const {correoUsuario, contrasenaUsuario} = req.body;
+    const { correoUsuario, contrasenaUsuario } = req.body;
 
     if (!correoUsuario || !contrasenaUsuario) {
         return res.json({
@@ -13,26 +13,26 @@ router.post('/', async (req, res) => {
             msj: "Faltan datos"
         });
     }
-    
-    try{
-        const user = await Usuario.findOne({where: {correoUsuario}});
-        if(user){
+
+    try {
+        const user = await Usuario.findOne({ where: { correoUsuario } });
+        if (user) {
             const validPassword = bcryptjs.compareSync(contrasenaUsuario, user.contrasenaUsuario)
-            if(!validPassword){
+            if (!validPassword) {
                 return res.json({
                     status: "error",
                     msj: "Password incorrecta"
                 });
             }
-        }else{
+        } else {
             return res.json({
                 status: "error",
                 msj: "Username incorrecto"
             });
         }
-        
 
-        if(user.idEstado == 2){
+
+        if (user.idEstado == 2) {
             return res.json({
                 status: "error",
                 msj: "Usuario no habilitado"
@@ -46,14 +46,14 @@ router.post('/', async (req, res) => {
             });
         } */
 
-        const token = await generateJWT(user.documentoUsuario);
+        const token = await generateJWT(user.idUsuario);
 
         res.json({
             status: "ok",
             msj: "User comprobao 🥶", user, token
         });
 
-    }catch(error){
+    } catch (error) {
         return res.status(500).json({
             status: 'error',
             msj: 'Error en el servidor'

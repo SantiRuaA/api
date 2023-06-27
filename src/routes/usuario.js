@@ -3,6 +3,7 @@ const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
 const bcryptjs = require('bcryptjs');
+const { Op } = require('sequelize');
 const { isEmail } = require('validator');
 const validateJWT = require('../middlewares/tokenValidation');
 const validateRol = require('../middlewares/validateRol');
@@ -76,14 +77,16 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (!isEmail(correoUsuario)) {
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+
+  if (!emailRegex.test(correoUsuario)) {
     return res.json({
       status: "error",
-      msj: "El email no tiene un formato válido",
+      msj: "El correo no tiene un formato válido",
     });
   }
 
-  const userId = await Usuario.findByPk(documentoUsuario)
+  const userId = await Usuario.findOne({ where: { documentoUsuario } })
   if (userId) {
     return res.json({
       status: "error",
@@ -127,9 +130,8 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
 
-  const { documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
-  const userId = await Usuario.findByPk(documentoUsuario);
-
+  const { idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
+  const userId = await Usuario.findOne({ where: { documentoUsuario } });
 
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol) {
     return res.json({
@@ -152,21 +154,27 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (documentoUsuario !== userId.documentoUsuario) {
+  if (documentoUsuario != userId.documentoUsuario) {
+    const userExists = await Usuario.findOne({ where: { documentoUsuario } });
+    if (userExists) {
+      return res.json({
+        status: "error",
+        msj: "El documento pertenece a otro usuario"
+      });
+    }
+
+  }
+
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+
+  if (!emailRegex.test(correoUsuario)) {
     return res.json({
       status: "error",
-      msj: "No puedes cambiar el documento de un usuario"
+      msj: "El correo no tiene un formato válido",
     });
   }
 
-  if (!isEmail(correoUsuario)) {
-    return res.json({
-      status: "error",
-      msj: "El email no tiene un formato válido",
-    });
-  }
-
-  if (correoUsuario !== userId.correoUsuario) {
+  if (correoUsuario != userId.correoUsuario) {
     const emailExists = await Usuario.findOne({ where: { correoUsuario } });
     if (emailExists) {
       return res.json({
@@ -217,6 +225,7 @@ router.put('/:id', async (req, res) => {
   }
 
   await userId.update({
+    idUsuario,
     documentoUsuario,
     idTipoDocumento,
     nombreUsuario,

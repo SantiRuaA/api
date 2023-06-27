@@ -14,32 +14,33 @@ router.post('/', async (req, res) => {
   try {
     const { uid } = jwt.verify(token, process.env.JWTSECRET);
     const user = await Usuario.findByPk(uid);
+    console.log(user);
 
     if (!user) {
-      return res.json({ 
-            sttaus: "error",
-            msj: 'Token no válido - usuario no registrado' 
-        });
+      return res.json({
+        sttaus: "error",
+        msj: 'Token no válido - usuario no registrado'
+      });
     }
 
     if (user.idEstado !== 1) {
-      return res.json({ 
-            status: "error",
-            msj: 'Token no válido - usuario no habilitado' 
-        });
+      return res.json({
+        status: "error",
+        msj: 'Token no válido - usuario no habilitado'
+      });
     }
 
     // Token válido
-    return res.json({ 
-        status: "ok",
-        msj: 'Token válido' 
+    return res.json({
+      status: "ok",
+      msj: 'Token válido'
     });
-    
+
   } catch (error) {
-    
-    return res.json({ 
-        status: "error",
-        msj: 'Token no válido' 
+
+    return res.json({
+      status: "error",
+      msj: 'Token no válido'
     });
   }
 });

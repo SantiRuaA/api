@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const clienteC = await Cliente.create({ documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente })
+  const clienteC = await Cliente.create({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente })
 
   res.json({
     status: "ok",
@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto } = req.body;
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
   const cltId = await Cliente.findByPk(idCliente);
 
   if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
@@ -124,10 +124,13 @@ router.put('/:id', async (req, res) => {
   }
 
   if (documentoCliente != cltId.documentoCliente) {
-    return res.json({
-      status: "error",
-      msj: "El documento pertenece a otro cliente"
-    });
+    const cltExists = await Cliente.findOne({ where: { documentoCliente } });
+    if(cltExists) {
+      return res.json({
+        status: "error",
+        msj: "El documento pertenece a otro cliente"
+      });
+  }
   }
 
   const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
@@ -157,7 +160,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await cltId.update({ documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, ...resto });
+  await cltId.update({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente });
 
   res.json({
     status: "ok",

@@ -3,6 +3,7 @@ const Cliente = require('../models/cliente');
 const Usuario = require('../models/Usuario');
 const EstadoPaquete = require('../models/estadoPaquete');
 const TamanoPaquete = require('../models/tamanoPaquete');
+const TipoPaquete = require('../models/tipoPaquete');
 const validateJWT = require('../middlewares/tokenValidation');
 const validateRol = require('../middlewares/validateRol');
 
@@ -146,10 +147,10 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano } = req.body;
+  const { codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo } = req.body;
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if ( !pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTamano ) {
+  if ( !pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo ) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -195,15 +196,23 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const tamano = await TamanoPaquete.findByPk(idTamano);
+  /* const tamano = await TamanoPaquete.findByPk(idTamano);
   if (!tamano) {
     return res.json({
       status: 'error',
       msj: 'El tamaño no existe',
     });
+  } */
+
+  const tipo = await TipoPaquete.findByPk(idTipo);
+  if (!tipo) {
+    return res.json({
+      status: 'error',
+      msj: 'El tipo no existe',
+    });
   }
 
-  const paquete = await Paquete.create({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano });
+  const paquete = await Paquete.create({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo });
 
   res.json({
     status: 'ok',
@@ -213,11 +222,11 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idPaquete, codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano } = req.body;
+  const { idPaquete, codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTamano) {
+  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTipo ) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -268,15 +277,28 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  const tamano = await TamanoPaquete.findByPk(idTamano);
+  /* const tamano = await TamanoPaquete.findByPk(idTamano);
   if (!tamano) {
     return res.json({
       status: 'error',
       msj: 'El tamaño no existe',
     });
+  } */
+
+  /* //Validar la variable idTamano por si el campo recibido es vacion que este sea nulo
+  if (idTamano == '') {
+    idTamano = null;
+  } */
+
+  const tipo = await TipoPaquete.findByPk(idTipo);
+  if (!tipo) {
+    return res.json({
+      status: 'error',
+      msj: 'El tipo no existe',
+    });
   }
 
-  await paqId.update({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano });
+  await paqId.update({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo });
 
   res.json({
     status: 'ok',

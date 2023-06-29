@@ -49,6 +49,10 @@ const Paquete = db.define('paquete', {
     },
     idTamano: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+    },
+    idTipo: {
+        type: DataTypes.INTEGER,
     },
 });
 //Paquete.hasOne(TipoDocumentoUsuario, { foreignKey: 'idTipoDocumentoUsuario'});

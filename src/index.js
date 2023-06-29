@@ -10,6 +10,7 @@ const tipoDocumentoCliente = require("./routes/tipoDocumentoCliente");
 const roles = require("./routes/rol")
 const EstadoPaquete = require("./routes/estadoPaquete");
 const TamanoPaquete = require("./routes/tamanoPaquete");
+const TipoPaquete = require("./routes/tipoPaquete");
 const permisos = require("./routes/permiso");
 const rolPermisos = require("./routes/rolPermiso");
 const clientes = require("./routes/cliente");
@@ -52,6 +53,8 @@ app.use('/estadoUsuario', estadoUsuario);
 app.use('/estadoPaquete', EstadoPaquete);
 
 app.use('/tamanoPaquete', TamanoPaquete);
+
+app.use('/tipoPaquete', TipoPaquete);
 
 app.use('/tipoDocumentoUsuario', tipoDocumentoUsuario);
 

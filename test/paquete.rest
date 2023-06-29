@@ -20,18 +20,19 @@ Content-Type: application/json
     "telefonoDestinatario": "310101010",
     "fechaAproxEntrega": "12/12/2020",
     "idUsuario": null,
-    "documentoRemitente": 9898,
+    "documentoRemitente": 102362566,
     "idEstado": 1,
-    "idTamano": 3
+    "idTamano": 3,
+    "idTipo": 3
 }
 
 ### Cuidado con la coma al final del json
 
-PUT http://localhost:3030/paquete/40
+PUT http://localhost:3030/paquete/54
 Content-Type: application/json
 
 {
-    "idPaquete": 40,
+    "idPaquete": 54,
     "codigoQrPaquete": "",
     "pesoPaquete": 25,
     "pesoVPaquete": 25,
@@ -43,9 +44,10 @@ Content-Type: application/json
     "telefonoDestinatario": "320202020",
     "fechaAproxEntrega": "2022-12-12",
     "idUsuario": null,
-    "documentoRemitente": 9909,
+    "documentoRemitente": 102362566,
     "idEstado": 2,
-    "idTamano": 1
+    "idTamano": 1,
+    "idTipo": 1
 }
 
 ###

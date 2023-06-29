@@ -10,26 +10,44 @@ Content-Type: application/json
 
 {
     
-    "pesoPaquete": 12,
-    "documentoUsuario": 1023625668,
-    "documentoRemitente": 1013337984,
-    "documentoDestinatario": 23,
+    "pesoPaquete": 2,
+    "pesoVPaquete": 20,
+    "unidadesPaquete": 20,
+    "contenidoPaquete": "Bolsa de basura",
+    "documentoDestinatario": 100000000,
+    "nombreDestinatario": "Juanito Perez",
+    "correoDestinatario": "juan@gmail.com",
+    "telefonoDestinatario": "310101010",
+    "fechaAproxEntrega": "12/12/2020",
+    "idUsuario": null,
+    "documentoRemitente": 9898,
     "idEstado": 1,
     "idTamano": 3
 }
 
 ### Cuidado con la coma al final del json
 
-PUT http://localhost:3030/paquete/3
+PUT http://localhost:3030/paquete/40
 Content-Type: application/json
 
 {
-    "codigoQrPaquete": "29",
-    "documentoUsuario":333,
-    "documentoCliente":123,
-    "idEstado": 20
+    "idPaquete": 40,
+    "codigoQrPaquete": "",
+    "pesoPaquete": 25,
+    "pesoVPaquete": 25,
+    "unidadesPaquete": 20,
+    "contenidoPaquete": "Bolsa de plastico",
+    "documentoDestinatario": 100000001,
+    "nombreDestinatario": "Milton Perez",
+    "correoDestinatario": "milton@gmail.com",
+    "telefonoDestinatario": "320202020",
+    "fechaAproxEntrega": "2022-12-12",
+    "idUsuario": null,
+    "documentoRemitente": 9909,
+    "idEstado": 2,
+    "idTamano": 1
 }
 
 ###
 
-DELETE http://localhost:3030/paquete/3
+DELETE http://localhost:3030/paquete/40

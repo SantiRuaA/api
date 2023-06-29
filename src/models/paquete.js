@@ -17,13 +17,31 @@ const Paquete = db.define('paquete', {
     pesoPaquete: {
         type: DataTypes.DECIMAL(10, 2)
     },
+    unidadesPaquete: {
+        type: DataTypes.INTEGER,
+    },
+    contenidoPaquete: {
+        type: DataTypes.STRING,
+    },
+    documentoDestinatario: {
+        type: DataTypes.INTEGER,
+    },
+    nombreDestinatario: {
+        type: DataTypes.STRING,
+    },
+    correoDestinatario: {
+        type: DataTypes.STRING,
+    },
+    telefonoDestinatario: {
+        type: DataTypes.STRING,
+    },
+    fechaAproxEntrega: {
+        type: DataTypes.DATE,
+    },
     idUsuario: {
         type: DataTypes.INTEGER,
     },
     documentoRemitente: {
-        type: DataTypes.INTEGER,
-    },
-    documentoDestinatario: {
         type: DataTypes.INTEGER,
     },
     idEstado: {

@@ -146,17 +146,17 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { codigoQrPaquete, pesoPaquete, idUsuario, documentoRemitente, documentoDestinatario, idEstado, idTamano } = req.body;
+  const { codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano } = req.body;
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!documentoRemitente || !documentoDestinatario || !idEstado || !idTamano) {
+  if ( !pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTamano ) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
     });
   }
 
-  if (isNaN(pesoPaquete)) {
+  if (isNaN(pesoPaquete) || isNaN(unidadesPaquete) || isNaN(telefonoDestinatario)) {
     return res.json({
       status: "error",
       msj: "El campo peso deben ser numerico",
@@ -164,17 +164,15 @@ router.post('/', async (req, res) => {
   }
   //nou
 
-  if (documentoDestinatario === documentoRemitente) {
+  /* if (documentoDestinatario === documentoRemitente) {
     return res.json({
       status: 'error',
       msj: 'El destinatario y el remitente no pueden ser iguales',
     });
-  }
+  } */
 
   const userRemi = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
-  const userDest = await Cliente.findOne({ where: { documentoCliente: documentoDestinatario } });
-  console.log("VIDA HP:", userRemi);
-  if (!userRemi || !userDest) {
+  if (!userRemi ) {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',
@@ -205,7 +203,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const paquete = await Paquete.create({ pesoPaquete, idUsuario, documentoRemitente, documentoDestinatario, codigoQrPaquete, idEstado, idTamano });
+  const paquete = await Paquete.create({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano });
 
   res.json({
     status: 'ok',
@@ -215,18 +213,18 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idPaquete, idUsuario, pesoPaquete, documentoRemitente, documentoDestinatario, codigoQrPaquete, idEstado, idTamano } = req.body;
+  const { idPaquete, codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!documentoRemitente || !documentoDestinatario || !idEstado || !codigoQrPaquete || !idTamano) {
+  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTamano) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
     });
   }
 
-  if (isNaN(pesoPaquete)) {
+  if (isNaN(pesoPaquete) || isNaN(unidadesPaquete) || isNaN(telefonoDestinatario)) {
     return res.json({
       status: "error",
       msj: "El campo peso deben ser numerico",
@@ -247,28 +245,20 @@ router.put('/:id', async (req, res) => {
     });
   } */
 
-  if (documentoDestinatario === documentoRemitente) {
-    return res.json({
-      status: 'error',
-      msj: 'El destinatario y el remitente no pueden ser iguales',
-    });
-  }
-
   const remitente = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
-  const destinatario = await Cliente.findOne({ where: { documentoCliente: documentoDestinatario } });
-  if (!remitente || !destinatario) {
+  if (!remitente ) {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',
     });
   }
 
-  if (documentoDestinatario === documentoRemitente) {
+  /* if (documentoDestinatario === documentoRemitente) {
     return res.json({
       status: 'error',
       msj: 'El documento del destinatario y el remitente no pueden ser iguales',
     });
-  }
+  } */
 
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
@@ -286,7 +276,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await paqId.update({ pesoPaquete, idUsuario, documentoRemitente, documentoDestinatario, codigoQrPaquete, idEstado, idTamano });
+  await paqId.update({ codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano });
 
   res.json({
     status: 'ok',

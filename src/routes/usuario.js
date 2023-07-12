@@ -17,14 +17,14 @@ router.get('/', async (req, res) => {
   if (users.length === 0) {
     return res.json({
       status: 'error',
-      msj: 'No hay usuarios registrados',
+      msj: 'No hay usuarios registrados.',
     });
   }
 
   res.json(users);
 });
 
-//:0
+
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const user = await Usuario.findByPk(id, {
@@ -36,7 +36,7 @@ router.get('/:id', async (req, res) => {
   if (!user) {
     return res.json({
       status: "error",
-      msj: "No existe el usuario"
+      msj: "No existe ningun usuario con el id proporcionado."
     });
   }
 
@@ -50,23 +50,32 @@ router.post('/', async (req, res) => {
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !contrasenaUsuario || !idRol || !idEstado) {
     return res.json({
       status: "error",
-      msj: "Uno o mas campos vacios"
+      msj: "Uno o mas campos vacios."
     });
   }
 
-  if (isNaN(documentoUsuario) || isNaN(telefonoUsuario)) {
+  const docRegex = new RegExp('^[0-9]{7,10}$');
+  if (!docRegex.test(documentoUsuario)) {
     return res.json({
       status: "error",
-      msj: "El documento y el telefono deben ser un número",
+      msj: "Documento inválido, mínimo 7 y máximo 10 dígitos numéricos.",
     });
   }
 
-  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d)(?=.*[!@#$%^&+=*]).{8,}$/;
-
-  if (!passwordRegex.test(contrasenaUsuario)) {
+  const userDoc = await Usuario.findOne({ where: { documentoUsuario } })
+  if (userDoc) {
     return res.json({
       status: "error",
-      msj: "La contraseña debe contener como mínimo 8 caracteres, una mayúscula, una minuscula, minimo 3 numeros y al menos un caracter especial",
+      msj: "Ya existe un usuario registrado con ese documento."
+    });
+  }
+
+
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
+  if (!emailRegex.test(correoUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "Correo inválido.",
     });
   }
 
@@ -74,45 +83,47 @@ router.post('/', async (req, res) => {
   if (emailUser) {
     return res.json({
       status: "error",
-      msj: "El email ya está en uso"
+      msj: "El correo ya está en uso."
     });
   }
 
-  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
 
-  if (!emailRegex.test(correoUsuario)) {
+  const telRegex = new RegExp('^[0-9]{10}$');
+  if (!telRegex.test(telefonoUsuario)) {
     return res.json({
       status: "error",
-      msj: "El correo no tiene un formato válido",
+      msj: "Teléfono inválido, debe contener 10 dígitos numéricos.",
     });
   }
 
-  const userId = await Usuario.findOne({ where: { documentoUsuario } })
-  if (userId) {
+
+  const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d)(?=.*[!@#$%^&+=?.:,"°~;_¿¡*/{}|<>()]).{8,}$/;
+  if (!passwordRegex.test(contrasenaUsuario)) {
     return res.json({
       status: "error",
-      msj: "Ya existe un usuario con ese documento"
+      msj: "La contraseña debe contener mínimo: 8 caracteres, una minúscula, una mayúscula, 3 números y 1 caracter especial.",
     });
   }
+
 
   const rol = await Rol.findByPk(idRol);
   if (!rol) {
     return res.json({
-      error: 'El idRol proporcionado no es válido'
+      error: 'El idRol proporcionado no es válido.'
     });
   }
 
   const estado = await Estado.findByPk(idEstado);
   if (!estado) {
     return res.json({
-      error: 'El idEstado proporcionado no es válido'
+      error: 'El idEstado proporcionado no es válido.'
     });
   }
 
   const tipoDoc = await TipoDoc.findByPk(idTipoDocumento);
   if (!tipoDoc) {
     return res.json({
-      error: 'El idTipoDocumento proporcionado no es válido'
+      error: 'El idTipoDocumento proporcionado no es válido.'
     });
   }
 
@@ -123,7 +134,7 @@ router.post('/', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Usuario creado exitosamente'
+    msj: 'Usuario creado exitosamente.'
   });
 });
 
@@ -136,21 +147,23 @@ router.put('/:id', async (req, res) => {
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol) {
     return res.json({
       status: "error",
-      msj: "Uno o mas campos vacios"
-    });
-  }
-
-  if (isNaN(documentoUsuario) || isNaN(telefonoUsuario)) {
-    return res.json({
-      status: "error",
-      msj: "El documento y el telefono deben ser un número",
+      msj: "Uno o mas campos vacios."
     });
   }
 
   if (!idUsuario) {
     return res.json({
       status: "error",
-      msj: 'El usuario a editar no existe'
+      msj: 'El usuario a editar no existe.'
+    });
+  }
+
+
+  const docRegex = new RegExp('^[0-9]{7,10}$');
+  if (!docRegex.test(documentoUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "Documento inválido, mínimo 7 y máximo 10 dígitos numéricos.",
     });
   }
 
@@ -159,17 +172,17 @@ router.put('/:id', async (req, res) => {
     if (userExists) {
       return res.json({
         status: "error",
-        msj: "El documento pertenece a otro usuario"
+        msj: "Ya existe un usuario registrado con ese documento."
       });
     }
   }
 
-  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
 
+  const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
   if (!emailRegex.test(correoUsuario)) {
     return res.json({
       status: "error",
-      msj: "El correo no tiene un formato válido",
+      msj: "Correo inválido.",
     });
   }
 
@@ -178,9 +191,17 @@ router.put('/:id', async (req, res) => {
     if (emailExists) {
       return res.json({
         status: "error",
-        msj: 'El email ya está en uso'
+        msj: "El correo ya está en uso."
       });
     }
+  }
+
+  const telRegex = new RegExp('^[0-9]{10}$');
+  if (!telRegex.test(telefonoUsuario)) {
+    return res.json({
+      status: "error",
+      msj: "Teléfono inválido, debe contener 10 dígitos numéricos.",
+    });
   }
 
 
@@ -188,12 +209,12 @@ router.put('/:id', async (req, res) => {
   let pwdEncrypt = contrasenaUsuario;
 
   if (contrasenaUsuario) { // Si se proporciona una contraseña, se encripta
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d{3,}).{8,}$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d)(?=.*[!@#$%^&+=?.:,"°~;_¿¡*/{}|<>()]).{8,}$/;
 
     if (!passwordRegex.test(contrasenaUsuario)) {
       return res.json({
         status: "error",
-        msj: "La contraseña debe contener como mínimo 8 caracteres, una letra mayúscula y al menos 3 caracteres numéricos",
+        msj: "La contraseña debe contener mínimo: 8 caracteres, una minúscula, una mayúscula, 3 números y 1 caracter especial."
       });
     }
     pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
@@ -203,15 +224,16 @@ router.put('/:id', async (req, res) => {
   if (!rol) {
     return res.json({
       status: "error",
-      msj: 'El idRol proporcionado no es válido'
+      msj: 'El idRol proporcionado no es válido.'
     });
   }
+
 
   const estado = await Estado.findByPk(idEstado);
   if (!estado) {
     return res.json({
       status: "error",
-      msj: 'El idEstado proporcionado no es válido'
+      msj: 'El idEstado proporcionado no es válido.'
     });
   }
 
@@ -219,7 +241,7 @@ router.put('/:id', async (req, res) => {
   if (!tipoDoc) {
     return res.json({
       status: "error",
-      msj: 'El idTipoDocumento proporcionado no es válido'
+      msj: 'El idTipoDocumento proporcionado no es válido.'
     });
   }
 
@@ -240,7 +262,7 @@ router.put('/:id', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Usuario actualizado con exito'
+    msj: 'Usuario actualizado con exito.'
   });
 });
 
@@ -252,7 +274,7 @@ router.delete('/:id', async (req, res) => {
   if (!userId) {
     return res.json({
       status: 'error',
-      msj: 'El usuario no existe o ya ha sido eliminado',
+      msj: 'El usuario no existe o ya ha sido eliminado.',
     });
   }
 
@@ -260,7 +282,7 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Usuario eliminado con exito'
+    msj: 'Usuario eliminado con exito.'
   });
 });
 

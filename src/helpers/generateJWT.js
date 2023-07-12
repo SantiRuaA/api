@@ -12,7 +12,7 @@ const generateJWT = (uid) => {
                 console.log(err)
                 reject('No se pudo generar el token, gueva 😛')
             } else {
-                console.log("token generado:", token);
+                /* console.log("token generado:", token); */
                 resolve(token)
             }
         });

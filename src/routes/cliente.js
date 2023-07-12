@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   /* if (clientes.length < 1) {
     return res.json({
       status: "error",
-      msj: "No hay clientes registrados"
+      msj: "No hay clientes registrados."
     });
   } */
 
@@ -29,7 +29,7 @@ router.get('/:id', async (req, res) => {
   if (!cliente) {
     return res.json({
       status: "error",
-      msj: "No existe el cliente"
+      msj: "No existe ningun cliente con el id proporcionado."
     });
   }
 
@@ -43,39 +43,50 @@ router.post('/', async (req, res) => {
   if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
       status: "error",
-      msj: "Uno o mas campos vacios"
+      msj: "Uno o mas campos vacios."
     });
   }
 
-  if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
+
+  const docRegex = new RegExp('^[0-9]{7,10}$');
+  if (!docRegex.test(documentoCliente)) {
     return res.json({
       status: "error",
-      msj: "El documento y el telefono deben ser un número",
+      msj: "Documento inválido, mínimo 7 y máximo 10 dígitos numéricos.",
     });
   }
 
-  const userCliente = await Cliente.findOne({ where: { correoCliente } })
-  if (userCliente) {
+  const clienteDoc = await Cliente.findOne({ where: { documentoCliente } })
+  if (clienteDoc) {
     return res.json({
       status: "error",
-      msj: "El email ya está en uso"
+      msj: "Ya existe un cliente con ese documento."
     });
   }
 
-  const clienteId = await Cliente.findOne({ where: { documentoCliente } })
-  if (clienteId) {
-    return res.json({
-      status: "error",
-      msj: "Ya existe un cliente con ese documento"
-    });
-  }
 
   const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
-
   if (!emailRegex.test(correoCliente)) {
     return res.json({
       status: "error",
-      msj: "El correo no tiene un formato válido",
+      msj: "Correo inválido.",
+    });
+  }
+
+  const emailCliente = await Cliente.findOne({ where: { correoCliente } })
+  if (emailCliente) {
+    return res.json({
+      status: "error",
+      msj: "El correo ya está en uso."
+    });
+  }
+
+
+  const telRegex = new RegExp('^[0-9]{10}$');
+  if (!telRegex.test(telefonoCliente)) {
+    return res.json({
+      status: "error",
+      msj: "Teléfono inválido, debe contener 10 dígitos numéricos.",
     });
   }
 
@@ -84,7 +95,7 @@ router.post('/', async (req, res) => {
   if (!tDocumento) {
     return res.json({
       status: "error",
-      msj: 'El tipo documento no existe'
+      msj: 'El tipo documento no existe.'
     });
   }
 
@@ -92,7 +103,7 @@ router.post('/', async (req, res) => {
 
   res.json({
     status: "ok",
-    msj: 'Cliente creado exitosamente'
+    msj: 'Cliente creado exitosamente.'
   });
 });
 
@@ -105,40 +116,41 @@ router.put('/:id', async (req, res) => {
   if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
       status: "error",
-      msj: "Uno o mas campos vacios"
-    });
-  }
-
-  if (isNaN(documentoCliente) || isNaN(telefonoCliente)) {
-    return res.json({
-      status: "error",
-      msj: "El documento y el telefono deben ser un número",
+      msj: "Uno o mas campos vacios."
     });
   }
 
   if (!idCliente) {
     return res.json({
       status: "error",
-      msj: 'El cliente a editar no existe'
+      msj: 'El cliente a editar no existe.'
+    });
+  }
+
+  const docRegex = new RegExp('^[0-9]{7,10}$');
+  if (!docRegex.test(documentoCliente)) {
+    return res.json({
+      status: "error",
+      msj: "Documento inválido, mínimo 7 y máximo 10 dígitos numéricos.",
     });
   }
 
   if (documentoCliente != cltId.documentoCliente) {
     const cltExists = await Cliente.findOne({ where: { documentoCliente } });
-    if(cltExists) {
+    if (cltExists) {
       return res.json({
         status: "error",
-        msj: "El documento pertenece a otro cliente"
+        msj: "Ya existe un cliente con ese documento."
       });
+    }
   }
-  }
+
 
   const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
-
   if (!emailRegex.test(correoCliente)) {
     return res.json({
       status: "error",
-      msj: "El correo no tiene un formato válido",
+      msj: "Correo inválido.",
     });
   }
 
@@ -147,16 +159,25 @@ router.put('/:id', async (req, res) => {
     if (emailExists) {
       return res.json({
         status: "error",
-        msj: 'El email ya está en uso'
+        msj: "El correo ya está en uso."
       });
     }
+  }
+
+
+  const telRegex = new RegExp('^[0-9]{10}$');
+  if (!telRegex.test(telefonoCliente)) {
+    return res.json({
+      status: "error",
+      msj: "Teléfono inválido, debe contener 10 dígitos numéricos.",
+    });
   }
 
   const tDocumento = await TipoDocumento.findByPk(idTipoDocumento);
   if (!tDocumento) {
     return res.json({
       status: "error",
-      msj: 'El tipo documento no existe'
+      msj: 'El tipo documento no existe.'
     });
   }
 
@@ -164,7 +185,7 @@ router.put('/:id', async (req, res) => {
 
   res.json({
     status: "ok",
-    msj: 'Cliente actualizado con exito'
+    msj: 'Cliente actualizado con exito.'
   });
 });
 
@@ -174,7 +195,10 @@ router.delete('/:id', async (req, res) => {
   const cltId = await Cliente.findByPk(id);
 
   if (!cltId) {
-    return res.json({ msj: 'El cliente no existe o ya ha sido eliminado' });
+    return res.json({
+      status: 'error',
+      msj: 'El cliente no existe o ya ha sido eliminado.'
+    });
   }
 
   const paqAsociados = await Paquete.findAll({ where: { documentoRemitente: cltId.documentoCliente } });
@@ -182,7 +206,7 @@ router.delete('/:id', async (req, res) => {
   if (paqAsociados.length > 0) { //ESTA VUELTA ES PARA VER SI EL CLIENTE TIENE PAQUETES ASOCIADOS
     return res.json({
       status: 'error',
-      msj: 'No se puede eliminar el cliente porque tiene paquetes asociados'
+      msj: 'No se puede eliminar el cliente porque tiene paquetes asociados.'
     });
   }
 
@@ -190,7 +214,7 @@ router.delete('/:id', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Cliente eliminado con exito'
+    msj: 'Cliente eliminado con exito.'
   });
 });
 

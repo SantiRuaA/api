@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     if (!correoUsuario || !contrasenaUsuario) {
         return res.json({
             status: "error",
-            msj: "Faltan datos"
+            msj: "Correo y/o contraseña vacios"
         });
     }
 
@@ -21,13 +21,13 @@ router.post('/', async (req, res) => {
             if (!validPassword) {
                 return res.json({
                     status: "error",
-                    msj: "Password incorrecta"
+                    msj: "Contraseña incorrecta"
                 });
             }
         } else {
             return res.json({
                 status: "error",
-                msj: "Username incorrecto"
+                msj: "Correo incorrecto"
             });
         }
 

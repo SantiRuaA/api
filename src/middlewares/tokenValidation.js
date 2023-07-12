@@ -14,7 +14,6 @@ router.post('/', async (req, res) => {
   try {
     const { uid } = jwt.verify(token, process.env.JWTSECRET);
     const user = await Usuario.findByPk(uid);
-    console.log(user);
 
     if (!user) {
       return res.json({

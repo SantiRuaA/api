@@ -22,11 +22,11 @@ router.get('/', async (req, res) => {
   res.json(paquetes);
 });
 
-router.get('/:idCliente/documento', async (req, res) => {
-  const { idCliente } = req.params;
+router.get('/:documentoCliente/data', async (req, res) => {
+  const { documentoCliente } = req.params;
 
   try {
-    const cliente = await Cliente.findByPk(idCliente);
+    const cliente = await Cliente.findOne({ where: { documentoCliente } });
 
 
     if (!cliente) {
@@ -37,6 +37,10 @@ router.get('/:idCliente/documento', async (req, res) => {
 
     res.json({
       documento: cliente.documentoCliente,
+      nombre: cliente.nombreCliente,
+      direccion: cliente.direccionCliente,
+      telefono: cliente.telefonoCliente,
+      correo: cliente.correoCliente,
     });
   } catch (error) {
     console.error(error);
@@ -66,73 +70,6 @@ router.get('/:idCliente/nombre', async (req, res) => {
   }
 });
 
-router.get('/:documentoCliente/direccion', async (req, res) => {
-  const { documentoCliente } = req.params;
-
-  try {
-    const cliente = await Cliente.findOne({ where: { documentoCliente } });
-
-
-    if (!cliente) {
-      return res.json({
-        status: 'error',
-        msj: 'El cliente no existe',
-      });
-    }
-
-    res.json({
-      direccion: cliente.direccionCliente,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-});
-
-router.get('/:idCliente/telefono', async (req, res) => {
-  const { idCliente } = req.params;
-
-  try {
-    const cliente = await Cliente.findByPk(idCliente);
-
-
-    if (!cliente) {
-      return res.json({
-        error: 'El cliente no existe',
-      });
-    }
-
-    res.json({
-      telefono: cliente.telefonoCliente,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-});
-
-router.get('/:idCliente/correo', async (req, res) => {
-  const { idCliente } = req.params;
-
-  try {
-    const cliente = await Cliente.findByPk(idCliente);
-
-
-    if (!cliente) {
-      return res.json({
-        error: 'El cliente no existe',
-      });
-    }
-
-    res.json({
-      correo: cliente.correoCliente,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-});
-
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const paquete = await Paquete.findByPk(id);
@@ -150,7 +87,7 @@ router.post('/', async (req, res) => {
   const { codigoQrPaquete, pesoPaquete, unidadesPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo } = req.body;
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if ( !pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo ) {
+  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -173,7 +110,7 @@ router.post('/', async (req, res) => {
   } */
 
   const userRemi = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
-  if (!userRemi ) {
+  if (!userRemi) {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',
@@ -226,7 +163,7 @@ router.put('/:id', async (req, res) => {
   const paqId = await Paquete.findByPk(idPaquete);
   // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
-  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTipo ) {
+  if (!pesoPaquete || !unidadesPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTipo) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
@@ -255,7 +192,7 @@ router.put('/:id', async (req, res) => {
   } */
 
   const remitente = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
-  if (!remitente ) {
+  if (!remitente) {
     return res.json({
       status: 'error',
       msj: 'El documento del cliente no existe',

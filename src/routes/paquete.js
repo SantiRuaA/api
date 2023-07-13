@@ -1,11 +1,7 @@
 const Paquete = require('../models/paquete');
 const Cliente = require('../models/cliente');
-const Usuario = require('../models/Usuario');
 const EstadoPaquete = require('../models/estadoPaquete');
-const TamanoPaquete = require('../models/tamanoPaquete');
 const TipoPaquete = require('../models/tipoPaquete');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router();
 
@@ -41,28 +37,6 @@ router.get('/:documentoCliente/data', async (req, res) => {
       direccion: cliente.direccionCliente,
       telefono: cliente.telefonoCliente,
       correo: cliente.correoCliente,
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-});
-
-router.get('/:idCliente/nombre', async (req, res) => {
-  const { idCliente } = req.params;
-
-  try {
-    const cliente = await Cliente.findByPk(idCliente);
-
-
-    if (!cliente) {
-      return res.json({
-        error: 'El cliente no existe',
-      });
-    }
-
-    res.json({
-      nombre: cliente.nombreCliente,
     });
   } catch (error) {
     console.error(error);

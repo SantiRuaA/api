@@ -1,8 +1,6 @@
 const RolPermiso = require('../models/rolPermiso');
 const Rol = require('../models/Rol');
 const Permiso = require('../models/permiso');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 

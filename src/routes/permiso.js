@@ -1,24 +1,22 @@
 const Permiso = require('../models/permiso');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/',async (req,res)=>{
+router.get('/', async (req, res) => {
   const permisos = await Permiso.findAll();
 
   res.json(permisos);
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const permiso = await Permiso.findByPk(id)
 
-  if(!permiso){
+  if (!permiso) {
     return res.json({
-      error:"No existe el permiso"
+      error: "No existe el permiso"
     });
   }
 
@@ -26,24 +24,24 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/',async (req,res)=>{
+router.post('/', async (req, res) => {
   const { nombrePermiso } = req.body;
-  const permi = await Permiso.findOne({ where: {nombrePermiso}})
-  
-  if(!nombrePermiso || !idModulo ){
+  const permi = await Permiso.findOne({ where: { nombrePermiso } })
+
+  if (!nombrePermiso || !idModulo) {
     return res.json({
       status: "error",
-      msj:"Uno o mas campos vacios"
+      msj: "Uno o mas campos vacios"
     });
   }
-  if (permi){
+  if (permi) {
     return res.json({
       status: "error",
-      msj:"El permiso ya existe"
+      msj: "El permiso ya existe"
     });
   }
 
-  const permiso = await Permiso.create({nombrePermiso,idModulo})
+  const permiso = await Permiso.create({ nombrePermiso, idModulo })
 
   res.json({
     status: "ok",
@@ -52,41 +50,41 @@ router.post('/',async (req,res)=>{
 }),
 
 
-router.put('/:id',async (req, res) => {
-  const { id } = req.params;
-  
-  const { idPermiso, nombrePermiso, ...resto } = req.body;
-  const permiId = await Permiso.findByPk(idPermiso);
-  
-  if(!nombrePermiso ){
-    return res.json({
-      error:"Uno o mas campos vacios"
-    });
-  }
+  router.put('/:id', async (req, res) => {
+    const { id } = req.params;
 
-  if (!permiId) {
-    return res.json({ msj: 'El permiso no existe' });
-  }
-  
-  if (permiId.nombrePermiso !== nombrePermiso) {
-    const permiExists = await Permiso.findOne({ where: { nombrePermiso } });
-    if (permiExists) {
+    const { idPermiso, nombrePermiso, ...resto } = req.body;
+    const permiId = await Permiso.findByPk(idPermiso);
+
+    if (!nombrePermiso) {
       return res.json({
-        status : "error",
-        msj: 'El permiso ya existe bro'
+        error: "Uno o mas campos vacios"
       });
     }
-  }
 
-  await permiId.update({ nombrePermiso, idModulo, ...resto });
+    if (!permiId) {
+      return res.json({ msj: 'El permiso no existe' });
+    }
 
-  res.json({
-    status: 'ok',
-    msj: 'Permiso actualizado con exito',
+    if (permiId.nombrePermiso !== nombrePermiso) {
+      const permiExists = await Permiso.findOne({ where: { nombrePermiso } });
+      if (permiExists) {
+        return res.json({
+          status: "error",
+          msj: 'El permiso ya existe bro'
+        });
+      }
+    }
+
+    await permiId.update({ nombrePermiso, idModulo, ...resto });
+
+    res.json({
+      status: 'ok',
+      msj: 'Permiso actualizado con exito',
+    });
   });
-});
 
-router.delete('/:id',async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const permiId = await Permiso.findByPk(id);
 
@@ -97,10 +95,10 @@ router.delete('/:id',async (req, res) => {
   await permiId.destroy();
 
   res.json({
-    status : 'ok',
+    status: 'ok',
     msj: 'Permiso eliminado con exito',
   });
 });
-  
+
 
 module.exports = router

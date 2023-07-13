@@ -1,6 +1,4 @@
 const TipoPaquete = require('../models/tipoPaquete');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 

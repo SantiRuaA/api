@@ -1,24 +1,22 @@
 const EstadoUsuario = require('../models/estadoUsuario');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/',async (req,res)=>{
+router.get('/', async (req, res) => {
     const estadoUsers = await EstadoUsuario.findAll();
 
     res.json(estadoUsers);
 });
 
 
-router.get('/:id', async(req,res)=>{
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const estadoUser = await EstadoUsuario.findByPk(id)
 
-    if(!estadoUser){
+    if (!estadoUser) {
         return res.json({
-          error:"No existe el estado de usuario"
+            error: "No existe el estado de usuario"
         });
     }
 
@@ -26,35 +24,35 @@ router.get('/:id', async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', async (req, res) => {
     const { idEstado, estadoUsuario } = req.body;
-    const estadoUserExists = await EstadoUsuario.findOne({ where: {estadoUsuario}})
+    const estadoUserExists = await EstadoUsuario.findOne({ where: { estadoUsuario } })
     const estadoUserId = await EstadoUsuario.findByPk(idEstado)
-    
-    if (!estadoUsuario || !idEstado){
+
+    if (!estadoUsuario || !idEstado) {
         return res.json({
-            error:"Uno o más campos vacios"
+            error: "Uno o más campos vacios"
         })
     }
-    if(estadoUserId){
+    if (estadoUserId) {
         return res.json({
-            error:"Ya existe un usuario con ese ID"
+            error: "Ya existe un usuario con ese ID"
         });
     }
 
     if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
         return res.json({
-            error:"Valor no permitido para el campo estado usuario"
+            error: "Valor no permitido para el campo estado usuario"
         })
     }
 
-    if(estadoUserExists){
+    if (estadoUserExists) {
         return res.json({
-            error:"El estado del usuario ya existe"
+            error: "El estado del usuario ya existe"
         });
     }
 
-    const estadoUserC = await EstadoUsuario.create({idEstado, estadoUsuario})
+    const estadoUserC = await EstadoUsuario.create({ idEstado, estadoUsuario })
 
     res.json({
         msj: 'EstadoUsuario creado exitosamente',
@@ -67,54 +65,54 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const estadoUserId = await EstadoUsuario.findByPk(id);
     const { idEstado, estadoUsuario, ...resto } = req.body;
-  
-    if (!estadoUsuario || !idEstado){
+
+    if (!estadoUsuario || !idEstado) {
         return res.json({
-            error:"Uno o más campos vacios"
+            error: "Uno o más campos vacios"
         })
     }
 
     if (!estadoUserId) {
-      return res.json({ msj: 'El estado del usuario no existe' });
+        return res.json({ msj: 'El estado del usuario no existe' });
     }
-  
+
     const estadoUserExists = await EstadoUsuario.findOne({ where: { estadoUsuario } });
     if (estadoUserExists) {
-      return res.json({
-        error: 'El estado del usuario ya existe'
-      });
+        return res.json({
+            error: 'El estado del usuario ya existe'
+        });
     }
 
     if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
         return res.json({
-            error:"Valor no permitido para el campo estado usuario"
+            error: "Valor no permitido para el campo estado usuario"
         })
     }
-  
+
     await estadoUserId.update({ estadoUsuario, ...resto });
-  
+
     res.json({
-      msj: 'EstadoUsuario actualizado con exito',
-      Estado: estadoUserId
+        msj: 'EstadoUsuario actualizado con exito',
+        Estado: estadoUserId
     });
 });
 
 
-router.delete('/:id', validateJWT, validateRol, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     const { id } = req.params;
     const estadoUserId = await EstadoUsuario.findByPk(id);
-  
+
     if (!estadoUserId) {
-        return res.json({ 
-            msj: 'El estado del usuario no existe o ya ha sido eliminado' 
+        return res.json({
+            msj: 'El estado del usuario no existe o ya ha sido eliminado'
         });
     }
-  
+
     await estadoUserId.destroy();
-  
+
     res.json({
-      msj: 'EstadoUsuario eliminado con exito',
-      Estado: estadoUserId
+        msj: 'EstadoUsuario eliminado con exito',
+        Estado: estadoUserId
     });
 });
 

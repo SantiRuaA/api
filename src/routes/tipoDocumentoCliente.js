@@ -1,23 +1,21 @@
 const TipoDocumentoCliente = require('../models/tipoDocumentoCliente');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/',async (req,res)=>{
+router.get('/', async (req, res) => {
   const tipoDocClts = await TipoDocumentoCliente.findAll();
 
   res.json(tipoDocClts);
 })
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoDocClt = await TipoDocumentoCliente.findByPk(id)
 
-  if(!tipoDocClt){
+  if (!tipoDocClt) {
     return res.json({
-      error:"No existe el tipo de documento de cliente"
+      error: "No existe el tipo de documento de cliente"
     });
   }
 
@@ -25,28 +23,28 @@ router.get('/:id',async(req,res)=>{
 });
 
 
-router.post('/',async (req,res)=>{
-  const { idTipoDocumento,nombreTipo } = req.body;
-  const tipo = await TipoDocumentoCliente.findOne({ where: {nombreTipo}})
-  if(!nombreTipo || !idTipoDocumento){
+router.post('/', async (req, res) => {
+  const { idTipoDocumento, nombreTipo } = req.body;
+  const tipo = await TipoDocumentoCliente.findOne({ where: { nombreTipo } })
+  if (!nombreTipo || !idTipoDocumento) {
     return res.json({
-      error:"Uno o mas campos vacios"
+      error: "Uno o mas campos vacios"
     });
   }
 
-  if(tipo){
+  if (tipo) {
     return res.json({
-      error:"El tipo de documento ya existe mibro"
+      error: "El tipo de documento ya existe mibro"
     });
   }
 
   if (!TipoDocumentoCliente.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
     return res.json({
-        error:"Valor no permitido para el campo tipoDocumentoCliente"
+      error: "Valor no permitido para el campo tipoDocumentoCliente"
     })
   }
 
-  const tipoDocClt = await TipoDocumentoCliente.create({idTipoDocumento, nombreTipo})
+  const tipoDocClt = await TipoDocumentoCliente.create({ idTipoDocumento, nombreTipo })
 
   res.json({
     msj: 'TipoDocumentoCliente creado exitosamente',
@@ -55,16 +53,16 @@ router.post('/',async (req,res)=>{
 });
 
 
-router.put('/:id',async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoCliente.findByPk(id);
   const { nombreTipo, ...resto } = req.body;
 
-  if (!nombreTipo){
+  if (!nombreTipo) {
     return res.json({
-      error:"Uno o más campos vacios"
+      error: "Uno o más campos vacios"
     })
-}
+  }
 
   if (!tipoId) {
     return res.json({ msj: 'El tipo de documento no existe' });
@@ -72,7 +70,7 @@ router.put('/:id',async (req, res) => {
 
   if (!TipoDocumentoCliente.rawAttributes.nombreTipo.values.includes(nombreTipo)) {
     return res.json({
-        error:"Valor no permitido para el campo tipoDocumentoCliente"
+      error: "Valor no permitido para el campo tipoDocumentoCliente"
     })
   }
 
@@ -93,7 +91,7 @@ router.put('/:id',async (req, res) => {
 });
 
 
-router.delete('/:id',async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoDocumentoCliente.findByPk(id);
 

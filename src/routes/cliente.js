@@ -1,9 +1,6 @@
 const Cliente = require('../models/cliente');
 const TipoDocumento = require('../models/tipoDocumentoCliente');
 const Paquete = require('../models/paquete');
-const { isEmail } = require('validator');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 

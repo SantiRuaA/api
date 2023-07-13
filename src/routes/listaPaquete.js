@@ -1,12 +1,10 @@
 const Paquete = require('../models/paquete');
 const ListaPaquete = require('../models/listaPaquete');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/', async (req,res)=>{
+router.get('/', async (req, res) => {
   const lists = await ListaPaquete.findAll();
 
   res.json({
@@ -15,13 +13,13 @@ router.get('/', async (req,res)=>{
 });
 
 
-router.get('/:id', async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const listPaquete = await ListaPaquete.findByPk(id)
-  
-  if(!listPaquete){
+
+  if (!listPaquete) {
     return res.json({
-      error:"No existe la lista de paquetes"
+      error: "No existe la lista de paquetes"
     });
   }
 
@@ -32,22 +30,22 @@ router.get('/:id', async(req,res)=>{
 });
 
 
-router.post('/', async (req,res)=>{
+router.post('/', async (req, res) => {
   const { idPaquete } = req.body;
-  
-  if(!idPaquete){
+
+  if (!idPaquete) {
     return res.status(400).json({
-      error:"Campos vacios"
+      error: "Campos vacios"
     });
   }
 
   const paquete = await Paquete.findByPk(idPaquete);
   if (!paquete) {
     return res.status(400).json({
-    error: 'El paquete no existe'
-    }); 
+      error: 'El paquete no existe'
+    });
   }
-  const list = await ListaPaquete.create({idPaquete})
+  const list = await ListaPaquete.create({ idPaquete })
 
   res.json({
     msj: 'Lista creada exitosamente',
@@ -59,23 +57,23 @@ router.post('/', async (req,res)=>{
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const listId = await ListaPaquete.findByPk(id);
-  const { idLista, idPaquete,...resto } = req.body;
-  
-  if(!idPaquete){
+  const { idLista, idPaquete, ...resto } = req.body;
+
+  if (!idPaquete) {
     return res.status(400).json({
-      error:"Campos vacios"
+      error: "Campos vacios"
     });
   }
 
   if (!listId) {
     return res.json({ msj: 'La lista no existe' });
   }
-  
+
   const paq = await Paquete.findByPk(idPaquete);
   if (!paq) {
     return res.status(400).json({
-    error: 'El paquete no existe'
-    }); 
+      error: 'El paquete no existe'
+    });
   }
 
 
@@ -102,6 +100,6 @@ router.delete('/:id', async (req, res) => {
     Lista: listId
   });
 });
-  
+
 
 module.exports = router

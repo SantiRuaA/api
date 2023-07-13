@@ -1,6 +1,4 @@
 const Rol = require('../models/rol');
-const validateRol = require('../middlewares/validateRol');
-const validateJWT = require('../middlewares/tokenValidation');
 const Usuario = require('../models/Usuario');
 
 const router = require('express').Router()

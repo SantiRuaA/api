@@ -3,10 +3,6 @@ const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
 const bcryptjs = require('bcryptjs');
-const { Op } = require('sequelize');
-const { isEmail } = require('validator');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 

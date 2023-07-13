@@ -1,8 +1,6 @@
 const Novedad = require('../models/novedad');
 const TipoNovedad = require('../models/tipoNovedad');
 const Entrega = require('../models/entrega');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 

@@ -1,60 +1,58 @@
 const TipoNovedad = require('../models/tipoNovedad');
-const validateJWT = require('../middlewares/tokenValidation');
-const validateRol = require('../middlewares/validateRol');
 
 const router = require('express').Router()
 
 
-router.get('/',async (req,res)=>{
+router.get('/', async (req, res) => {
   const novedades = await TipoNovedad.findAll();
 
   res.json(novedades);
 });
 
 
-router.get('/:id',async(req,res)=>{
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const novedad = await TipoNovedad.findByPk(id)
 
-  if(!novedad){
+  if (!novedad) {
     return res.json({
-      error:"No existe la novedad"
+      error: "No existe la novedad"
     });
   }
 
-  res.json( novedad);
+  res.json(novedad);
 });
 
 
-router.post('/',async (req,res)=>{
+router.post('/', async (req, res) => {
   const { idTipoNovedad, tipoNovedad } = req.body;
-  const tipo = await TipoNovedad.findOne({ where: {tipoNovedad}})
+  const tipo = await TipoNovedad.findOne({ where: { tipoNovedad } })
   const tipoId = await TipoNovedad.findByPk(idTipoNovedad)
-  if(!tipoNovedad || !idTipoNovedad){
+  if (!tipoNovedad || !idTipoNovedad) {
     return res.json({
-      error:"Uno o mas campos vacios"
+      error: "Uno o mas campos vacios"
     });
   }
 
-  if(tipo){
+  if (tipo) {
     return res.json({
-        error:"El tipo de novedad ya existe"
+      error: "El tipo de novedad ya existe"
     });
   }
 
   if (!TipoNovedad.rawAttributes.tipoNovedad.values.includes(tipoNovedad)) {
     return res.json({
-        error:"Valor no permitido para el campo tipo novedad"
+      error: "Valor no permitido para el campo tipo novedad"
     })
-}
+  }
 
-  if(tipoId){
+  if (tipoId) {
     return res.json({
-      error:"Ya existe una novedad con ese ID"
+      error: "Ya existe una novedad con ese ID"
     });
   }
 
-  const novedad = await TipoNovedad.create({idTipoNovedad, tipoNovedad})
+  const novedad = await TipoNovedad.create({ idTipoNovedad, tipoNovedad })
 
   res.json({
     status: 'ok',
@@ -63,14 +61,14 @@ router.post('/',async (req,res)=>{
 });
 
 
-router.put('/:id',async (req, res) => {
+router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
   const { idTipoNovedad, tipoNovedad, ...resto } = req.body;
 
-  if(!tipoNovedad || !idTipoNovedad){
+  if (!tipoNovedad || !idTipoNovedad) {
     return res.json({
-      error:"Uno o mas campos vacios"
+      error: "Uno o mas campos vacios"
     });
   }
 
@@ -86,14 +84,14 @@ router.put('/:id',async (req, res) => {
 
   if (!TipoNovedad.rawAttributes.tipoNovedad.values.includes(tipoNovedad)) {
     return res.json({
-        error:"Valor no permitido para el campo tipo novedad"
+      error: "Valor no permitido para el campo tipo novedad"
     })
   }
 
-  const tipoDocId = await TipoNovedad.findByPk(idTipoNovedad) 
-  if(tipoDocId){
+  const tipoDocId = await TipoNovedad.findByPk(idTipoNovedad)
+  if (tipoDocId) {
     return res.json({
-      error:"Ya existe una novedad con ese ID"
+      error: "Ya existe una novedad con ese ID"
     });
   }
 
@@ -113,7 +111,7 @@ router.put('/:id',async (req, res) => {
 });
 
 
-router.delete('/:id',async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const tipoId = await TipoNovedad.findByPk(id);
 

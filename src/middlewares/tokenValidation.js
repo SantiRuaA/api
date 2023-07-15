@@ -32,14 +32,14 @@ router.post('/', async (req, res) => {
     // Token válido
     return res.json({
       status: "ok",
-      msj: 'Token válido'
+      msj: 'Token válido.'
     });
 
   } catch (error) {
 
     return res.json({
       status: "error",
-      msj: 'Token no válido'
+      msj: 'Token inválido.'
     });
   }
 });

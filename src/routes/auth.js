@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     if (!correoUsuario || !contrasenaUsuario) {
         return res.json({
             status: "error",
-            msj: "Correo y/o contraseña vacios"
+            msj: "Correo y/o contraseña vacios."
         });
     }
 
@@ -21,13 +21,13 @@ router.post('/', async (req, res) => {
             if (!validPassword) {
                 return res.json({
                     status: "error",
-                    msj: "Contraseña incorrecta"
+                    msj: "Contraseña incorrecta."
                 });
             }
         } else {
             return res.json({
                 status: "error",
-                msj: "Correo incorrecto"
+                msj: "Correo incorrecto."
             });
         }
 
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
         if (user.idEstado == 2) {
             return res.json({
                 status: "error",
-                msj: "Usuario no habilitado"
+                msj: "Usuario no habilitado."
             });
         }
 
@@ -56,7 +56,7 @@ router.post('/', async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             status: 'error',
-            msj: 'Error en el servidor'
+            msj: 'Error en el servidor.'
         })
     }
 });

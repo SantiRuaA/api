@@ -2,10 +2,12 @@ const Usuario = require('../models/Usuario');
 const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
+const validateToken = require('../middlewares/tokenFunc');
 const bcryptjs = require('bcryptjs');
 
 const router = require('express').Router()
 
+router.use(validateToken);
 
 router.get('/', async (req, res) => {
   const users = await Usuario.findAll();
@@ -147,7 +149,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!idUsuario) {
+  if (!userId) {
     return res.json({
       status: "error",
       msj: 'El usuario a editar no existe.'

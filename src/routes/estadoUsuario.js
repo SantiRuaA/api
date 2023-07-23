@@ -1,6 +1,9 @@
 const EstadoUsuario = require('../models/estadoUsuario');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken)
 
 
 router.get('/', async (req, res) => {

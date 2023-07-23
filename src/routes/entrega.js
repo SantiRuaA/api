@@ -1,8 +1,10 @@
 const Entrega = require('../models/entrega');
 const Lista = require('../models/listaPaquete');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
 
+router.use(validateToken)
 
 router.get('/', async (req, res) => {
   const entregas = await Entrega.findAll();

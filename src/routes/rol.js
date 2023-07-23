@@ -1,7 +1,10 @@
 const Rol = require('../models/rol');
 const Usuario = require('../models/Usuario');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken);
 
 router.get('/lastId', async (req, res) => {
     const lastRol = await Rol.findOne({
@@ -11,7 +14,7 @@ router.get('/lastId', async (req, res) => {
 
     if (!lastRol) {
         return res.json({
-            error: 'No se encontraron roles'
+            error: 'No se encontraron roles.'
         });
     }
 
@@ -24,7 +27,7 @@ router.get("/", async (req, res) => {
     if (roles.length === 0) {
         return res.json({
             status: "error",
-            msj: "No hay roles registrados"
+            msj: "No hay roles registrados."
         });
     }
 
@@ -62,7 +65,7 @@ router.post("/", async (req, res) => {
     if (rolExists) {
         return res.json({
             status: "error",
-            msj: "El rol ya existe"
+            msj: "El rol ya existe."
         });
     }
 
@@ -77,7 +80,7 @@ router.post("/", async (req, res) => {
 
     res.json({
         status: 'ok',
-        msj: 'Rol creado exitosamente',
+        msj: 'Rol creado exitosamente.',
         id: rol.id
     });
 });
@@ -91,14 +94,14 @@ router.put('/:id', async (req, res) => {
     if (!nombreRol) {
         return res.json({
             status: "error",
-            msj: "Uno o más campos vacios"
+            msj: "Uno o más campos vacios."
         })
     }
 
     if (!rolId) {
         return res.json({
             status: 'error',
-            msj: 'El rol no existe'
+            msj: 'El rol no existe.'
         });
     }
 
@@ -108,7 +111,7 @@ router.put('/:id', async (req, res) => {
         if (rolExists) {
             return res.json({
                 status: 'error',
-                msj: 'El rol ya existe'
+                msj: 'El rol ya existe.'
             });
         }
     }
@@ -117,7 +120,7 @@ router.put('/:id', async (req, res) => {
 
     res.json({
         status: 'ok',
-        msj: 'Rol actualizado con exito',
+        msj: 'Rol actualizado con exito.',
     });
 });
 
@@ -127,7 +130,7 @@ router.delete('/:id', async (req, res) => {
 
     if (!rolId) {
         return res.json({
-            msj: 'El rol no existe o ya ha sido eliminado'
+            msj: 'El rol no existe o ya ha sido eliminado.'
         });
     }
 
@@ -136,7 +139,7 @@ router.delete('/:id', async (req, res) => {
     if (usersAsociados.length > 0) { //ESTA VUELTA ES PARA VER SI EL ROL TIENE USERS ASOCIADOS
         return res.json({
             status: 'error',
-            msj: 'No se puede eliminar el rol porque tiene usuarios asociados'
+            msj: 'No se puede eliminar el rol porque tiene usuarios asociados.'
         });
     }
 

@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const tokenValidation = require("./middlewares/tokenValidation");
+const tokenRoute = require("./middlewares/tokenRoute");
 const usuarios = require("./routes/usuario")
-const login = require('./routes/auth')
+const auth = require('./routes/auth')
 const tipoNovedades = require("./routes/tipoNovedad")
 const estadoUsuario = require("./routes/estadoUsuario");
 const tipoDocumentoUsuario = require("./routes/tipoDocumentoUsuario");
@@ -34,17 +34,16 @@ const port = process.env.PORT || 3030;
 })()
 
 
-
 //middlewares
-app.use(express.json()); //Configura la aplicación para que pueda recibir datos en formato JSON.
+app.use(express.json()); //recibir datos en formato JSON.
 
 app.use(cors({
     origin: '*'
-}));// Configura la aplicación para que permita solicitudes de otros dominios.
+}));
 
 app.use('/usuario', usuarios);
 
-app.use('/token', tokenValidation);
+app.use('/token', tokenRoute);
 
 app.use('/tipoNovedad', tipoNovedades);
 
@@ -76,7 +75,7 @@ app.use('/listaPaquete', listaPaquetes);
 
 app.use('/novedad', novedades);
 
-app.use('/login', login)
+app.use('/auth', auth)
 
 
 app.listen(port, () => {

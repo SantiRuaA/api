@@ -1,9 +1,11 @@
 const Cliente = require('../models/cliente');
 const TipoDocumento = require('../models/tipoDocumentoCliente');
 const Paquete = require('../models/paquete');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
 
+router.use(validateToken)
 
 router.get('/', async (req, res) => {
   const clientes = await Cliente.findAll();

@@ -1,7 +1,10 @@
 const Paquete = require('../models/paquete');
 const ListaPaquete = require('../models/listaPaquete');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken)
 
 
 router.get('/', async (req, res) => {

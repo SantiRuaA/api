@@ -90,14 +90,19 @@ router.post('/forgot-pwd', async (req, res) => {
 
         // Utiliza el transporter existente para enviar el correo electrónico
         await transporter.sendMail({
-            from: '"Star ☆ Routing" <soporte.starsouting@gmail.com>', // sender address
+            from: '"Star ☆ Routing" <soporte.starrouting@gmail.com>', // sender address
             to: user.correoUsuario, // list of receivers
             subject: "Recuperar contraseña", // Subject line
             html: `
-            <h1>Recupera tu contraseña</h1>
-            <p>Para recuperar tu contraseña, haz click <a href="${verificacionLink}">aqui</a> ;)</p>
+                <h2>Recupera tu contraseña</h2>
+                <p>Para recuperar tu contraseña, haz clic <a href="${verificacionLink}" style="color: #007BFF; text-decoration: none">aquí</a> ;)</p>
+                <br><br><br><hr>
+                <p style="color: #666666; margin: 0;">Este es un correo electrónico generado automáticamente. Por favor, no respondas a este mensaje.</p>
+                <p style="color: #666666; margin: 0;">Gracias,</p>
+                <p style="color: #9C27B0; margin: 0;"><strong>El equipo de Star ☆ Routing</strong></p>
             `, // html body
         });
+
 
         return res.json({
             status: "ok",
@@ -105,10 +110,10 @@ router.post('/forgot-pwd', async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         return res.json({
             status: 'error',
             msj: 'Error en el servidor.',
+            error: error
         });
     }
 });

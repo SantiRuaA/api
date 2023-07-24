@@ -260,7 +260,7 @@ router.put('/:id', async (req, res) => {
 
   res.json({
     status: 'ok',
-    msj: 'Usuario actualizado con exito.'
+    msj: 'El usuario ha sido actualizado exitosamente.'
   });
 });
 

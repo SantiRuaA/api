@@ -92,7 +92,7 @@ router.post('/forgot-pwd', async (req, res) => {
         await transporter.sendMail({
             from: '"Star ☆ Routing" <soporte.starrouting@gmail.com>', // sender address
             to: user.correoUsuario, // list of receivers
-            subject: "NO-REPLY-Recuperar contraseña", // Subject line
+            subject: "Recuperar contraseña", // Subject line
             html: `
                 <h2>Recupera tu contraseña</h2>
                 <p>Para recuperar tu contraseña, haz clic <a href="${verificacionLink}" style="color: #007BFF; text-decoration: none">aquí</a> ;)</p>
@@ -106,7 +106,7 @@ router.post('/forgot-pwd', async (req, res) => {
 
         return res.json({
             status: "ok",
-            msj: "Correo enviado exitosamente.",
+            msj: "Hemos enviado un correo electrónico a tu cuenta con un enlace para restablecer tu contraseña.",
         });
 
     } catch (error) {
@@ -120,8 +120,8 @@ router.post('/forgot-pwd', async (req, res) => {
 
 
 router.post('/new-pwd/:token', async (req, res) => {
+    const { token } = req.params;
     const { newPwd } = req.body;
-    const token = req.header('token')
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWTSECRET);

@@ -86,7 +86,7 @@ router.post('/forgot-pwd', async (req, res) => {
         }
 
         const token = await generateJWT(user.idUsuario);
-        let verificacionLink = `http://localhost:3030/new-pwd/${token}`;
+        let verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
 
         // Utiliza el transporter existente para enviar el correo electrónico
         await transporter.sendMail({
@@ -119,12 +119,19 @@ router.post('/forgot-pwd', async (req, res) => {
 });
 
 
-router.post('/new-pwd/:token', async (req, res) => {
-    const { token } = req.params;
-    const { newPwd } = req.body;
+router.post('/new-pwd', async (req, res) => {
+    const { newPwd, token } = req.body;
+
+    if (!newPwd || !token) {
+        return res.json({
+            status: "error",
+            msj: "Todos los campos son requeridos."
+        });
+    }
 
     try {
         const decodedToken = jwt.verify(token, process.env.JWTSECRET);
+
         const userId = decodedToken.uid;
 
         const user = await Usuario.findByPk(userId);
@@ -132,6 +139,11 @@ router.post('/new-pwd/:token', async (req, res) => {
             return res.json({
                 status: "error",
                 msj: "Usuario no encontrado."
+            });
+        } else if (user.idEstado != '1') {
+            return res.json({
+                status: "error",
+                msj: "Usuario no habilitado."
             });
         }
 
@@ -155,9 +167,10 @@ router.post('/new-pwd/:token', async (req, res) => {
         });
 
     } catch (error) {
-        return res.status(500).json({
+        return res.json({
             status: 'error',
-            msj: 'Error en el servidor al cambiar la contraseña.',
+            msj: 'Error en el servidor al cambiar la contraseña, intente nuevamente.',
+            error: error
         });
     }
 });

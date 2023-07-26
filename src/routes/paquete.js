@@ -27,7 +27,6 @@ router.get('/:documentoCliente/data', async (req, res) => {
   try {
     const cliente = await Cliente.findOne({ where: { documentoCliente } });
 
-
     if (!cliente) {
       return res.json({
         error: 'El cliente no existe',
@@ -44,7 +43,6 @@ router.get('/:documentoCliente/data', async (req, res) => {
       correo: cliente.correoCliente,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
 });

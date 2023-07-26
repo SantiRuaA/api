@@ -1,6 +1,9 @@
 const TipoPaquete = require('../models/tipoPaquete');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken)
 
 
 router.get('/', async (req, res) => {

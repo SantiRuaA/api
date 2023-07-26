@@ -1,6 +1,9 @@
 const TipoDocumentoUsuario = require('../models/tipodocumentousuario');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken)
 
 router.get('/', async (req, res) => {
   const tipoDocUsers = await TipoDocumentoUsuario.findAll();

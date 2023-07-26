@@ -1,8 +1,11 @@
 const Novedad = require('../models/novedad');
 const TipoNovedad = require('../models/tipoNovedad');
 const Entrega = require('../models/entrega');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
+
+router.use(validateToken)
 
 router.get('/', async (req, res) => {
   const novedades = await Novedad.findAll();

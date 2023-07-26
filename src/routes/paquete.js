@@ -2,8 +2,11 @@ const Paquete = require('../models/paquete');
 const Cliente = require('../models/cliente');
 const EstadoPaquete = require('../models/estadoPaquete');
 const TipoPaquete = require('../models/tipoPaquete');
+const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router();
+
+router.use(validateToken);
 
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();

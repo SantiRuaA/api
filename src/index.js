@@ -33,8 +33,6 @@ const port = process.env.PORT || 3030;
 
 })()
 
-
-
 //middlewares
 app.use(express.json()); //Configura la aplicación para que pueda recibir datos en formato JSON.
 

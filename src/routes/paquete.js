@@ -32,6 +32,8 @@ router.get('/:documentoCliente/data', async (req, res) => {
     }
 
     res.json({
+      id: cliente.idCliente,
+      tipoDocumento: cliente.idTipoDocumento,
       documento: cliente.documentoCliente,
       nombre: cliente.nombreCliente,
       direccion: cliente.direccionCliente,

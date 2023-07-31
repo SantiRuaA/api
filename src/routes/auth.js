@@ -155,6 +155,18 @@ router.post('/new-pwd', async (req, res) => {
             });
         }
 
+        // Obtener la contraseña actual de la base de datos y desencriptarla
+        const currentPassword = user.contrasenaUsuario;
+        const isMatch = bcryptjs.compareSync(newPwd, currentPassword);
+
+        // Check if the new password is different from the current password
+        if (isMatch) {
+            return res.json({
+                status: "error",
+                msj: "La nueva contraseña debe ser diferente a la contraseña actual."
+            });
+        }
+
         const salt = await bcryptjs.genSalt();
         const hashedPassword = await bcryptjs.hash(newPwd, salt);
 
@@ -163,13 +175,13 @@ router.post('/new-pwd', async (req, res) => {
 
         return res.json({
             status: "ok",
-            msj: "Contraseña actualizada exitosamente."
+            msj: "Si estabas en la app movil, ya puedes volver a ingresar, si no, solo cierra este mensaje."
         });
 
     } catch (error) {
         return res.json({
             status: 'error',
-            msj: 'Error en el servidor al cambiar la contraseña, intente nuevamente.',
+            msj: 'Error en el servidor al cambiar la contraseña, intenta nuevamente o pide un nuevo correo.',
             error: error
         });
     }

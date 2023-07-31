@@ -202,9 +202,8 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-
-  const salt = bcryptjs.genSaltSync();
-  let pwdEncrypt = contrasenaUsuario;
+  const salt = await bcryptjs.genSalt();
+  let hashPwd = contrasenaUsuario;
 
   if (contrasenaUsuario) { // Si se proporciona una contraseña, se encripta
     const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d.*\d.*\d)(?=.*[!@#$%^&+=?.:,"°~;_¿¡*/{}|<>()]).{8,}$/;
@@ -215,7 +214,19 @@ router.put('/:id', async (req, res) => {
         msj: "La contraseña debe contener mínimo: 8 caracteres, una minúscula, una mayúscula, 3 números y 1 caracter especial."
       });
     }
-    pwdEncrypt = bcryptjs.hashSync(contrasenaUsuario, salt);
+
+    // Obtener la contraseña actual de la base de datos y desencriptarla
+    const currentPassword = userId.contrasenaUsuario;
+    const isMatch = bcryptjs.compareSync(contrasenaUsuario, currentPassword);
+
+    if (isMatch) {
+      return res.json({
+        status: "error",
+        msj: "La nueva contraseña debe ser diferente a la contraseña actual."
+      });
+    }
+
+    hashPwd = await bcryptjs.hash(contrasenaUsuario, salt);
   }
 
   const rol = await Rol.findByPk(idRol);
@@ -251,7 +262,7 @@ router.put('/:id', async (req, res) => {
     apellidoUsuario,
     telefonoUsuario,
     correoUsuario,
-    contrasenaUsuario: pwdEncrypt || userId.contrasenaUsuario, // Si contrasenaUsuario es vacío, se mantiene la contraseña actual 
+    contrasenaUsuario: hashPwd || userId.contrasenaUsuario, // Si contrasenaUsuario es vacío, se mantiene la contraseña actual 
     idRol,
     idEstado
   });

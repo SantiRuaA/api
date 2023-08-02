@@ -6,7 +6,7 @@ const validateToken = async (req, res, next) => {
   const token = req.header('token');
 
   if (!token) {
-    return res.status(401).json({ msj: 'Token no proporcionado.' });
+    return res.status(401).json({ msj: 'Acceso denegado.' });
   }
 
   try {

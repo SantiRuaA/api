@@ -3,7 +3,16 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/Usuario');
 const { generateJWT } = require('../helpers/generateJWT');
-const router = require('express').Router()
+const router = require('express').Router();
+
+const fs = require('fs');
+const path = require('path');
+
+// Función para leer el contenido del archivo con la plantilla de correo
+const leerPlantillaCorreo = () => {
+    const rutaPlantilla = path.join(__dirname, '../templates', 'forgotMail.html');
+    return fs.readFileSync(rutaPlantilla, 'utf-8');
+};
 
 router.post('/login', async (req, res) => {
 
@@ -86,23 +95,23 @@ router.post('/forgot-pwd', async (req, res) => {
         }
 
         const token = await generateJWT(user.idUsuario);
-        let verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
+        const verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
+
+        // Obtén la plantilla HTML
+        let plantillaCorreo = leerPlantillaCorreo();
+
+        // Reemplaza la etiqueta {VERIFICATION_LINK} con el verificacionLink en la plantilla
+        plantillaCorreo = plantillaCorreo.replace(/{VERIFICATION_LINK}/g, verificacionLink);
+
+
 
         // Utiliza el transporter existente para enviar el correo electrónico
         await transporter.sendMail({
             from: '"Star ☆ Routing" <soporte.starrouting@gmail.com>', // sender address
             to: user.correoUsuario, // list of receivers
             subject: "Recuperar contraseña", // Subject line
-            html: `
-                <h2>Recupera tu contraseña</h2>
-                <p>Para recuperar tu contraseña, haz clic <a href="${verificacionLink}" style="color: #007BFF; text-decoration: none">aquí</a> ;)</p>
-                <br><br><br><hr>
-                <p style="color: #666666; margin: 0;">Este es un correo electrónico generado automáticamente. Por favor, no respondas a este mensaje.</p>
-                <p style="color: #666666; margin: 0;">Gracias,</p>
-                <p style="color: #9C27B0; margin: 0;"><strong>El equipo de Star ☆ Routing</strong></p>
-            `, // html body
+            html: plantillaCorreo, // html body
         });
-
 
         return res.json({
             status: "ok",
@@ -110,9 +119,10 @@ router.post('/forgot-pwd', async (req, res) => {
         });
 
     } catch (error) {
+        console.log(error);
         return res.json({
             status: 'error',
-            msj: 'Error en el servidor.',
+            msj: 'Error en el servidor al enviar el correo electrónico, intenta nuevamente.',
             error: error
         });
     }
@@ -155,6 +165,18 @@ router.post('/new-pwd', async (req, res) => {
             });
         }
 
+        // Obtener la contraseña actual de la base de datos y desencriptarla
+        const currentPassword = user.contrasenaUsuario;
+        const isMatch = bcryptjs.compareSync(newPwd, currentPassword);
+
+        // Check if the new password is different from the current password
+        if (isMatch) {
+            return res.json({
+                status: "error",
+                msj: "La nueva contraseña debe ser diferente a la contraseña actual."
+            });
+        }
+
         const salt = await bcryptjs.genSalt();
         const hashedPassword = await bcryptjs.hash(newPwd, salt);
 
@@ -163,13 +185,13 @@ router.post('/new-pwd', async (req, res) => {
 
         return res.json({
             status: "ok",
-            msj: "Contraseña actualizada exitosamente."
+            msj: "Si estabas en la app movil, ya puedes volver a ingresar, si no, solo cierra este mensaje."
         });
 
     } catch (error) {
         return res.json({
             status: 'error',
-            msj: 'Error en el servidor al cambiar la contraseña, intente nuevamente.',
+            msj: 'Error en el servidor al cambiar la contraseña, intenta nuevamente o pide un nuevo correo.',
             error: error
         });
     }

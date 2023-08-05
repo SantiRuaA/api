@@ -94,6 +94,13 @@ router.post('/forgot-pwd', async (req, res) => {
             });
         }
 
+        if (user.idEstado != 1) {
+            return res.json({
+                status: "error",
+                msj: "Usuario no habilitado."
+            });
+        }
+
         const token = await generateJWT(user.idUsuario);
         const verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
 

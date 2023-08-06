@@ -5,14 +5,13 @@ require('dotenv').config();
 const generateJWT = (uid) => {
     return new Promise((resolve, reject) => {
         const payload = { uid };
-        jwt.sign(payload, process.env.JWTSECRET, { //tomamos la auth con el token
+        jwt.sign(payload, process.env.JWTSECRET, { // tomamos la auth con el token
             expiresIn: '12h'
         }, (err, token) => {
             if (err) {
                 console.log(err)
                 reject('No se pudo generar el token.')
             } else {
-                /* console.log("token generado:", token); */
                 resolve(token)
             }
         });

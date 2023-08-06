@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
             });
         }
 
-        if (user.idEstado !== 1) {
+        if (user.idEstado != 1) {
             return res.json({
                 status: 'error',
                 msj: 'Token inválido.',

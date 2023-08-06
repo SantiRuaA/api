@@ -22,7 +22,7 @@ const validateToken = async (req, res, next) => {
       });
     }
 
-    if (user.idEstado !== 1) {
+    if (user.idEstado != 1) {
       return res.json({
         status: 'error',
         msj: 'Token inválido.',

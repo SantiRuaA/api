@@ -13,7 +13,6 @@ const transporter = nodemailer.createTransport({
 
 transporter.verify().then(() => {
     console.log('melos pa los emails');
-
 })
 
 module.exports = transporter;

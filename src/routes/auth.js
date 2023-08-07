@@ -8,7 +8,7 @@ const router = require('express').Router();
 const fs = require('fs');
 const path = require('path');
 
-// Función para leer el contenido del archivo con la plantilla de correo
+// pa leer el contenido del archivo con la plantilla de correo
 const leerPlantillaCorreo = () => {
     const rutaPlantilla = path.join(__dirname, '../templates', 'forgotMail.html');
     return fs.readFileSync(rutaPlantilla, 'utf-8');
@@ -84,7 +84,7 @@ router.post('/forgot-pwd', async (req, res) => {
         });
     }
 
-    const user = await Usuario.findOne({ where: { correoUsuario, documentoUsuario } });
+    const user = await Usuario.findOne({ where: { documentoUsuario, correoUsuario } });
 
     try {
         if (!user) {
@@ -104,15 +104,11 @@ router.post('/forgot-pwd', async (req, res) => {
         const token = await generateJWT(user.idUsuario);
         const verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
 
-        // Obtén la plantilla HTML
         let plantillaCorreo = leerPlantillaCorreo();
 
-        // Reemplaza la etiqueta {VERIFICATION_LINK} con el verificacionLink en la plantilla
         plantillaCorreo = plantillaCorreo.replace(/{VERIFICATION_LINK}/g, verificacionLink);
 
 
-
-        // Utiliza el transporter existente para enviar el correo electrónico
         await transporter.sendMail({
             from: '"Star ☆ Routing" <soporte.starrouting@gmail.com>', // sender address
             to: user.correoUsuario, // list of receivers
@@ -126,11 +122,9 @@ router.post('/forgot-pwd', async (req, res) => {
         });
 
     } catch (error) {
-        console.log(error);
         return res.json({
             status: 'error',
-            msj: 'Error en el servidor al enviar el correo electrónico, intenta nuevamente.',
-            error: error
+            msj: 'Ha ocurrido un error al intentar enviar el correo electrónico, intenta nuevamente.',
         });
     }
 });
@@ -172,11 +166,9 @@ router.post('/new-pwd', async (req, res) => {
             });
         }
 
-        // Obtener la contraseña actual de la base de datos y desencriptarla
-        const currentPassword = user.contrasenaUsuario;
-        const isMatch = bcryptjs.compareSync(newPwd, currentPassword);
+        const currentPwd = user.contrasenaUsuario;
+        const isMatch = bcryptjs.compareSync(newPwd, currentPwd);
 
-        // Check if the new password is different from the current password
         if (isMatch) {
             return res.json({
                 status: "error",
@@ -185,21 +177,20 @@ router.post('/new-pwd', async (req, res) => {
         }
 
         const salt = await bcryptjs.genSalt();
-        const hashedPassword = await bcryptjs.hash(newPwd, salt);
+        const hashedPwd = await bcryptjs.hash(newPwd, salt);
 
-        user.contrasenaUsuario = hashedPassword;
+        user.contrasenaUsuario = hashedPwd;
         await user.save();
 
         return res.json({
             status: "ok",
-            msj: "Si estabas en la app movil, ya puedes volver a ingresar, si no, solo cierra este mensaje."
+            msj: "Si estabas en la app móvil, ya puedes volver a ingresar, si no, solo cierra este mensaje."
         });
 
     } catch (error) {
         return res.json({
             status: 'error',
-            msj: 'Error en el servidor al cambiar la contraseña, intenta nuevamente o pide un nuevo correo.',
-            error: error
+            msj: 'Ha ocurrido un error al intentar cambiar la contraseña, intenta nuevamente o pide un nuevo correo.',
         });
     }
 });

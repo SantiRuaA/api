@@ -26,7 +26,8 @@ router.get('/:id', async (req, res) => {
 
   if (!entrega) {
     return res.json({
-      error: "No existe la entrega"
+      status: "error",
+      msj: "No existe ninguna entrega con el id proporcionado."
     });
   }
 
@@ -40,7 +41,8 @@ router.post('/', async (req, res) => {
 
   if (!firmaDestinatario || !fechaEntrega || !idLista) {
     return res.json({
-      error: "Uno o mas campos vacios"
+      status: "error",
+      msj: "Uno o mas campos vacios"
     });
   }
 
@@ -53,14 +55,15 @@ router.post('/', async (req, res) => {
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
     return res.json({
-      error: 'La lista de paquetes no existe'
+      status: "error",
+      msj: 'La lista de paquetes no existe'
     });
   }
-
 
   const entrega = await Entrega.create({ firmaDestinatario, fechaEntrega, idLista })
 
   res.json({
+    status: "ok",
     msj: 'Entrega creada exitosamente',
     Entrega: entrega
   });
@@ -73,15 +76,17 @@ router.put('/:id', async (req, res) => {
   const { firmaDestinatario, fechaEntrega, idLista } = req.body;
   /* const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}}) */
 
-  if (!firmaDestinatario || !fechaEntrega || !idLista) {
+  if (!firmaDestinatario || !idLista) {
     return res.json({
-      error: "Uno o mas campos vacios"
+      status: "error",
+      msj: "Uno o mas campos vacios"
     });
   }
 
   if (!entId) {
     return res.json({
-      error: "No existe la entrega"
+      status: "error",
+      msj: "No existe la entrega"
     });
   }
 
@@ -94,13 +99,15 @@ router.put('/:id', async (req, res) => {
   const listId = await Lista.findByPk(idLista);
   if (!listId) {
     return res.json({
-      error: 'La lista de paquetes no existe'
+      status: "error",
+      msj: 'La lista de paquetes no existe'
     });
   }
 
-  await entId.update({ firmaDestinatario, fechaEntrega, idLista })
+  await entId.update({ firmaDestinatario, idLista })
 
   res.json({
+    status: "ok",
     msj: 'Entrega actualizada con exito',
     Entrega: entId
   });
@@ -112,12 +119,16 @@ router.delete('/:id', async (req, res) => {
   const entId = await Entrega.findByPk(id);
 
   if (!entId) {
-    return res.json({ msj: 'La entrega no existe o ya ha sido eliminado' });
+    return res.json({ 
+      status: "error",
+      msj: 'La entrega no existe o ya ha sido eliminado' 
+    });
   }
 
   await entId.destroy();
 
   res.json({
+    status: "ok",
     msj: 'Entrega eliminada con exito',
     Entrega: entId
   });

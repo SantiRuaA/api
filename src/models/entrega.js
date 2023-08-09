@@ -9,7 +9,7 @@ const Entrega = db.define('entrega',{
         autoIncrement: true
     },
     firmaDestinatario:{
-        type: DataTypes.STRING,
+        type: DataTypes.BLOB,
     },
     fechaEntrega:{
         type:DataTypes.DATE,

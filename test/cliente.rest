@@ -9,25 +9,27 @@ POST http://localhost:3030/cliente/
 Content-Type: application/json
 
 {
-    "documentoCliente":9090,
-    "idTipoDocumento":5,
-    "nombreCliente":"MiLTON",
-    "telefonoCliente":"311111111",
-    "correoCliente":"090@gmail.com",
-    "direccionCliente":"djskdd"
+    "documentoCliente": 2228882222,
+    "idTipoDocumento": 1,
+    "nombreCliente": "Jhon Freddy",
+    "telefonoCliente": "3108323315",
+    "correoCliente": "ooole@g.com",
+    "direccionCliente": "Cra. 43a #110-23, La Isla, Medellín, Popular, Medellín, Antioquia, Colombia"
 }
 
 ### Cuidado con la coma al final del json
 
-PUT http://localhost:3030/cliente/9090
+PUT http://localhost:3030/cliente/54
 Content-Type: application/json
 
 {
-    "idTipoDocumento":1,
-    "nombreCliente":"miltrus",
-    "telefonoCliente":"311111111",
-    "correoCliente":"100@pepe.co",
-    "direccionCliente":"KR11 #2-43"
+    "idCliente": 54,
+    "documentoCliente": 1000291725,
+    "idTipoDocumento": 1,
+    "nombreCliente": "Pablo",
+    "telefonoCliente": "3108323315",
+    "correoCliente": "holamundo@g.com",
+    "direccionCliente": "Cra. 43a #110-23, La Isla, Medellín, Popular, Medellín, Antioquia, Colombia"
 }
 
 ###

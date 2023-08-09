@@ -102,7 +102,8 @@ router.post('/', async (req, res) => {
 
   res.json({
     status: "ok",
-    msj: 'Cliente creado exitosamente.'
+    msj: 'Cliente creado exitosamente.',
+    Cliente: clienteC
   });
 });
 
@@ -184,7 +185,8 @@ router.put('/:id', async (req, res) => {
 
   res.json({
     status: "ok",
-    msj: 'Cliente actualizado con exito.'
+    msj: 'Cliente actualizado con exito.',
+    Cliente: cltId
   });
 });
 

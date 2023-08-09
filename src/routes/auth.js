@@ -59,6 +59,8 @@ router.post('/login', async (req, res) => {
 
         const token = await generateJWT(user.idUsuario);
 
+        user.contrasenaUsuario = undefined;
+
         res.json({
             status: "ok",
             msj: "User comprobao 🥶", user, token

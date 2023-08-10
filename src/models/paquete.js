@@ -51,6 +51,12 @@ const Paquete = db.define('paquete', {
     idTipo: {
         type: DataTypes.INTEGER,
     },
+    lat: {
+        type: DataTypes.STRING,
+    },
+    lng: {
+        type: DataTypes.STRING,
+    }
 });
 //Paquete.hasOne(TipoDocumentoUsuario, { foreignKey: 'idTipoDocumentoUsuario'});
 module.exports = Paquete;

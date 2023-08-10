@@ -37,9 +37,9 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, lat, lng } = req.body;
 
-  if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
+  if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente || !lat || !lng) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios."
@@ -98,7 +98,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const clienteC = await Cliente.create({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente })
+  const clienteC = await Cliente.create({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, lat, lng })
 
   res.json({
     status: "ok",

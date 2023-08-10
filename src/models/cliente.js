@@ -26,6 +26,12 @@ const Cliente = db.define('cliente', {
     direccionCliente: {
         type: DataTypes.STRING,
     },
+    lat: {
+        type: DataTypes.STRING,
+    },
+    lng: {
+        type: DataTypes.STRING,
+    }
 });
 //Cliente.hasOne(TipoDocumentoCliente, { foreignKey: 'idTipoDocumentoCliente'});
 module.exports = Cliente;

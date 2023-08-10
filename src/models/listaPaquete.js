@@ -1,11 +1,10 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
-const Paquete = require("./paquete")
 
-const ListaPaquete = db.define('listaPaquetes',{
-    idLista:{
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
-        primaryKey: true,       
+const ListaPaquete = db.define('listaPaquetes', {
+    idLista: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
     },
     idPaquete: {
@@ -13,5 +12,4 @@ const ListaPaquete = db.define('listaPaquetes',{
     },
 });
 
-//ListaPaquete.hasOne(Paquete, { foreignKey: 'idPaquete'});
 module.exports = ListaPaquete;

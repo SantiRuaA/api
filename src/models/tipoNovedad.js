@@ -3,14 +3,14 @@ const db = require("../db/database");
 
 const TipoNovedad = db.define('tiponovedad', {
     idTipoNovedad: {
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: false,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        allowNull: false,
     },
     tipoNovedad: {
-        type: DataTypes.ENUM('retraso', 'devolucion', 'otro'),
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 });
 

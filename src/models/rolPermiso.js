@@ -1,10 +1,10 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
-const Rol = require("./Rol");
+const Rol = require("./rol");
 const Permiso = require("./permiso");
 
-const RolPermiso = db.define('rolPermiso',{
-    idRolPermiso:{
+const RolPermiso = db.define('rolPermiso', {
+    idRolPermiso: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -14,7 +14,7 @@ const RolPermiso = db.define('rolPermiso',{
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    idPermiso:{
+    idPermiso: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },

@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
-const TipoDocumentoCliente = require("./tipoDocumentoCliente");
 
 const Cliente = db.define('cliente', {
     idCliente: {
@@ -26,6 +25,9 @@ const Cliente = db.define('cliente', {
     direccionCliente: {
         type: DataTypes.STRING,
     },
+    detalleDireccionCliente: {
+        type: DataTypes.STRING,
+    },
     lat: {
         type: DataTypes.STRING,
     },
@@ -33,5 +35,5 @@ const Cliente = db.define('cliente', {
         type: DataTypes.STRING,
     }
 });
-//Cliente.hasOne(TipoDocumentoCliente, { foreignKey: 'idTipoDocumentoCliente'});
+
 module.exports = Cliente;

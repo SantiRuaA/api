@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
-const Rol = require("./rol");
 
 const Usuario = db.define('usuario', {
     idUsuario: {
@@ -38,5 +37,4 @@ const Usuario = db.define('usuario', {
     },
 });
 
-Usuario.hasOne(Rol, { foreignKey: 'idRol' });
 module.exports = Usuario;

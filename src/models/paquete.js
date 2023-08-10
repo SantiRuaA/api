@@ -1,9 +1,5 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
-const Usuario = require("./Usuario");
-const Cliente = require("./cliente");
-const EstadoPaquete = require("./estadoPaquete");
-const TamanoPaquete = require("./tamanoPaquete");
 
 const Paquete = db.define('paquete', {
     idPaquete: {
@@ -11,7 +7,10 @@ const Paquete = db.define('paquete', {
         primaryKey: true,
         autoIncrement: true
     },
-    codigoQrPaquete: {
+    direccionPaquete: {
+        type: DataTypes.STRING,
+    },
+    detalleDireccionPaquete: {
         type: DataTypes.STRING,
     },
     pesoPaquete: {
@@ -58,5 +57,5 @@ const Paquete = db.define('paquete', {
         type: DataTypes.STRING,
     }
 });
-//Paquete.hasOne(TipoDocumentoUsuario, { foreignKey: 'idTipoDocumentoUsuario'});
+
 module.exports = Paquete;

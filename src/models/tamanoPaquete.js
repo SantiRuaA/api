@@ -3,14 +3,14 @@ const db = require("../db/database");
 
 const TamanoPaquete = db.define('tamanopaquete', {
     idTamano: {
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: false,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        allowNull: false,
     },
     tamanoPaquete: {
-        type: DataTypes.ENUM('largo', 'ancho', 'alto', 'otro'),
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.STRING,
+        allowNull: false,
     },
 });
 

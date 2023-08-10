@@ -1,15 +1,15 @@
 const { DataTypes } = require("sequelize");
 const db = require("../db/database");
 
-const TipoDocumentoUsuario = db.define('tipodocumentousuario',{
-    idTipoDocumento:{
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
-        primaryKey: true,       
+const TipoDocumentoUsuario = db.define('tipodocumentousuario', {
+    idTipoDocumento: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
         autoIncrement: true,
-        allowNull: true,   //Siempre de debe proporcionjar un valor
+        allowNull: true,
     },
     nombreTipo: {
-        type: DataTypes.ENUM('cedulaCiudadania', 'cedulaExtranjeria','pasaporte', 'tarjetaIdentidad'),
+        type: DataTypes.STRING,
     },
 });
 

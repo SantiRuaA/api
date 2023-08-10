@@ -37,7 +37,7 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, lat, lng } = req.body;
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng } = req.body;
 
   if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente || !lat || !lng) {
     return res.json({
@@ -98,7 +98,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const clienteC = await Cliente.create({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, lat, lng })
+  const clienteC = await Cliente.create({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng })
 
   res.json({
     status: "ok",
@@ -110,10 +110,10 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente } = req.body;
+  const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng } = req.body;
   const cltId = await Cliente.findByPk(idCliente);
 
-  if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
+  if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente || !lat || !lng) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios."
@@ -181,7 +181,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await cltId.update({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente });
+  await cltId.update({ idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng });
 
   res.json({
     status: "ok",

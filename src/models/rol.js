@@ -3,7 +3,7 @@ const db = require("../db/database");
 
 const Rol = db.define('rol', {
     idRol: {
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },

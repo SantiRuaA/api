@@ -3,14 +3,14 @@ const db = require("../db/database");
 
 const TipoPaquete = db.define('tipopaquete', {
     idTipo: {
-        type: DataTypes.INTEGER,    //Numero entero para bases de datos
+        type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: false,
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        allowNull: false,
     },
     tipoPaquete: {
-        type: DataTypes.ENUM('Fragil', 'Especial', 'Estándar', 'Documento','Otro'),
-        allowNull: false,   //Siempre de debe proporcionjar un valor
+        type: DataTypes.ENUM('Fragil', 'Especial', 'Estándar', 'Documento', 'Otro'),
+        allowNull: false,
     },
 });
 

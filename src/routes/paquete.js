@@ -39,6 +39,7 @@ router.get('/:documentoCliente/data', async (req, res) => {
       documento: cliente.documentoCliente,
       nombre: cliente.nombreCliente,
       direccion: cliente.direccionCliente,
+      detalleDireccion: cliente.detalleDireccionCliente,
       telefono: cliente.telefonoCliente,
       correo: cliente.correoCliente,
       lat: cliente.lat,
@@ -63,8 +64,8 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { codigoQrPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
-  // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
+  const { direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
+
 
   if (!pesoPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo || !lat || !lng) {
     return res.json({
@@ -79,7 +80,6 @@ router.post('/', async (req, res) => {
       msj: "El campo peso deben ser numerico",
     });
   }
-  //nou
 
   /* if (documentoDestinatario === documentoRemitente) {
     return res.json({
@@ -128,7 +128,7 @@ router.post('/', async (req, res) => {
     });
   }
 
-  const paquete = await Paquete.create({ codigoQrPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng });
+  const paquete = await Paquete.create({ direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng });
 
   res.json({
     status: 'ok',
@@ -138,9 +138,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { idPaquete, codigoQrPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
+  const { idPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
-  // const paq = await Paquete.findOne({ where: { codigoQrPaquete } });
 
   if (!pesoPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTipo || !lat || !lng) {
     return res.json({
@@ -214,7 +213,7 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  await paqId.update({ codigoQrPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng });
+  await paqId.update({ direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng });
 
   res.json({
     status: 'ok',

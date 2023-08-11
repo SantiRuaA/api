@@ -8,7 +8,7 @@ const Usuario = db.define('usuario', {
         autoIncrement: true,
     },
     documentoUsuario: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
     },
     idTipoDocumento: {
         type: DataTypes.INTEGER,

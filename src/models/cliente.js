@@ -8,7 +8,7 @@ const Cliente = db.define('cliente', {
         autoIncrement: true,
     },
     documentoCliente: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
     },
     idTipoDocumento: {
         type: DataTypes.INTEGER,

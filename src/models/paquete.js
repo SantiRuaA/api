@@ -7,6 +7,9 @@ const Paquete = db.define('paquete', {
         primaryKey: true,
         autoIncrement: true
     },
+    codigoPaquete: {
+        type: DataTypes.STRING,
+    },
     direccionPaquete: {
         type: DataTypes.STRING,
     },

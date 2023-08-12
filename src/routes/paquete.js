@@ -6,7 +6,7 @@ const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router();
 
-router.use(validateToken);
+/* router.use(validateToken); */
 
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();
@@ -56,7 +56,22 @@ router.get('/:id', async (req, res) => {
 
   if (!paquete) {
     return res.json({
-      error: 'No existe el paquete',
+      status: 'error',
+      msj: 'No existe el paquete',
+    });
+  }
+
+  res.json(paquete);
+});
+
+router.get('/codigo/:codigoPaquete', async (req, res) => {
+  const { codigoPaquete } = req.params;
+  const paquete = await Paquete.findOne({ where: { codigoPaquete } })
+
+  if (!paquete) {
+    return res.json({
+      status: 'error',
+      msj: 'No existe el paquete',
     });
   }
 

@@ -31,15 +31,6 @@ router.post('/', async (req, res) => {
             });
         }
 
-        // Verificar expiración del token
-        const currentTimestamp = Math.floor(Date.now() / 1000);
-        if (decodedToken.exp < currentTimestamp) {
-            return res.json({
-                status: 'error',
-                msj: 'Token inválido.',
-            });
-        }
-
         res.json({
             status: 'ok',
             msj: 'Token válido.',

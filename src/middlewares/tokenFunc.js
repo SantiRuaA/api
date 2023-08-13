@@ -29,16 +29,6 @@ const validateToken = async (req, res, next) => {
       });
     }
 
-    // Verificar expiración del token
-    const currentTimestamp = Math.floor(Date.now() / 1000);
-    if (decodedToken.exp < currentTimestamp) {
-      return res.json({
-        status: 'error',
-        msj: 'Token inválido.',
-      });
-    }
-
-    // Token válido, llamar a la siguiente función (ruta)
     next();
 
   } catch (error) {

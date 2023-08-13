@@ -6,7 +6,7 @@ const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router();
 
-/* router.use(validateToken); */
+router.use(validateToken);
 
 router.get('/', async (req, res) => {
   const paquetes = await Paquete.findAll();
@@ -89,19 +89,20 @@ router.post('/', async (req, res) => {
     });
   }
 
+  const codExits = await Paquete.findOne({ where: { codigoPaquete } });
+  if (codExits) {
+    return res.json({
+      status: 'error',
+      msj: 'Ya hay un paquete registrado con ese codigo.',
+    });
+  }
+
   if (isNaN(pesoPaquete) || isNaN(telefonoDestinatario)) {
     return res.json({
       status: "error",
       msj: "El campo peso deben ser numerico",
     });
   }
-
-  /* if (documentoDestinatario === documentoRemitente) {
-    return res.json({
-      status: 'error',
-      msj: 'El destinatario y el remitente no pueden ser iguales',
-    });
-  } */
 
   const userRemi = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
   if (!userRemi) {

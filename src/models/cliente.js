@@ -29,10 +29,10 @@ const Cliente = db.define('cliente', {
         type: DataTypes.STRING,
     },
     lat: {
-        type: DataTypes.STRING,
+        type: DataTypes.DOUBLE,
     },
     lng: {
-        type: DataTypes.STRING,
+        type: DataTypes.DOUBLE,
     }
 });
 

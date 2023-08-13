@@ -54,10 +54,10 @@ const Paquete = db.define('paquete', {
         type: DataTypes.INTEGER,
     },
     lat: {
-        type: DataTypes.STRING,
+        type: DataTypes.DOUBLE,
     },
     lng: {
-        type: DataTypes.STRING,
+        type: DataTypes.DOUBLE,
     }
 });
 

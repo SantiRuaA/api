@@ -64,7 +64,7 @@ router.get('/:id', async (req, res) => {
   res.json(paquete);
 });
 
-router.get('/codigo/:codigoPaquete', async (req, res) => {
+router.get('/data/:codigoPaquete', async (req, res) => {
   const { codigoPaquete } = req.params;
   const paquete = await Paquete.findOne({ where: { codigoPaquete } })
 

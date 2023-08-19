@@ -20,7 +20,7 @@ const listaPaquetes = require("./routes/listaPaquete");
 const novedades = require("./routes/novedad");
 const db = require("./db/database");
 const app = express();
-const port = process.env.PORT || 3030;
+const DB_PORT = process.env.DB_PORT || 5951;
 
 (async () => {
     try {
@@ -77,6 +77,6 @@ app.use('/novedad', novedades);
 app.use('/auth', auth)
 
 
-app.listen(port, () => {
-    console.log("Servidor trotando en el puerto: ", port);
+app.listen(DB_PORT, () => {
+    console.log("Servidor trotando en el puerto: ", DB_PORT);
 });

@@ -1,6 +1,7 @@
 const Usuario = require('../models/Usuario');
 const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
+const TipoDoc = require('../models/tipodocumentousuario');
 const validateToken = require('../middlewares/tokenFunc');
 const bcryptjs = require('bcryptjs');
 

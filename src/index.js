@@ -20,7 +20,7 @@ const listaPaquetes = require("./routes/listaPaquete");
 const novedades = require("./routes/novedad");
 const db = require("./db/database");
 const app = express();
-const port = process.env.PORT || 3030;
+//const port = process.env.PORT || 3030;
 
 (async () => {
     try {

@@ -28,7 +28,7 @@ const DB_PORT = process.env.DB_PORT || 5951;
         await db.sync();
         console.log("melos en la base de datos");
     } catch (error) {
-        throw new Error(error)
+        throw new Error("su puta madre", error)
     }
 
 })()

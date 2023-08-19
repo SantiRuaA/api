@@ -24,13 +24,14 @@ const DB_PORT = process.env.DB_PORT || 5951;
 
 (async () => {
     try {
-        await db.authenticate();
+        await db.authenticate()
         await db.sync();
-        console.log("Conexión exitosa y sincronización completada");
+        console.log("melos en la base de datos");
     } catch (error) {
-        console.error("Error durante la autenticación o sincronización:", error);
+        throw new Error(error)
     }
-})();
+
+})()
 
 //middlewares
 app.use(express.json()); //recibir datos en formato JSON.

@@ -31,7 +31,7 @@ router.post('/login', async (req, res) => {
         if (!user) {
             return res.json({
                 status: "error",
-                msj: "Credenciales incorrectas."
+                msj: "Correo y/o contraseña incorrectos."
             });
         }
 
@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
         if (!validPassword) {
             return res.json({
                 status: "error",
-                msj: "Credenciales incorrectas."
+                msj: "Correo y/o contraseña incorrectos."
             });
         }
 
@@ -126,7 +126,7 @@ router.post('/forgot-pwd', async (req, res) => {
     } catch (error) {
         return res.json({
             status: 'error',
-            msj: 'Ha ocurrido un error al intentar enviar el correo electrónico, intenta nuevamente.',
+            msj: 'Ha ocurrido un error al recuperar tu contraseña. Por favor, inténtalo nuevamente.',
         });
     }
 });
@@ -192,7 +192,7 @@ router.post('/new-pwd', async (req, res) => {
     } catch (error) {
         return res.json({
             status: 'error',
-            msj: 'Ha ocurrido un error al intentar cambiar la contraseña, intenta nuevamente o pide un nuevo correo.',
+            msj: 'Ha ocurrido un error al cambiar tu contraseña. Por favor, inténtalo nuevamente o solicita un nuevo correo.',
         });
     }
 });

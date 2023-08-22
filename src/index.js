@@ -20,11 +20,11 @@ const listaPaquetes = require("./routes/listaPaquete");
 const novedades = require("./routes/novedad");
 const db = require("./db/database");
 const app = express();
-const DB_PORT = 5951;
+const DB_PORT = process.env.DB_PORT || 5951;
 
 (async () => {
     try {
-
+        await db.authenticate()
         await db.sync();
         console.log("melos en la base de datos");
     } catch (error) {

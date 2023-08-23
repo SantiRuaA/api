@@ -234,6 +234,7 @@ router.put('/:id', async (req, res) => {
   res.json({
     status: 'ok',
     msj: 'Paquete actualizado con éxito',
+    paquete: paqId,
   });
 });
 

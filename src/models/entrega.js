@@ -13,7 +13,7 @@ const Entrega = db.define('entrega', {
     fechaEntrega: {
         type: DataTypes.DATE,
     },
-    idLista: {
+    idRastreo: {
         type: DataTypes.INTEGER,
     },
 });

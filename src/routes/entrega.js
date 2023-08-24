@@ -1,10 +1,10 @@
 const Entrega = require('../models/entrega');
-const Lista = require('../models/listaPaquete');
+const Rastreo = require('../models/rastreo');
 const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()
 
-router.use(validateToken)
+/* router.use(validateToken) */
 
 router.get('/', async (req, res) => {
   const entregas = await Entrega.findAll();
@@ -36,10 +36,10 @@ router.get('/:id', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-  const { firmaDestinatario, fechaEntrega, idLista } = req.body;
+  const { firmaDestinatario, fechaEntrega, idRastreo } = req.body;
   //const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}})
 
-  if (!firmaDestinatario || !fechaEntrega || !idLista) {
+  if (!firmaDestinatario || !fechaEntrega || !idRastreo) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios"
@@ -52,15 +52,15 @@ router.post('/', async (req, res) => {
     });
   }*/
 
-  const listId = await Lista.findByPk(idLista);
-  if (!listId) {
+  const rastreoId = await Rastreo.findByPk(idRastreo);
+  if (!rastreoId) {
     return res.json({
       status: "error",
-      msj: 'La lista de paquetes no existe'
+      msj: 'El rastreo de paquetes no existe'
     });
   }
 
-  const entrega = await Entrega.create({ firmaDestinatario, fechaEntrega, idLista })
+  const entrega = await Entrega.create({ firmaDestinatario, fechaEntrega, idRastreo })
 
   res.json({
     status: "ok",
@@ -73,10 +73,10 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const entId = await Entrega.findByPk(id);
-  const { firmaDestinatario, fechaEntrega, idLista } = req.body;
+  const { firmaDestinatario, fechaEntrega, idRastreo } = req.body;
   /* const ent = await Entrega.findOne({ where: {"Lo que no se vaya a repetir"}}) */
 
-  if (!firmaDestinatario || !idLista) {
+  if (!firmaDestinatario || !idRastreo) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios"
@@ -96,15 +96,15 @@ router.put('/:id', async (req, res) => {
      });
    } */
 
-  const listId = await Lista.findByPk(idLista);
-  if (!listId) {
+  const rastreoId = await Rastreo.findByPk(idRastreo);
+  if (!rastreoId) {
     return res.json({
       status: "error",
-      msj: 'La lista de paquetes no existe'
+      msj: 'El rastreo de paquetes no existe'
     });
   }
 
-  await entId.update({ firmaDestinatario, idLista })
+  await entId.update({ firmaDestinatario, idRastreo })
 
   res.json({
     status: "ok",

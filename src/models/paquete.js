@@ -35,7 +35,7 @@ const Paquete = db.define('paquete', {
         type: DataTypes.STRING,
     },
     fechaAproxEntrega: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
     },
     idUsuario: {
         type: DataTypes.INTEGER,

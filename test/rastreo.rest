@@ -1,0 +1,31 @@
+//este rest es para que reconozca esete archivo como un archivo de solicitudes
+
+
+GET http://localhost:3030/rastreo/2
+
+###
+
+POST http://localhost:3030/rastreo
+Content-Type: application/json
+
+{
+    "motivoNoEntrega": "Ayuda, me estan explotando",
+    "idPaquete": 199,
+    "idEstado": 3
+}
+
+###
+
+PUT http://localhost:3030/rastreo/2
+Content-Type: application/json
+
+{
+    "idRastreo": 2,
+    "motivoNoEntrega": "Ayuda, me estan explotando fisicamente",
+    "idPaquete": 105,
+    "idEstado": 2
+}
+
+###
+
+DELETE http://localhost:3030/rastreo/1

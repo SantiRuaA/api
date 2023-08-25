@@ -13,6 +13,20 @@ router.get("/", async (req, res) => {
     res.json(rastreo);
 });
 
+router.get("/paquete/:idPaquete", async (req, res) => {
+    const { idPaquete } = req.params;
+    const rastreo = await Rastreo.findOne({ where: { idPaquete } });
+
+    if (!rastreo) {
+        return res.json({
+            status: "error",
+            msj: "No existe ningun rastreo con el id proporcionado.",
+        });
+    }
+
+    res.json(rastreo);
+});
+
 router.get("/:id", async (req, res) => {
     const { id } = req.params;
     const rastreo = await Rastreo.findByPk(id);
@@ -28,9 +42,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const { motivoNoEntrega, idPaquete, idEstado } = req.body;  //¿ID ESTADO?
+    const { motivoNoEntrega, idPaquete, idEstado } = req.body;
 
-    if ( !idPaquete || !idEstado) {
+    if (!idPaquete) {
         return res.json({
             status: "error",
             msj: "Uno o mas campos vacios.",
@@ -60,7 +74,7 @@ router.put("/:id", async (req, res) => {
     const { idRastreo, motivoNoEntrega, idPaquete, idEstado } = req.body;
     const rastreoId = await Rastreo.findByPk(idRastreo);
 
-    if (!idPaquete || !idEstado) {
+    if (!idPaquete) {
         return res.json({
             status: "error",
             msj: "Uno o mas campos vacios.",
@@ -76,23 +90,24 @@ router.put("/:id", async (req, res) => {
     });
 });
 
-router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-    const rastreoId = await Rastreo.findByPk(id);
+router.delete('/:idPaquete', async (req, res) => {
+    const { idPaquete } = req.params;
 
-    if (!rastreoId) {
+    const paqId = await Rastreo.findOne({ where: { idPaquete } });
+
+    if (!paqId) {
         return res.json({
-            status: "error",
-            msj: "No existe ningun rastreo con el id proporcionado.",
+            status: "ok",
+            msj: "No existe ningun rastreo con el idPaquete proporcionado.",
         });
     }
 
-    await rastreoId.destroy();
+    await paqId.destroy();
 
     res.json({
         status: "ok",
         msj: "Rastreo eliminado exitosamente.",
-        Rastreo: rastreoId
+        Rastreo: paqId
     });
 });
 

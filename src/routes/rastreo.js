@@ -5,7 +5,7 @@ const validateToken = require("../middlewares/tokenFunc");
 
 const router = require("express").Router();
 
-/* router.use(validateToken); */
+router.use(validateToken);
 
 router.get("/", async (req, res) => {
     const rastreo = await Rastreo.findAll();

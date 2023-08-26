@@ -11,7 +11,7 @@ const Entrega = db.define('entrega', {
         type: DataTypes.BLOB,
     },
     fechaEntrega: {
-        type: DataTypes.DATE,
+        type: DataTypes.STRING,
     },
     idRastreo: {
         type: DataTypes.INTEGER,

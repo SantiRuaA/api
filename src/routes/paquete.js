@@ -78,6 +78,20 @@ router.get('/data/:codigoPaquete', async (req, res) => {
   res.json(paquete);
 });
 
+router.get('/usuario/:uid', async (req, res) => {
+  const { uid } = req.params;
+  const paquete = await Paquete.findAll({ where: { idUsuario: uid } });
+
+  if (!paquete) {
+    return res.json({
+      status: 'error',
+      msj: 'No existe el paqueteslodjk',
+    });
+  }
+
+  res.json(paquete);
+});
+
 router.post('/', async (req, res) => {
   const { codigoPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
 

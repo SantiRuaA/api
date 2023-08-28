@@ -1,22 +1,40 @@
 const Entrega = require('../models/entrega');
 const Rastreo = require('../models/rastreo');
 const validateToken = require('../middlewares/tokenFunc');
-
+const zlib = require('zlib'); // Para descomprimir (si está comprimido)
 const router = require('express').Router()
 
-router.use(validateToken)
+/* router.use(validateToken) */
 
 router.get('/', async (req, res) => {
   const entregas = await Entrega.findAll();
 
-  if (entregas.length === 0) {
-    return res.json({
+  try {
+    const entregas = await Entrega.findAll();
+
+    if (entregas.length === 0) {
+      return res.json({
+        status: "error",
+        msj: "No hay entregas registradas"
+      });
+    }
+
+    for (const entrega of entregas) {
+      const firmaDestinatarioBlob = entrega.firmaDestinatario;
+      const imageUrl = firmaDestinatarioBlob.toString('utf-8');
+      
+      await entrega.update({ firmaDestinatario: imageUrl });
+    }
+
+    res.json(entregas);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
       status: "error",
-      msj: "No hay entregas registradas"
+      msj: "Error al procesar la solicitud"
     });
   }
 
-  res.json(entregas);
 });
 
 
@@ -119,9 +137,9 @@ router.delete('/:id', async (req, res) => {
   const entId = await Entrega.findByPk(id);
 
   if (!entId) {
-    return res.json({ 
+    return res.json({
       status: "error",
-      msj: 'La entrega no existe o ya ha sido eliminado' 
+      msj: 'La entrega no existe o ya ha sido eliminado'
     });
   }
 

@@ -10,6 +10,9 @@ const Rastreo = db.define('rastreo', {
     motivoNoEntrega: {
         type: DataTypes.STRING,
     },
+    fechaNoEntrega: {
+        type: DataTypes.STRING,
+    },
     idPaquete: {
         type: DataTypes.INTEGER,
     },

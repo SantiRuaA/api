@@ -42,7 +42,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const { motivoNoEntrega, idPaquete, idEstado } = req.body;
+    const { motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
 
     if (!idPaquete) {
         return res.json({
@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
         });
     }
 
-    const rastreo = await Rastreo.create({ motivoNoEntrega, idPaquete, idEstado });
+    const rastreo = await Rastreo.create({ motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado });
 
     res.json({
         status: "ok",
@@ -71,7 +71,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
-    const { idRastreo, motivoNoEntrega, idPaquete, idEstado } = req.body;
+    const { idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
     const rastreoId = await Rastreo.findByPk(idRastreo);
 
     if (!idPaquete) {
@@ -81,7 +81,7 @@ router.put("/:id", async (req, res) => {
         });
     }
 
-    await rastreoId.update({ idRastreo, motivoNoEntrega, idPaquete, idEstado });
+    await rastreoId.update({ idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado });
 
     res.json({
         status: "ok",

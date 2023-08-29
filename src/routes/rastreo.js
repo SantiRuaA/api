@@ -41,6 +41,18 @@ router.get("/:id", async (req, res) => {
     res.json(rastreo);
 });
 
+router.get("/novedad/novs", async (req, res) => {
+    const rastreos = await Rastreo.findAll({ where: { idEstado: 2 } })
+
+    res.json(rastreos);
+});
+
+router.get("/entregas/entregado", async (req, res) => {
+    const rastreos = await Rastreo.findAll({ where: { idEstado: 1 } })
+
+    res.json(rastreos);
+});
+
 router.post("/", async (req, res) => {
     const { motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
 

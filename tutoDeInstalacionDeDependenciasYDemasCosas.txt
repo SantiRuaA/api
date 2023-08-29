@@ -1,9 +1,0 @@
-Instalar la extension REST Client
-Instalar el yarn que es como el npm, eso yo ya lo tyengo
-hacer el npm init -y
-hacer yarn add express
-hacer yarn add -D nodemon para que se instale como dependencia de desarrollo
-para ejecutar es asi: nodemon src/index.js
-hace yarn add cors
-yarn add mysql2	
-npm install --save sequelize

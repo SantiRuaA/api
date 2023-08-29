@@ -80,7 +80,13 @@ router.get('/data/:codigoPaquete', async (req, res) => {
 
 router.get('/usuario/:uid', async (req, res) => {
   const { uid } = req.params;
-  const paquete = await Paquete.findAll({ where: { idUsuario: uid } });
+  const paquete = await Paquete.findAll({
+    where: {
+      idUsuario: uid,
+      idEstado: 2
+    }
+  });
+
 
   if (!paquete) {
     return res.json({
@@ -90,6 +96,12 @@ router.get('/usuario/:uid', async (req, res) => {
   }
 
   res.json(paquete);
+});
+
+router.get('/entregas/entregado', async (req, res) => {
+  const paquetesEntregado = await Paquete.findAll({ where: { idEstado: 3 } });
+
+  res.json(paquetesEntregado)
 });
 
 router.post('/', async (req, res) => {

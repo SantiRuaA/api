@@ -2,6 +2,7 @@ const Usuario = require('../models/Usuario');
 const Rol = require('../models/rol');
 const Estado = require('../models/estadoUsuario');
 const TipoDoc = require('../models/tipodocumentousuario');
+const Paquete = require('../models/paquete');
 const validateToken = require('../middlewares/tokenFunc');
 const bcryptjs = require('bcryptjs');
 
@@ -39,6 +40,21 @@ router.get('/:id', async (req, res) => {
   }
 
   res.json(user);
+});
+
+router.get("/paquete/cont/:idUsuario", async (req, res) => {
+  const { idUsuario } = req.params;
+
+  const paqs = await Paquete.findAll({ where: { idUsuario: idUsuario, idEstado: 3 } });
+
+  if (paqs.length < 1) {
+    return res.json({
+      status: "error",
+      msj: "No existe ningun usuario con el id proporcionado."
+    });
+  }
+
+  res.json(paqs.length)
 });
 
 

@@ -43,12 +43,6 @@ router.post('/', async (req, res) => {
         });
     }
 
-    if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
-        return res.json({
-            error: "Valor no permitido para el campo estado usuario"
-        })
-    }
-
     if (estadoUserExists) {
         return res.json({
             error: "El estado del usuario ya existe"
@@ -84,12 +78,6 @@ router.put('/:id', async (req, res) => {
         return res.json({
             error: 'El estado del usuario ya existe'
         });
-    }
-
-    if (!EstadoUsuario.rawAttributes.estadoUsuario.values.includes(estadoUsuario)) {
-        return res.json({
-            error: "Valor no permitido para el campo estado usuario"
-        })
     }
 
     await estadoUserId.update({ estadoUsuario, ...resto });

@@ -11,7 +11,11 @@ const router = require('express').Router()
 router.use(validateToken);
 
 router.get('/', async (req, res) => {
-  const users = await Usuario.findAll();
+  const users = await Usuario.findAll({
+    attributes: {
+      exclude: ['contrasenaUsuario']
+    }
+  });
 
   if (users.length === 0) {
     return res.json({

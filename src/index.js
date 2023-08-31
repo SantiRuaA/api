@@ -32,8 +32,7 @@ const port = process.env.PORT || 3030;
 
 })()
 
-//middlewares
-app.use(express.json()); //recibir datos en formato JSON.
+app.use(express.json());
 
 app.use(cors({
     origin: '*'
@@ -75,5 +74,5 @@ app.use('/auth', auth)
 
 
 app.listen(port, () => {
-    console.log("Servidor trotando en el puerto: ", port);
+    console.log("Server trotando en el puerto: ", port);
 });

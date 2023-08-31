@@ -4,7 +4,7 @@ const validateToken = require('../middlewares/tokenFunc');
 const zlib = require('zlib'); // Para descomprimir (si está comprimido)
 const router = require('express').Router()
 
-/* router.use(validateToken) */
+router.use(validateToken)
 
 router.get('/', async (req, res) => {
   const entregas = await Entrega.findAll();
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     for (const entrega of entregas) {
       const firmaDestinatarioBlob = entrega.firmaDestinatario;
       const imageUrl = firmaDestinatarioBlob.toString('utf-8');
-      
+
       await entrega.update({ firmaDestinatario: imageUrl });
     }
 

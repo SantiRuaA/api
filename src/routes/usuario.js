@@ -54,7 +54,7 @@ router.get("/paquete/cont/:idUsuario", async (req, res) => {
   if (paqs.length < 1) {
     return res.json({
       status: "error",
-      msj: "No existe ningun usuario con el id proporcionado."
+      msj: "El user no tiene paquetes entregados."
     });
   }
 

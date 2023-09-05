@@ -2,6 +2,7 @@ const Rastreo = require("../models/rastreo");
 const Paquete = require("../models/paquete");
 const estadoRastreo = require("../models/estadoRastreo");
 const validateToken = require("../middlewares/tokenFunc");
+const { where } = require("sequelize");
 
 const router = require("express").Router();
 
@@ -15,7 +16,13 @@ router.get("/", async (req, res) => {
 
 router.get("/paquete/:idPaquete", async (req, res) => {
     const { idPaquete } = req.params;
-    const rastreo = await Rastreo.findOne({ where: { idPaquete } });
+    const rastreo = await Rastreo.findOne({
+        where: {
+            idPaquete,
+            idEstado: null
+        }
+    });
+
 
     if (!rastreo) {
         return res.json({
@@ -63,15 +70,6 @@ router.post("/", async (req, res) => {
         });
     }
 
-    const paqueteId = await Paquete.findByPk(idPaquete);
-
-    if (!paqueteId) {
-        return res.json({
-            status: "error",
-            msj: "El paquete no existe.",
-        });
-    }
-
     const rastreo = await Rastreo.create({ motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado });
 
     res.json({
@@ -84,7 +82,12 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
     const { idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
-    const rastreoId = await Rastreo.findByPk(idRastreo);
+    const rastreoId = await Rastreo.findOne({
+        where: {
+            idRastreo,
+            idEstado: null
+        }
+    });
 
     if (!idPaquete) {
         return res.json({
@@ -105,7 +108,12 @@ router.put("/:id", async (req, res) => {
 router.delete('/:idPaquete', async (req, res) => {
     const { idPaquete } = req.params;
 
-    const paqId = await Rastreo.findOne({ where: { idPaquete } });
+    const paqId = await Rastreo.findOne({
+        where: {
+            idPaquete,
+            idEstado: null
+        }
+    });
 
     if (!paqId) {
         return res.json({

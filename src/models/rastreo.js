@@ -16,6 +16,9 @@ const Rastreo = db.define('rastreo', {
     idPaquete: {
         type: DataTypes.INTEGER,
     },
+    idUsuario: {
+        type: DataTypes.INTEGER,
+    },
     idEstado: {
         type: DataTypes.INTEGER,
     },

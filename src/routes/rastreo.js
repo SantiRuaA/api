@@ -61,16 +61,16 @@ router.get("/entregas/entregado", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const { motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
+    const { motivoNoEntrega, fechaNoEntrega, idPaquete, idUsuario, idEstado } = req.body;
 
-    if (!idPaquete) {
+    if (!idPaquete || !idUsuario) {
         return res.json({
             status: "error",
             msj: "Uno o mas campos vacios.",
         });
     }
 
-    const rastreo = await Rastreo.create({ motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado });
+    const rastreo = await Rastreo.create({ motivoNoEntrega, fechaNoEntrega, idPaquete, idUsuario, idEstado });
 
     res.json({
         status: "ok",
@@ -81,7 +81,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
     const { id } = req.params;
-    const { idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado } = req.body;
+    const { idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idUsuario, idEstado } = req.body;
     const rastreoId = await Rastreo.findOne({
         where: {
             idRastreo,
@@ -96,7 +96,7 @@ router.put("/:id", async (req, res) => {
         });
     }
 
-    await rastreoId.update({ idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idEstado });
+    await rastreoId.update({ idRastreo, motivoNoEntrega, fechaNoEntrega, idPaquete, idUsuario, idEstado });
 
     res.json({
         status: "ok",

@@ -138,14 +138,6 @@ router.post('/', async (req, res) => {
     });
   }
 
-  /*const clDoc = await Cliente.findByPk(documentoCliente);
-  if (!clDoc) {
-    return res.json({
-      status: 'error',
-      msj: 'El documento del cliente no existe',
-    });
-  }*/
-
   const estado = await EstadoPaquete.findByPk(idEstado);
   if (!estado) {
     return res.json({
@@ -153,14 +145,6 @@ router.post('/', async (req, res) => {
       msj: 'El estado no existe',
     });
   }
-
-  /* const tamano = await TamanoPaquete.findByPk(idTamano);
-  if (!tamano) {
-    return res.json({
-      status: 'error',
-      msj: 'El tamaño no existe',
-    });
-  } */
 
   const tipo = await TipoPaquete.findByPk(idTipo);
   if (!tipo) {
@@ -183,75 +167,10 @@ router.put('/:idPaquete', async (req, res) => {
   const { idPaquete, codigoPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
 
-  if (!pesoPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idEstado || !idTipo || !lat || !lng) {
-    return res.json({
-      status: 'error',
-      msj: 'Uno o más campos vacíos',
-    });
-  }
-
-  if (isNaN(pesoPaquete) || isNaN(telefonoDestinatario)) {
-    return res.json({
-      status: "error",
-      msj: "El campo peso deben ser numerico",
-    });
-  }
-
   if (!paqId) {
     return res.json({
       status: 'error',
-      msj: 'No existe el paquete',
-    });
-  }
-  /* const userDoc = await Usuario.findByPk(documentoUsuario);
-  if (!userDoc) {
-    return res.json({
-      status: 'error',
-      msj: 'El documento del usuario no existe',
-    });
-  } */
-
-  const remitente = await Cliente.findOne({ where: { documentoCliente: documentoRemitente } });
-  if (!remitente) {
-    return res.json({
-      status: 'error',
-      msj: 'El documento del cliente no existe',
-    });
-  }
-
-  /* if (documentoDestinatario === documentoRemitente) {
-    return res.json({
-      status: 'error',
-      msj: 'El documento del destinatario y el remitente no pueden ser iguales',
-    });
-  } */
-
-  const estado = await EstadoPaquete.findByPk(idEstado);
-  if (!estado) {
-    return res.json({
-      status: 'error',
-      msj: 'El estado no existe',
-    });
-  }
-
-  /* const tamano = await TamanoPaquete.findByPk(idTamano);
-  if (!tamano) {
-    return res.json({
-      status: 'error',
-      msj: 'El tamaño no existe',
-    });
-  } */
-
-  /* //Validar la variable idTamano por si el campo recibido es vacion que este sea nulo
-  if (idTamano == '') {
-    idTamano = null;
-  } */
-
-  const tipo = await TipoPaquete.findByPk(idTipo);
-  if (!tipo) {
-    return res.json({
-      status: 'error',
-      msj: 'El tipo no existe',
+      msj: 'El paquete no existe o ya ha sido eliminado',
     });
   }
 

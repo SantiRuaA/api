@@ -51,13 +51,6 @@ router.get("/paquete/cont/:idUsuario", async (req, res) => {
 
   const paqs = await Paquete.findAll({ where: { idUsuario: idUsuario, idEstado: 3 } });
 
-  if (paqs.length < 1) {
-    return res.json({
-      status: "error",
-      msj: "El user no tiene paquetes entregados."
-    });
-  }
-
   res.json(paqs.length)
 });
 

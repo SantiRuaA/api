@@ -39,10 +39,17 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng } = req.body;
 
-  if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente || !lat || !lng) {
+  if (!documentoCliente || !idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios."
+    });
+  }
+
+  if (!lat || !lng) {
+    return res.json({
+      status: "error",
+      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
     });
   }
 
@@ -113,10 +120,17 @@ router.put('/:id', async (req, res) => {
   const { idCliente, documentoCliente, idTipoDocumento, nombreCliente, telefonoCliente, correoCliente, direccionCliente, detalleDireccionCliente, lat, lng } = req.body;
   const cltId = await Cliente.findByPk(idCliente);
 
-  if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente || !lat || !lng) {
+  if (!idTipoDocumento || !nombreCliente || !telefonoCliente || !correoCliente || !direccionCliente) {
     return res.json({
       status: "error",
       msj: "Uno o mas campos vacios."
+    });
+  }
+
+  if (!lat || !lng) {
+    return res.json({
+      status: "error",
+      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
     });
   }
 

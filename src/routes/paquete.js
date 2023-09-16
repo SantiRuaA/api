@@ -108,10 +108,17 @@ router.post('/', async (req, res) => {
   const { codigoPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
 
 
-  if (!codigoPaquete || !pesoPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo || !lat || !lng) {
+  if (!codigoPaquete || !pesoPaquete || !contenidoPaquete || !documentoDestinatario || !nombreDestinatario || !correoDestinatario || !telefonoDestinatario || !fechaAproxEntrega || !documentoRemitente || !idTipo) {
     return res.json({
       status: 'error',
       msj: 'Uno o más campos vacíos',
+    });
+  }
+
+  if (!lat || !lng) {
+    return res.json({
+      status: "error",
+      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
     });
   }
 
@@ -167,10 +174,18 @@ router.put('/:idPaquete', async (req, res) => {
   const { idPaquete, codigoPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng } = req.body;
   const paqId = await Paquete.findByPk(idPaquete);
 
+
   if (!paqId) {
     return res.json({
       status: 'error',
       msj: 'El paquete no existe o ya ha sido eliminado',
+    });
+  }
+
+  if (!lat || !lng) {
+    return res.json({
+      status: "error",
+      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
     });
   }
 

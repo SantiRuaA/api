@@ -182,13 +182,6 @@ router.put('/:idPaquete', async (req, res) => {
     });
   }
 
-  if (!lat || !lng) {
-    return res.json({
-      status: "error",
-      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
-    });
-  }
-
   await paqId.update({ codigoPaquete, direccionPaquete, detalleDireccionPaquete, pesoPaquete, contenidoPaquete, documentoDestinatario, nombreDestinatario, correoDestinatario, telefonoDestinatario, fechaAproxEntrega, idUsuario, documentoRemitente, idEstado, idTamano, idTipo, lat, lng });
 
   res.json({

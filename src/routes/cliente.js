@@ -127,13 +127,6 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (!lat || !lng) {
-    return res.json({
-      status: "error",
-      msj: "Debes seleccionar una ubicación en el mapa, o en las recomendaciones de direcciones."
-    });
-  }
-
   if (!idCliente) {
     return res.json({
       status: "error",

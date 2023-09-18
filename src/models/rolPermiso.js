@@ -3,7 +3,7 @@ const db = require("../db/database");
 const Rol = require("./rol");
 const Permiso = require("./permiso");
 
-const RolPermiso = db.define('rolPermiso', {
+const RolPermiso = db.define('rolpermiso', {
     idRolPermiso: {
         type: DataTypes.INTEGER,
         primaryKey: true,

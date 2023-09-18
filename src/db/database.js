@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
-const db = new Sequelize('starrouting', 'root', '', {
-  host: 'localhost',
+const db = new Sequelize('baurarptfwoixloaogzv', 'baurarptfwoixloaogzv', 'HUZ8nQbXeVVQTOHP31pK', {
+  DB_HOST: 'baurarptfwoixloaogzv-mysql.services.clever-cloud.com',
   dialect: 'mysql',
   /* one of | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */
 

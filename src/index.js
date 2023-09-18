@@ -27,6 +27,7 @@ const port = process.env.PORT || 3030;
         await db.sync();
         console.log("melos en la base de datos");
     } catch (error) {
+        console.log(error);
         throw new Error(error)
     }
 

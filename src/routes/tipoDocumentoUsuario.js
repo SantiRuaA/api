@@ -1,4 +1,4 @@
-const TipoDocumentoUsuario = require('../models/tipodocumentousuario');
+const TipoDocumentoUsuario = require('../models/tipoDocumentoUsuario');
 const validateToken = require('../middlewares/tokenFunc');
 
 const router = require('express').Router()

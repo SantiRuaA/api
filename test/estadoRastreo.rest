@@ -1,7 +1,0 @@
-//este rest es para que reconozca esete archivo como un archivo de solicitudes
-
-
-GET http://localhost:3030/estadoRastreo
-
-###
-GET http://localhost:3030/estadoRastreo/1

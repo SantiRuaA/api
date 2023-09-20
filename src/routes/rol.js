@@ -116,6 +116,13 @@ router.put('/:id', async (req, res) => {
         }
     }
 
+    if (idRol == 1 || idRol == 2) {
+        return res.json({
+            status: 'error',
+            msj: 'No puedes modificar este rol.'
+        });
+    }
+
     await rolId.update({ idRol, nombreRol });
 
     res.json({

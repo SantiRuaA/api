@@ -104,7 +104,7 @@ router.post('/forgot-pwd', async (req, res) => {
         }
 
         const token = await generateJWT(user.idUsuario);
-        const verificacionLink = `http://localhost:4200/auth/new-pwd/${token}`;
+        const verificacionLink = `https://star-routing.netlify.app/auth/new-pwd/${token}`;
 
         let plantillaCorreo = leerPlantillaCorreo();
 

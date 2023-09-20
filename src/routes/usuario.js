@@ -81,13 +81,6 @@ router.post('/', async (req, res) => {
     });
   }
 
-  if (idUsuario == 1) {
-    return res.json({
-      status: 'error',
-      msj: 'No puedes modificar este usuario.'
-    });
-  }
-
 
   const emailRegex = new RegExp('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$');
   if (!emailRegex.test(correoUsuario)) {
@@ -173,6 +166,13 @@ router.put('/:id', async (req, res) => {
     return res.json({
       status: "error",
       msj: 'El usuario a editar no existe.'
+    });
+  }
+
+  if (idUsuario == 1) {
+    return res.json({
+      status: 'error',
+      msj: 'No puedes modificar este usuario.'
     });
   }
 

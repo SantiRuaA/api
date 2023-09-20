@@ -155,6 +155,13 @@ router.put('/:id', async (req, res) => {
   const { idUsuario, documentoUsuario, idTipoDocumento, nombreUsuario, apellidoUsuario, telefonoUsuario, correoUsuario, contrasenaUsuario, idRol, idEstado } = req.body;
   const userId = await Usuario.findByPk(idUsuario);
 
+  if (idUsuario == 1) {
+    return res.json({
+      status: 'error',
+      msj: 'No puedes modificar este usuario.'
+    });
+  }
+
   if (!documentoUsuario || !idTipoDocumento || !nombreUsuario || !apellidoUsuario || !telefonoUsuario || !correoUsuario || !idRol) {
     return res.json({
       status: "error",
@@ -169,12 +176,6 @@ router.put('/:id', async (req, res) => {
     });
   }
 
-  if (idUsuario == 1) {
-    return res.json({
-      status: 'error',
-      msj: 'No puedes modificar este usuario.'
-    });
-  }
 
 
   const docRegex = new RegExp('^[0-9]{7,10}$');

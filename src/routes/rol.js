@@ -91,6 +91,13 @@ router.put('/:id', async (req, res) => {
     const { idRol, nombreRol } = req.body;
     const rolId = await Rol.findByPk(idRol)
 
+    if (idRol == 1 || idRol == 2) {
+        return res.json({
+            status: 'error',
+            msj: 'No puedes modificar este rol.'
+        });
+    }
+
     if (!nombreRol) {
         return res.json({
             status: "error",
@@ -114,13 +121,6 @@ router.put('/:id', async (req, res) => {
                 msj: 'El rol ya existe.'
             });
         }
-    }
-
-    if (idRol == 1 || idRol == 2) {
-        return res.json({
-            status: 'error',
-            msj: 'No puedes modificar este rol.'
-        });
     }
 
     await rolId.update({ idRol, nombreRol });

@@ -53,14 +53,6 @@ router.post("/", async (req, res) => {
         })
     }
 
-    /* const rolId = await Rol.findByPk(idRol)
-    if(rolId){
-        return res.json({
-            status: "error",
-            msj:"Ya existe un rol con ese ID"
-        });
-    } */
-
     const rolExists = await Rol.findOne({ where: { nombreRol } })
     if (rolExists) {
         return res.json({
@@ -68,13 +60,6 @@ router.post("/", async (req, res) => {
             msj: "El rol ya existe."
         });
     }
-
-    /* if (!Rol.rawAttributes.nombreRol.values.includes(nombreRol)) {
-        return res.json({
-            status: "error",
-            msj:"Valor no permitido para el campo rol"
-        })
-    } */
 
     const rol = await Rol.create({ nombreRol });
 
@@ -91,7 +76,7 @@ router.put('/:id', async (req, res) => {
     const { idRol, nombreRol } = req.body;
     const rolId = await Rol.findByPk(idRol)
 
-    if (idRol == 1 || idRol == 2) {
+    if (idRol == 1) {
         return res.json({
             status: 'error',
             msj: 'No puedes modificar este rol.'

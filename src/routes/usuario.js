@@ -288,8 +288,6 @@ router.put('/:id', async (req, res) => {
     idEstado
   });
 
-  const userCr = await Usuario.findByPk(id);
-
   res.json({
     status: 'ok',
     msj: 'El usuario ha sido actualizado exitosamente.'

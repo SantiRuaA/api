@@ -50,13 +50,6 @@ router.post('/login', async (req, res) => {
             });
         }
 
-        /* if(user.idRol != 1 ){
-            return res.json({
-                status: "error",
-                msj: "Usted no es admin"
-            });
-        } */
-
         const token = await generateJWT(user.idUsuario);
 
         user.contrasenaUsuario = undefined;
@@ -114,7 +107,7 @@ router.post('/forgot-pwd', async (req, res) => {
         await transporter.sendMail({
             from: '"Star ☆ Routing" <soporte.starrouting@gmail.com>', // sender address
             to: user.correoUsuario, // list of receivers
-            subject: "Recuperar contraseña", // Subject line
+            subject: "Restablecer contraseña", // Subject line
             html: plantillaCorreo, // html body
         });
 
